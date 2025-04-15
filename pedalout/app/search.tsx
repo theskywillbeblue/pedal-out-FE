@@ -7,7 +7,7 @@ export default function FloatingSearchBar() {
        <View style={styles.floatingSearchContainer} >
          <TextInput
          
-           placeholder="📌 Search " //we can add template literals here to tell users what the search will do on dif. tabs
+           placeholder="📌 Search ... " //we can add template literals here to tell users what the search will do on dif. tabs
            placeholderTextColor="#888"
            style={styles.searchInput}
          />
@@ -19,14 +19,14 @@ export default function FloatingSearchBar() {
      floatingSearchContainer: {
       fontFamily: 'HelveticaRounded',
       position: 'absolute',
-       top: 23,
+       top: 35,
        left: 20,
        right: 20,
        zIndex: 1000,
        backgroundColor: 'white',
        borderRadius: 12,
-       paddingHorizontal: 12,
-       paddingVertical: 12,
+       paddingHorizontal: 2,
+       paddingVertical: 2,
        shadowColor: '#FFFFFF',
        shadowRadius: 5,
        elevation: 5,
