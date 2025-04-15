@@ -5,9 +5,9 @@ import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import FloatingSearchBar from '../search';
 
-export const options = {
-    headerShown: false,
-  };
+// export const options = {
+//     headerShown: false,
+//   };
 
 export default function TabOneScreen() {
   return (
@@ -33,6 +33,12 @@ export default function TabOneScreen() {
       <ThemedText>Placeholder Text</ThemedText>
       
     </ParallaxScrollView>
+{/* render 3+ wide panels */}
+
+
+{/*here we render a floating map button that opens up fullscreen interactive map */}
+
+
     </View>
   );
 }

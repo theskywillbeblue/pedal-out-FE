@@ -1,49 +1,44 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { HapticTab } from "@/components/HapticTab";
-import { View, Text } from "react-native";
-import { ThemedText } from '@/components/ThemedText';
-
-
 import TabBarBackground from "@/components/ui/TabBarBackground";
-
 import { useColorScheme } from "@/hooks/useColorScheme";
 
-const tabIconStyle = { alignItems: "center", width: 70 };
-const tabTextIconStyle = { fontSize: 12, marginTop: 2 };
+const TabIcon = ({ iconName, color }) => {
+  return (
+    <View style={{ alignItems: "center", justifyContent: "center", width: 60 }}>
+      <Ionicons name={iconName} size={30} color={color} />
+    </View>
+  );
+};
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
+  const screenOptions = {
+    headerShown: false,
+    tabBarActiveTintColor: "#FFF",
+    tabBarButton: HapticTab,
+    tabBarStyle: {
+      height: 60, // Reduced height
+      paddingTop: 5, // Adjust padding top
+      paddingBottom: 5, // Adjust padding bottom to ensure the icons fit
+      position: 'relative',
+      borderTopWidth: 0,
+      backgroundColor: 'transparent',
+    },
+  };
+
   return (
-
-
-
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: "#000",
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: { position: "absolute" },
-          default: {},
-        }),
-      }}
-    >
+    <Tabs screenOptions={screenOptions}>
       <Tabs.Screen
-        name="ViewRides"
+        name="index"
         options={{
           tabBarLabel: () => null,
           tabBarIcon: ({ color }) => (
-            <View style={tabIconStyle}>
-              <Ionicons name="bicycle-outline" size={24} color={color} />
-              <ThemedText type="tabText">
-          View Rides
-        </ThemedText>
-            </View>
+            <TabIcon iconName="bicycle-outline" color={color} />
           ),
         }}
       />
@@ -51,14 +46,8 @@ export default function TabLayout() {
         name="PostRide"
         options={{
           tabBarLabel: () => null,
-          title: "Post A Ride",
           tabBarIcon: ({ color }) => (
-            <View style={tabIconStyle}>
-              <Ionicons name="add-circle-outline" size={25} color={color} />
-              <ThemedText type="tabText">
-                Post A Ride
-              </ThemedText>
-            </View>
+            <TabIcon iconName="add-circle-outline" color={color} />
           ),
         }}
       />
@@ -66,14 +55,8 @@ export default function TabLayout() {
         name="Profile"
         options={{
           tabBarLabel: () => null,
-          title: "Profile",
           tabBarIcon: ({ color }) => (
-            <View style={tabIconStyle}>
-            <Ionicons name="person-circle-outline" size={28} color={color} />
-            <ThemedText type="tabText">
-                Profile
-              </ThemedText>
-              </View>
+            <TabIcon iconName="person-circle-outline" color={color} />
           ),
         }}
       />
@@ -81,18 +64,8 @@ export default function TabLayout() {
         name="Messages"
         options={{
           tabBarLabel: () => null,
-          title: "Messages",
           tabBarIcon: ({ color }) => (
-            <View style={tabIconStyle}>
-            <Ionicons
-              name="chatbubble-ellipses-outline"
-              size={28}
-              color={color}
-            />
-              <ThemedText type="tabText">
-                Chat
-              </ThemedText>
-              </View>
+            <TabIcon iconName="chatbubble-ellipses-outline" color={color} />
           ),
         }}
       />
@@ -100,14 +73,8 @@ export default function TabLayout() {
         name="Friends"
         options={{
           tabBarLabel: () => null,
-          title: "Friends",
           tabBarIcon: ({ color }) => (
-            <View style={tabIconStyle}>
-            <Ionicons name="people-circle-outline" size={28} color={color} />
-            <ThemedText type="tabText">
-                Friends
-              </ThemedText>
-              </View>
+            <TabIcon iconName="people-circle-outline" color={color} />
           ),
         }}
       />
