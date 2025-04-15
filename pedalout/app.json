@@ -15,12 +15,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jay_mulholland.pedalout"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/favicon.png"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
     },
     "plugins": [
       "expo-router",
