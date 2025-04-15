@@ -16,17 +16,20 @@ const HEADER_HEIGHT = 250;
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerBackgroundColor: { dark: string; light: string };
+  bottomPadding?: number;
 }>;
 
 export default function ParallaxScrollView({
   children,
   headerImage,
   headerBackgroundColor,
+  bottomPadding = 10,
 }: Props) {
   const colorScheme = useColorScheme() ?? 'light';
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
-  const bottom = useBottomTabOverflow();
+  // const bottom = useBottomTabOverflow();
+  const bottom = bottomPadding;
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
