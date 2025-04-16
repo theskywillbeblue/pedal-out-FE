@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import { StyleSheet, Image, Platform, SafeAreaView } from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
@@ -9,6 +9,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 
 export default function TabTwoScreen() {
   return (
+    <SafeAreaView>
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={
@@ -25,6 +26,7 @@ export default function TabTwoScreen() {
       <ThemedText>Placeholder Text</ThemedText>
       
     </ParallaxScrollView>
+    </SafeAreaView>
   );
 }
 

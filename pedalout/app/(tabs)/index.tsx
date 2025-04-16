@@ -3,17 +3,18 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import FloatingSearchBar from '../search';
-import ImageGridSquares from '../ImageGrid_Explore';
+import FloatingSearchBar from '../../components/search';
+import ImageGridSquares from '../../components/ImageGrid_Explore';
 import { rgbaColor } from 'react-native-reanimated/lib/typescript/Colors';
-
+import { SafeAreaView } from 'react-native';
 export const options = {
   headerShown: false,
 };
 
 export default function TabOneScreen() {
   return (
-    <View style={{ flex: 1 }}>
+  <SafeAreaView style={{ flex: 1 }}>
+   
       <FloatingSearchBar />
 
       <ParallaxScrollView
@@ -39,7 +40,7 @@ export default function TabOneScreen() {
         </ThemedView>
         
       
-    </View>
+    </SafeAreaView>
   );
 }
 

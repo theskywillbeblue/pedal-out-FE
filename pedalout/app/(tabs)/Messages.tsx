@@ -24,6 +24,7 @@ export default function TabFourScreen() {
 			</SafeAreaProvider>
 		
 	);
+
 }
 
 const styles = StyleSheet.create({
