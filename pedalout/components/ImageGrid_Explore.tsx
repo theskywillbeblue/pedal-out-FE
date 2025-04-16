@@ -7,17 +7,16 @@ export default function ImageGridSquares() {
   return (
     <View style={styles.grid}>
       <View style={styles.square}>
-      <View style={styles.overlay1} /> {/*used to colour over the card*/}
-      <ThemedText style={styles.rideCardDetails}>Hamster Heath  🚴
-      {'\n'}
-      🔥🔥🔥 </ThemedText>
-
-
-      </View>
+  <View style={styles.overlay1} />
+  <Text style={styles.rideCardDetails}>
+    {'Hamster Heath ' + '\u{1F6B4}' + '\n' + '\u{1F525}\u{1F525}\u{1F525}'}
+  </Text>
+</View>
+      
       <View style={styles.square}></View>
       <View style={styles.square}></View>
-      <ThemedText style={styles.default}>🚴 Friends Rides</ThemedText>
-      <View style={styles.square}></View>
+      <ThemedText style={styles.default}>{'\u{1F6B4}'}{' Friends Rides'}</ThemedText>
+            <View style={styles.square}></View>
       <View style={styles.square}></View>
       <View style={styles.square}></View>
       <View style={styles.square}></View>
