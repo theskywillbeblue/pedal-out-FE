@@ -66,16 +66,11 @@ function PostRide() {
 
 <TextInput style={[styles.input, { height: 120 }]} placeholder="Enter description" multiline />
 
-      {/*optional- users can type to enter address rather than select on map*/}
-
-    {/*}  <TextInput style={styles.input} placeholder="Enter location" /> */}
-
-      {/* Placeholder for Left Button + Two Actual Buttons */}
       <View style={styles.buttonContainer}>
-        <View style={styles.placeholderButton} /> {/* Invisible placeholder */}
+        <View style={styles.placeholderButton} /> 
 
         <Pressable style={styles.button}>
-          <Text style={styles.buttonTextDark}>👥+</Text>
+        <Text style={styles.buttonTextDark}>{'\u{1F465}+'}</Text>
         </Pressable>
 
         <Pressable style={styles.button2}>

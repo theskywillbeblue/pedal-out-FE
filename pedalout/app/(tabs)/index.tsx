@@ -2,24 +2,42 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import FloatingSearchBar from '../../components/search';
 import ImageGridSquares from '../../components/ImageGrid_Explore';
+import { useEffect, useState } from 'react';
+import {getRides} from '../../api.js';
 
 export const options = {
   headerShown: false,
 };
 
+
+
 export default function TabOneScreen() {
+const [rides, setRides] = useState([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState(null);
+   useEffect(() => {
+    getRides().then((rides) =>{
+      setRides(rides);
+      console.log(rides);
+    }).catch((error) => {
+      console.error('Error fetching rides:', error);
+      setError(error);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+    
+    }, [rides]);
+
+
+
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Floating Search Bar at top */}
       <FloatingSearchBar />
-
-      {/* Scrollable content starts below */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <ThemedText style={styles.title}>Rides Nearby</ThemedText>
-        <ThemedText style={styles.subtitle}>'user location'</ThemedText>
-
-
-        {/* Placeholder for the image grid */}
+        <ThemedText style={styles.subtitle}>user location</ThemedText>
         <ImageGridSquares />
       </ScrollView>
     </SafeAreaView>

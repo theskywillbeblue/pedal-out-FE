@@ -1,22 +1,13 @@
-import { StyleSheet, Image, Platform , ScrollView} from 'react-native';
-
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
+import { StyleSheet, ScrollView } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import PostRide from '@/components/PostRidePanel';
 import { SafeAreaView } from 'react-native-safe-area-context';
 export default function TabTwoScreen() {
   return (
-
- <SafeAreaView style={styles.safeArea}>
-    <ScrollView contentContainerStyle={styles.scrollContent}>
-            <ThemedText style={styles.title}>Post A Ride</ThemedText>
-    
-    
-           
-      <PostRide />
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ThemedText style={styles.title}>Post A Ride</ThemedText>
+        <PostRide />
       </ScrollView>
     </SafeAreaView>
   );
@@ -32,11 +23,12 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     gap: 8,
-  }, safeArea: {
+  },
+  safeArea: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  
+
   scrollContent: {
     paddingTop: 80, // enough space to avoid overlap with search bar
     paddingHorizontal: 16,
@@ -54,6 +46,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     marginBottom: 20,
-    
   },
 });
