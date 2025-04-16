@@ -1,13 +1,14 @@
 import { View, StyleSheet, Image, Platform } from 'react-native';
-import FloatingSearchBar from '../search';
+import FloatingSearchBar from '../../components/search';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabFourScreen() {
   return (
-<View style={{ flex: 1, paddingTop: 100 }}>
+<SafeAreaView style={{ flex: 1, paddingTop: 100 }}>
       
       <FloatingSearchBar />
 
@@ -27,7 +28,7 @@ export default function TabFourScreen() {
       <ThemedText>Placeholder Text</ThemedText>
       
     </ParallaxScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 

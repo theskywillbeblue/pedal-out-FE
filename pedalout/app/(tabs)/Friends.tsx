@@ -1,5 +1,5 @@
-import { StyleSheet, View, Image, Platform } from 'react-native';
-import FloatingSearchBar from '../search';
+import { StyleSheet, View, Image, Platform, SafeAreaView } from 'react-native';
+import FloatingSearchBar from '../../components/search';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -7,7 +7,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 
 export default function TabFiveScreen() {
   return (
- <View style={{ flex: 1, paddingTop: 100 }}>
+ <SafeAreaView style={{ flex: 1, paddingTop: 100 }}>
 
   <View style={styles.floatingWrapper}>
     <FloatingSearchBar />
@@ -30,7 +30,7 @@ export default function TabFiveScreen() {
       <ThemedText>Placeholder Text</ThemedText>
       
     </ParallaxScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
