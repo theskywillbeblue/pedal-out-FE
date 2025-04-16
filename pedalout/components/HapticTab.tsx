@@ -1,5 +1,5 @@
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
-import { PlatformPressable } from '@react-navigation/elements';
+import { Pressable } from 'react-native';
 import React, { useState } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
@@ -21,21 +21,26 @@ export function HapticTab(props: BottomTabBarButtonProps) {
   };
 
   return (
-    <PlatformPressable
-    {...props}
-    android_ripple={null} // 👈 Disables Android default ripple
-    onPressIn={handlePressIn}
-    onPressOut={handlePressOut}
-    style={({ pressed: _pressed }) => [
-      styles.wrapper,
-      props.style,
-    ]}
-  >
-      <View style={styles.iconContainer}>
-        {pressed && <View style={styles.hapticCircle} />}
-        {props.children}
-      </View>
-    </PlatformPressable>
+    <Pressable
+  onPress={props.onPress} 
+  onPressIn={handlePressIn}
+  onPressOut={handlePressOut}
+  style={({ pressed: isPressed }) => [
+    styles.wrapper,
+    props.style,
+    {
+      backgroundColor: 'transparent',
+      opacity: 1,
+    },
+  ]}
+  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+>
+  <View style={styles.iconContainer}>
+    {pressed && <View style={styles.hapticCircle} />}
+    {props.children}
+  </View>
+</Pressable>
+
   );
 }
 
@@ -56,7 +61,8 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    zIndex: 0,
+    backgroundColor: 'rgba(255, 248, 248, 0)',
+    zIndex: 1,
+    pointerEvents: 'none',
   },
 });
