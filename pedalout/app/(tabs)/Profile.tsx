@@ -6,9 +6,11 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabThreeScreen() {
   return (
+    <SafeAreaView>
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={
@@ -25,6 +27,7 @@ export default function TabThreeScreen() {
       <ThemedText>Placeholder Text</ThemedText>
       
     </ParallaxScrollView>
+    </SafeAreaView>
   );
 }
 
