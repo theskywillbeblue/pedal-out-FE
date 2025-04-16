@@ -1,75 +1,53 @@
-import { View, Text, TextInput, StyleSheet, Platform } from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import FloatingSearchBar from '../../components/search';
 import ImageGridSquares from '../../components/ImageGrid_Explore';
-import { rgbaColor } from 'react-native-reanimated/lib/typescript/Colors';
-import { SafeAreaView } from 'react-native';
+
 export const options = {
   headerShown: false,
 };
 
 export default function TabOneScreen() {
   return (
-  <SafeAreaView style={{ flex: 1 }}>
-   
+    <SafeAreaView style={styles.safeArea}>
+      {/* Floating Search Bar at top */}
       <FloatingSearchBar />
 
-      <ParallaxScrollView
-        headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-        headerImage={
-          <IconSymbol
-            size={310}
-            color="#808080"
-            name="chevron.left.forwardslash.chevron.right"
-            style={styles.headerImage}
-          />
-        }>
-<Text>
-<ThemedText style={styles.title}>Rides Nearby</ThemedText>
-</Text>
-          <ThemedText style={styles.subtitle}>'user location'</ThemedText>
-        <ImageGridSquares /> {/* Image grid component here */}
+      {/* Scrollable content starts below */}
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ThemedText style={styles.title}>Rides Nearby</ThemedText>
+        <ThemedText style={styles.subtitle}>'user location'</ThemedText>
 
-          </ParallaxScrollView>
-          
-        <ThemedView style={styles.titleContainer}>
-          
-        </ThemedView>
-        
-      
+
+        {/* Placeholder for the image grid */}
+        <ImageGridSquares />
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    fontFamily: 'Helvetica',
+  scrollContent: {
+    paddingTop: 80, // enough space to avoid overlap with search bar
+    paddingHorizontal: 16,
+    paddingBottom: 32,
   },
-  default: {
-    fontFamily: 'HelveticaRoundedBold',
-    fontSize: 16,
-    lineHeight: 24,
-  }, 
   title: {
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 25,
-    lineHeight: 24,
+    lineHeight: 30,
+    marginBottom: 8,
   },
   subtitle: {
     fontFamily: 'HelveticaRoundedBold',
     color: 'gray',
     fontSize: 16,
-    lineHeight: 15,
+    lineHeight: 20,
+    marginBottom: 20,
+    
   },
 });
