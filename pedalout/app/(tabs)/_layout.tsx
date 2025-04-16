@@ -65,7 +65,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="PostRide"
+          name="PostRideScreen"
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color, focused }) => (
@@ -74,7 +74,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="Profile"
+          name="ProfileScreen"
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color, focused }) => (
@@ -83,7 +83,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="Messages"
+          name="MessagesScreen"
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color, focused }) => (
@@ -92,7 +92,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="Friends"
+          name="FriendsScreen"
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color, focused }) => (

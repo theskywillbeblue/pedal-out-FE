@@ -1,5 +1,5 @@
 import { StyleSheet, ScrollView, Text, View } from 'react-native';
-import FloatingSearchBar from '../search';
+import FloatingSearchBar from '../../components/search';
 import ChatComponent from '@/components/Chat';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
