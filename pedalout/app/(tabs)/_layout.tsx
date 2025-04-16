@@ -5,7 +5,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { HapticTab } from "@/components/HapticTab";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
-const TabIcon = ({ iconName, color }) => {
+const TabIcon = ({ iconName, color, focused }) => {
+  const getIconColor = () => {
+    // If the tab is focused, set it to a lighter grey for visibility
+    if (focused) {
+      return "#555"; // Slightly darker grey for better visibility in both themes
+    }
+    return color; // Default color for unfocused tabs
+  };
+
   return (
     <View
       style={{
@@ -15,7 +23,7 @@ const TabIcon = ({ iconName, color }) => {
         transform: [{ translateY: -4 }], // shift icon up a bit
       }}
     >
-      <Ionicons name={iconName} size={30} color={color} />
+      <Ionicons name={iconName} size={30} color={getIconColor()} />
     </View>
   );
 };
@@ -33,20 +41,26 @@ export default function TabLayout() {
       paddingBottom: Platform.OS === "android" ? 20 : 30,
       position: "relative",
       borderTopWidth: 0,
-      backgroundColor: "transparent",
+      backgroundColor: colorScheme === "dark" ? "#111" : "#f8f8f8", // Or your themed background
       paddingHorizontal: 10,
     },
   };
 
+  const getTabIconColor = (colorScheme) => {
+    return colorScheme === "dark" ? "#FFF" : "#000"; // Change icon color based on light/dark mode
+  };
+
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
+    <SafeAreaView
+      style={[styles.safeAreaContainer, { backgroundColor: colorScheme === "dark" ? "#111" : "#f8f8f8" }]}
+    >
       <Tabs screenOptions={screenOptions}>
         <Tabs.Screen
           name="index"
           options={{
             tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => (
-              <TabIcon iconName="bicycle-outline" color={color} />
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon iconName="bicycle-outline" color={getTabIconColor(colorScheme)} focused={focused} />
             ),
           }}
         />
@@ -54,8 +68,8 @@ export default function TabLayout() {
           name="PostRide"
           options={{
             tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => (
-              <TabIcon iconName="add-circle-outline" color={color} />
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon iconName="add-circle-outline" color={getTabIconColor(colorScheme)} focused={focused} />
             ),
           }}
         />
@@ -63,8 +77,8 @@ export default function TabLayout() {
           name="Profile"
           options={{
             tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => (
-              <TabIcon iconName="person-circle-outline" color={color} />
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon iconName="person-circle-outline" color={getTabIconColor(colorScheme)} focused={focused} />
             ),
           }}
         />
@@ -72,8 +86,8 @@ export default function TabLayout() {
           name="Messages"
           options={{
             tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => (
-              <TabIcon iconName="chatbubble-ellipses-outline" color={color} />
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon iconName="chatbubble-ellipses-outline" color={getTabIconColor(colorScheme)} focused={focused} />
             ),
           }}
         />
@@ -81,8 +95,8 @@ export default function TabLayout() {
           name="Friends"
           options={{
             tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => (
-              <TabIcon iconName="people-circle-outline" color={color} />
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon iconName="people-circle-outline" color={getTabIconColor(colorScheme)} focused={focused} />
             ),
           }}
         />

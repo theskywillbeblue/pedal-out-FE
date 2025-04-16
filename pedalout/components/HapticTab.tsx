@@ -22,7 +22,7 @@ export function HapticTab(props: BottomTabBarButtonProps) {
 
   return (
     <Pressable
-  onPress={props.onPress} // ✅ This is the missing link
+  onPress={props.onPress} 
   onPressIn={handlePressIn}
   onPressOut={handlePressOut}
   style={({ pressed: isPressed }) => [

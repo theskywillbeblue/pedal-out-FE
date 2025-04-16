@@ -4,50 +4,47 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import FloatingSearchBar from '../search';
+import ImageGridSquares from '../ImageGrid_Explore';
+import { rgbaColor } from 'react-native-reanimated/lib/typescript/Colors';
 
-// export const options = {
-//     headerShown: false,
-//   };
+export const options = {
+  headerShown: false,
+};
 
 export default function TabOneScreen() {
   return (
-    <View style={{ flex: 1, paddingTop: 100 }}>
-      
+    <View style={{ flex: 1 }}>
       <FloatingSearchBar />
+
+      <ParallaxScrollView
+        headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+        headerImage={
+          <IconSymbol
+            size={310}
+            color="#808080"
+            name="chevron.left.forwardslash.chevron.right"
+            style={styles.headerImage}
+          />
+        }>
+<Text>
+<ThemedText style={styles.title}>Rides Nearby</ThemedText>
+</Text>
+          <ThemedText style={styles.subtitle}>'user location'</ThemedText>
+        <ImageGridSquares /> {/* Image grid component here */}
+
+          </ParallaxScrollView>
+          
+        <ThemedView style={styles.titleContainer}>
+          
+        </ThemedView>
+        
       
-    
-
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Placeholder Title</ThemedText>
-      </ThemedView>
-      <ThemedText>Placeholder Text</ThemedText>
-      
-    </ParallaxScrollView>
-{/* render 3+ wide panels */}
-
-
-{/*here we render a floating map button that opens up fullscreen interactive map */}
-
-
     </View>
   );
 }
 
-
-  
-  const styles = StyleSheet.create({
-    
-     headerImage: {
+const styles = StyleSheet.create({
+  headerImage: {
     color: '#808080',
     bottom: -90,
     left: -35,
@@ -58,6 +55,20 @@ export default function TabOneScreen() {
     gap: 8,
     fontFamily: 'Helvetica',
   },
-  });
-
-
+  default: {
+    fontFamily: 'HelveticaRoundedBold',
+    fontSize: 16,
+    lineHeight: 24,
+  }, 
+  title: {
+    fontFamily: 'HelveticaRoundedBold',
+    fontSize: 25,
+    lineHeight: 24,
+  },
+  subtitle: {
+    fontFamily: 'HelveticaRoundedBold',
+    color: 'gray',
+    fontSize: 16,
+    lineHeight: 15,
+  },
+});

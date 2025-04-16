@@ -1,12 +1,10 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
-
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { BOLD_WEIGHT } from 'jest-matcher-utils';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'tabText';
 };
 
 export function ThemedText({
@@ -28,6 +26,7 @@ export function ThemedText({
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
         type === 'tabText' ? styles.tabText : undefined,
+        style, // allow overriding styles
       ]}
       {...rest}
     />
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontFamily: 'HelveticaRoundedBold',
     fontWeight: 'bold',
-    lineHeight: 32,
+    lineHeight: 38,
   },
   subtitle: {
     fontFamily: 'HelveticaRoundedBold',
@@ -63,8 +62,7 @@ const styles = StyleSheet.create({
     color: '#0a7ea4',
   },
   tabText: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'HelveticaRoundedBold',
     fontSize: 13,
-    
   },
 });
