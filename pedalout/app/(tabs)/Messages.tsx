@@ -1,45 +1,49 @@
-import { View, StyleSheet, Image, Platform } from 'react-native';
+import { StyleSheet, ScrollView, Text, View } from 'react-native';
 import FloatingSearchBar from '../search';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import ChatComponent from '@/components/Chat';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function TabFourScreen() {
-  return (
-<View style={{ flex: 1, paddingTop: 100 }}>
-      
+	return (
+	
+			<SafeAreaProvider>
       <FloatingSearchBar />
-
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Placeholder Title</ThemedText>
-      </ThemedView>
-      <ThemedText>Placeholder Text</ThemedText>
-      
-    </ParallaxScrollView>
-    </View>
-  );
+      <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.scrollOverlay}
+          contentContainerStyle={styles.avatarContainer}
+        >
+          <View style={styles.avatarPlaceholder} />
+          <View style={styles.avatarPlaceholder} />
+          <View style={styles.avatarPlaceholder} />
+          <View style={styles.avatarPlaceholder} />
+          <View style={styles.avatarPlaceholder} />
+        </ScrollView>
+				<ChatComponent></ChatComponent>
+			</SafeAreaProvider>
+		
+	);
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
+  scrollOverlay: {
     position: 'absolute',
+    top: 80,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    paddingVertical: 10,
   },
-  titleContainer: {
+  avatarContainer: {
+    paddingHorizontal: 16,
     flexDirection: 'row',
-    gap: 8,
+    gap: 16, 
   },
-});
+  avatarPlaceholder: {
+    width: 70,
+    height: 70,
+    borderRadius: 40,
+    backgroundColor: '#ccc',
+  }
+})
