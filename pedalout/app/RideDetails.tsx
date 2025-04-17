@@ -1,29 +1,33 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import PostRide from '@/components/PostRidePanel';
-import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
+import React, { useLayoutEffect } from 'react';
+import { Pressable, StyleSheet, Text, TouchableOpacity, useColorScheme } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { useColorScheme } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { useThemeColor } from '@/hooks/useThemeColor';
-import ParallaxScrollView from '@/components/ParallaxScrollView'; // Import your custom ParallaxScrollView
-import { useNavigation } from '@react-navigation/native'; // Import navigation hook
-import { ThemedView } from '@/components/ThemedView';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+
 
 export default function RideDetails() {
   const colorScheme = useColorScheme();
   const mapBackground = useThemeColor({ light: '#eee', dark: '#222' });
-
+  const navigation = useNavigation();
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
-  const navigation = useNavigation(); // Use navigation hook
+  useLayoutEffect(() => {
+      navigation.setOptions({ headerShown: false });
+    }, [navigation]);
+
+  
 
   const handleLongPress = () => {
-    // Navigate to MapScreen when long-pressed
     navigation.navigate('MapScreen');
   };
 
   return (
     <ThemedSafeAreaView style={styles.safeArea}>
+      <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
+              <Text style={styles.closeText}>✕</Text>
+            </Pressable>
       <ParallaxScrollView
         headerImage={
           <TouchableOpacity onLongPress={handleLongPress} activeOpacity={1} style={styles.mapPreviewContainer}>
@@ -45,10 +49,10 @@ export default function RideDetails() {
           light: '#fff',
           dark: '#222',
         }}
-        headerHeight={400} // Set the header height to 400
+        headerHeight={400}
         bottomPadding={20}
       >
-        
+  
       </ParallaxScrollView>
     </ThemedSafeAreaView>
   );
@@ -59,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mapPreviewContainer: {
-    height: 400, // Adjust the height to 400
+    height: 400,
     width: '100%',
     borderRadius: 6,
     overflow: 'hidden',
@@ -70,5 +74,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     width: '100%',
     height: '100%',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  closeText: {
+    color: '#fff',
+    fontSize: 24,
+    lineHeight: 24,
   },
 });
