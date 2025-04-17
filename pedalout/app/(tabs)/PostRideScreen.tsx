@@ -26,7 +26,11 @@ export default function TabTwoScreen() {
     <ThemedSafeAreaView style={styles.safeArea}>
       <ParallaxScrollView
         headerImage={
-          <TouchableOpacity onLongPress={handleLongPress} activeOpacity={1} style={styles.mapPreviewContainer}>
+          <TouchableOpacity
+            onLongPress={handleLongPress}
+            activeOpacity={1}
+            style={styles.mapPreviewContainer}
+          >
             <MapView
               style={[styles.mapPreview, { backgroundColor: mapBackground }]}
               initialRegion={{
@@ -37,7 +41,10 @@ export default function TabTwoScreen() {
               }}
               pointerEvents="none"
             >
-              <Marker coordinate={{ latitude: 51.5072, longitude: -0.1276 }} title="Hamster Heath" />
+              <Marker
+                coordinate={{ latitude: 51.5072, longitude: -0.1276 }}
+                title="Hamster Heath"
+              />
             </MapView>
           </TouchableOpacity>
         }
