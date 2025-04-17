@@ -3,34 +3,39 @@ import { ThemedText } from '@/components/ThemedText';
 import FloatingSearchBar from '../../components/search';
 import ImageGridSquares from '../../components/ImageGrid_Explore';
 import { useEffect, useState } from 'react';
-import {getRides} from '../../api.js';
+import { getRides } from '../../api.js';
 
 export const options = {
   headerShown: false,
 };
 
-
-
 export default function TabOneScreen() {
-const [rides, setRides] = useState([]);
-const [loading, setLoading] = useState(true);
-const [error, setError] = useState(null);
-   useEffect(() => {
-    getRides().then((rides) =>{
-      setRides(rides);
-      console.log(rides);
-    }).catch((error) => {
-      console.error('Error fetching rides:', error);
-      setError(error);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
-    
-    }, [rides]);
+  const [rides, setRides] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    getRides()
+      .then((res) => {
+        setRides(res.rides);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
+  if (isLoading) {
+    return <Text>Rides are on their way...</Text>;
+  }
+  if (error) {
+    return <Text>Houston, we have a problem!</Text>;
+  }
 
-
+  type Props = {
+    rides: any[];
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -38,7 +43,7 @@ const [error, setError] = useState(null);
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <ThemedText style={styles.title}>Rides Nearby</ThemedText>
         <ThemedText style={styles.subtitle}>user location</ThemedText>
-        <ImageGridSquares />
+        <ImageGridSquares rides={rides} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -66,6 +71,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     marginBottom: 20,
-    
   },
 });
