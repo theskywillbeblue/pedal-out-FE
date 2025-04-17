@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const supabaseApi = axios.create({
-	baseURL: 'https://pedal-out-be.onrender.com',
+	baseURL: 'https://pedal-out-be.onrender.com/api',
 });
 
 const mongoApi = axios.create({
@@ -26,6 +26,7 @@ async function getRides(ride_id, discipline, sortBy, order) {
 		throw err;
 	}
 }
+
 
 async function postRide(newRide) {
 	try {
