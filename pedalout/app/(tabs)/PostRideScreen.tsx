@@ -1,50 +1,74 @@
-import { StyleSheet, ScrollView } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import PostRide from '@/components/PostRidePanel';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
+import MapView, { Marker } from 'react-native-maps';
+import { useColorScheme } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import ParallaxScrollView from '@/components/ParallaxScrollView'; // Import your custom ParallaxScrollView
+import { useNavigation } from '@react-navigation/native'; // Import navigation hook
+import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ThemedText';
+
 export default function TabTwoScreen() {
+  const colorScheme = useColorScheme();
+  const mapBackground = useThemeColor({ light: '#eee', dark: '#222' });
+
+  const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
+  const navigation = useNavigation(); // Use navigation hook
+
+  const handleLongPress = () => {
+    // Navigate to MapScreen when long-pressed
+    navigation.navigate('MapScreen');
+  };
+
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText style={styles.title}>Post A Ride</ThemedText>
+    <ThemedSafeAreaView style={styles.safeArea}>
+      <ParallaxScrollView
+        headerImage={
+          <TouchableOpacity onLongPress={handleLongPress} activeOpacity={1} style={styles.mapPreviewContainer}>
+            <MapView
+              style={[styles.mapPreview, { backgroundColor: mapBackground }]}
+              initialRegion={{
+                latitude: 51.5072,
+                longitude: -0.1276,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
+              }}
+              pointerEvents="none"
+            >
+              <Marker coordinate={{ latitude: 51.5072, longitude: -0.1276 }} title="Hamster Heath" />
+            </MapView>
+          </TouchableOpacity>
+        }
+        headerBackgroundColor={{
+          light: '#fff',
+          dark: '#222',
+        }}
+        headerHeight={400} // Set the header height to 400
+        bottomPadding={20}
+      >
         <PostRide />
-      </ScrollView>
-    </SafeAreaView>
+      </ParallaxScrollView>
+    </ThemedSafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
   },
-
-  scrollContent: {
-    paddingTop: 80, // enough space to avoid overlap with search bar
-    paddingHorizontal: 16,
-    paddingBottom: 32,
+  mapPreviewContainer: {
+    height: 400, // Adjust the height to 400
+    width: '100%',
+    borderRadius: 6,
+    overflow: 'hidden',
+    marginBottom: 0,
   },
-  title: {
-    fontFamily: 'HelveticaRoundedBold',
-    fontSize: 25,
-    lineHeight: 30,
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontFamily: 'HelveticaRoundedBold',
-    color: 'gray',
-    fontSize: 16,
-    lineHeight: 20,
-    marginBottom: 20,
+  mapPreview: {
+    flex: 1,
+    backgroundColor: '#eee',
+    width: '100%',
+    height: '100%',
   },
 });

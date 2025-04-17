@@ -1,10 +1,18 @@
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, ScrollView } from 'react-native';
+import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView'; // Updated import
 import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView'; // Import ThemedView
 import FloatingSearchBar from '../../components/search';
 import ImageGridSquares from '../../components/ImageGrid_Explore';
-import { useEffect, useState } from 'react';
+
 import { getRides } from '../../api.js';
+import { useNavigation } from '@react-navigation/native';
+
+import { useEffect, useState } from 'react';
+
 import { Ionicons } from '@expo/vector-icons';
+
 
 export const options = {
   headerShown: false,
@@ -38,8 +46,9 @@ export default function TabOneScreen() {
     rides: any[];
   };
 
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <ThemedSafeAreaView style={styles.safeArea}> {/* Use ThemedSafeAreaView */}
       <FloatingSearchBar />
       <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 75 }}>
         <Ionicons name="location-outline" size={24} color="gray" />
@@ -47,21 +56,28 @@ export default function TabOneScreen() {
         <Ionicons name="heart-outline" size={24} color="gray" />
       </View>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-    
-        
-        <ImageGridSquares rides={rides} />
+
+        <ThemedText style={styles.title}>Rides Nearby</ThemedText>
+        <ThemedText style={styles.subtitle}>user location</ThemedText>
+        <ThemedView> {/* Wrap ImageGridSquares in ThemedView */}
+           <ImageGridSquares rides={rides} />
+        </ThemedView>
+
       </ScrollView>
-    </SafeAreaView>
+    </ThemedSafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
+    // You might not need to set backgroundColor here if ThemedSafeAreaView handles it
   },
   scrollContent: {
+
+
     paddingTop: 15, // enough space to avoid overlap with search bar
+
     paddingHorizontal: 16,
     paddingBottom: 32,
   },

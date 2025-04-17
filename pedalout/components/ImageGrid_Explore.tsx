@@ -10,6 +10,7 @@ export default function ImageGridSquares({ rides }: Props) {
 
   return (
     <View style={styles.grid}>
+
       {rides.slice(0, 8).map((ride, index) => (
         <View key={index} style={styles.square}>
           <View style={styles.overlay1} />
@@ -25,6 +26,7 @@ export default function ImageGridSquares({ rides }: Props) {
           {'\u{1F6B4}'} No rides to show
         </ThemedText>
       )}
+
     </View>
   );
 }
