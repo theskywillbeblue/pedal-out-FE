@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   floatingSearchContainer: {
     fontFamily: 'HelveticaRounded',
     position: 'absolute',
-    top: 35,
+    top: 30,
     left: 20,
     right: 20,
     zIndex: 1000,
