@@ -73,7 +73,6 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    // You might not need to set backgroundColor here if ThemedSafeAreaView handles it
   },
   scrollContent: {
 
