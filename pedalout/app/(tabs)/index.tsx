@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView'; // Updated import
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView'; // Import ThemedView
@@ -9,7 +9,6 @@ import ImageGridSquares from '../../components/ImageGrid_Explore';
 import { getRides } from '../../api.js';
 import { useNavigation } from '@react-navigation/native';
 
-import { useEffect, useState } from 'react';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -36,22 +35,25 @@ export default function TabOneScreen() {
   }, []);
 
   if (isLoading) {
-    return <Text>Rides are on their way...</Text>;
+    return <ThemedText>Rides are on their way...</ThemedText>;
   }
   if (error) {
-    return <Text>Houston, we have a problem!</Text>;
+    return <ThemedText>Houston, we have a problem!</ThemedText>;
   }
 
   type Props = {
     rides: any[];
   };
 
+  const navigation = useNavigation();
 
   return (
     <ThemedSafeAreaView style={styles.safeArea}> {/* Use ThemedSafeAreaView */}
       <FloatingSearchBar />
-      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 75 }}>
-        <Ionicons name="location-outline" size={24} color="gray" />
+      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 75, marginBottom: 5 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('MapScreen')}>
+    <Ionicons name="location-outline" size={24} color="gray" />
+  </TouchableOpacity>
         <Ionicons name="bicycle-outline" size={24} color="gray" />
         <Ionicons name="heart-outline" size={24} color="gray" />
       </View>

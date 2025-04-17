@@ -15,13 +15,13 @@ export default function MapScreen() {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 51.5072,
-          longitude: -0.1276,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
+          latitude: 54.6586,
+          longitude: -1.9325,
+          latitudeDelta: 0.6,
+          longitudeDelta: 0.6,
         }}
       >
-        <Marker title="Hamster Heath" coordinate={{ latitude: 51.5072, longitude: -0.1276 }} />
+        <Marker title="Hamster Heath" coordinate={{ latitude: 54.6586, longitude: -1.9325 }} />
       </MapView>
 
       {/* ❌ Floating Exit Button */}
