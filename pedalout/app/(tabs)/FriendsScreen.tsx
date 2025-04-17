@@ -1,11 +1,39 @@
-import { StyleSheet, View, Image, Platform, SafeAreaView } from 'react-native';
+import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
+import { useEffect } from 'react';
 import FloatingSearchBar from '../../components/search';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import {getFriends} from'../../api.js'
 
 export default function TabFiveScreen() {
+
+  const [friends, setFriends] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    getFriends()
+      .then((res) => {
+        setFriends(res.friends);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return <Text>Fetching your friends...</Text>;
+  }
+  if (error) {
+    return <Text>Houston, we have a problem!</Text>;
+  }
+
+
+
   return (
  <SafeAreaView style={{ flex: 1, paddingTop: 100 }}>
 

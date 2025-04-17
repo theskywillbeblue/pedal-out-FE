@@ -4,6 +4,7 @@ import FloatingSearchBar from '../../components/search';
 import ImageGridSquares from '../../components/ImageGrid_Explore';
 import { useEffect, useState } from 'react';
 import { getRides } from '../../api.js';
+import { Ionicons } from '@expo/vector-icons';
 
 export const options = {
   headerShown: false,
@@ -40,9 +41,14 @@ export default function TabOneScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <FloatingSearchBar />
+      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 75 }}>
+        <Ionicons name="location-outline" size={24} color="gray" />
+        <Ionicons name="bicycle-outline" size={24} color="gray" />
+        <Ionicons name="heart-outline" size={24} color="gray" />
+      </View>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText style={styles.title}>Rides Nearby</ThemedText>
-        <ThemedText style={styles.subtitle}>user location</ThemedText>
+    
+        
         <ImageGridSquares rides={rides} />
       </ScrollView>
     </SafeAreaView>
@@ -55,7 +61,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   scrollContent: {
-    paddingTop: 80, // enough space to avoid overlap with search bar
+    paddingTop: 15, // enough space to avoid overlap with search bar
     paddingHorizontal: 16,
     paddingBottom: 32,
   },
