@@ -8,9 +8,9 @@ export default function ImageGridSquares() {
     <View style={styles.grid}>
       <View style={styles.square}>
   <View style={styles.overlay1} />
-  <Text style={styles.rideCardDetails}>
-    {'Hamster Heath ' + '\u{1F6B4}' + '\n' + '\u{1F525}\u{1F525}\u{1F525}'}
-  </Text>
+  <ThemedText style={styles.rideCardDetails}>
+    {'Hamsterley Heath ' + '\u{1F6B4}' + '\n' + '\u{1F525}\u{1F525}\u{1F525}'}
+  </ThemedText>
 </View>
       
       <View style={styles.square}></View>
