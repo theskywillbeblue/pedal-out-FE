@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native'; // Import navigation h
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 
-export default function TabTwoScreen() {
+export default function RideDetails() {
   const colorScheme = useColorScheme();
   const mapBackground = useThemeColor({ light: '#eee', dark: '#222' });
 

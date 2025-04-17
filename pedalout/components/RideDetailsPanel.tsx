@@ -6,7 +6,7 @@ import { ThemedText } from './ThemedText';
 import { useThemeColor } from '@/hooks/useThemeColor'; // Import the useThemeColor hook
 import { ThemedView } from '@/components/ThemedView'; // Import ThemedView
 
-function PostRide() {
+function RideDetailsPanel() {
  
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
@@ -110,4 +110,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostRide;
+export default RideDetailsPanel;

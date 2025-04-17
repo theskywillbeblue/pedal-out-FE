@@ -6,6 +6,10 @@ import { useThemeColor } from '@/hooks/useThemeColor'; // Import the useThemeCol
 import { ThemedView } from '@/components/ThemedView'; // Import ThemedView
 
 function PostRide() {
+
+
+
+
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -35,7 +39,7 @@ function PostRide() {
   return (
     <ThemedView style={[styles.container, { backgroundColor }]}>
       {/* Input for Title */}
-      <ThemedTextInput
+      <ThemedTextInput 
         style={[styles.title, { borderColor }]} // Border color based on theme
         placeholder="Enter title"
         placeholderTextColor={textColor}
