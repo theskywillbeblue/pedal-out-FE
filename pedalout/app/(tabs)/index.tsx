@@ -9,8 +9,6 @@ export const options = {
   headerShown: false,
 };
 
-
-
 export default function TabOneScreen() {
 const [rides, setRides] = useState([]);
 const [loading, setLoading] = useState(true);
@@ -34,7 +32,9 @@ const [error, setError] = useState(null);
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <FloatingSearchBar />
+           <View style={{ paddingTop: 10, paddingHorizontal: 16 }}>
+        <FloatingSearchBar />
+      </View>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <ThemedText style={styles.title}>Rides Nearby</ThemedText>
         <ThemedText style={styles.subtitle}>user location</ThemedText>
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop: 60,
   },
   scrollContent: {
     paddingTop: 80, // enough space to avoid overlap with search bar
