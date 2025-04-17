@@ -3,6 +3,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from '@react-navigation/native';
+
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -44,6 +45,7 @@ export default function RootLayout() {
     };
   }, []);
 
+
   useEffect(() => {
     if (loaded && session !== undefined) {
       SplashScreen.hideAsync();
@@ -73,6 +75,9 @@ export default function RootLayout() {
         <StatusBar style="auto" />
         <Stack initialRouteName="(tabs)">
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        <Stack.Screen name="MapScreen" />
+        <Stack.Screen name="RideDetails" />
         </Stack>
       </ThemeProvider>
     </UserProvider>
