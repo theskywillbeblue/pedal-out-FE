@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   square: {
     alignContent: 'center',
     width: '100%',
-    height: 190,
+    height: 240,
     backgroundColor: '#f0f0f0',
     borderRadius: 10,
     //borderWidth: 2,
