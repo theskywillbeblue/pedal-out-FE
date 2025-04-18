@@ -1,36 +1,44 @@
 import React, { useLayoutEffect } from 'react';
-import { Pressable, StyleSheet, Text, TouchableOpacity, useColorScheme } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { useNavigation } from '@react-navigation/native';
-
+// import { useNavigation } from '@react-navigation/native';
+import { router } from 'expo-router';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 
-
 export default function RideDetails() {
   const colorScheme = useColorScheme();
   const mapBackground = useThemeColor({ light: '#eee', dark: '#222' });
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
-  useLayoutEffect(() => {
-      navigation.setOptions({ headerShown: false });
-    }, [navigation]);
 
-  
+  // export const options = {
+  //   headerShown: false,
+  // };
 
   const handleLongPress = () => {
-    navigation.navigate('MapScreen');
+    router.push('/MapScreen');
   };
 
   return (
     <ThemedSafeAreaView style={styles.safeArea}>
-      <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
-              <Text style={styles.closeText}>✕</Text>
-            </Pressable>
+      <Pressable style={styles.closeButton} onPress={() => router.back()}>
+        <Text style={styles.closeText}>✕</Text>
+      </Pressable>
       <ParallaxScrollView
         headerImage={
-          <TouchableOpacity onLongPress={handleLongPress} activeOpacity={1} style={styles.mapPreviewContainer}>
+          <TouchableOpacity
+            onLongPress={handleLongPress}
+            activeOpacity={1}
+            style={styles.mapPreviewContainer}
+          >
             <MapView
               style={[styles.mapPreview, { backgroundColor: mapBackground }]}
               initialRegion={{
@@ -41,7 +49,10 @@ export default function RideDetails() {
               }}
               pointerEvents="none"
             >
-              <Marker coordinate={{ latitude: 51.5072, longitude: -0.1276 }} title="Hamster Heath" />
+              <Marker
+                coordinate={{ latitude: 51.5072, longitude: -0.1276 }}
+                title="Hamster Heath"
+              />
             </MapView>
           </TouchableOpacity>
         }
@@ -51,9 +62,7 @@ export default function RideDetails() {
         }}
         headerHeight={400}
         bottomPadding={20}
-      >
-  
-      </ParallaxScrollView>
+      ></ParallaxScrollView>
     </ThemedSafeAreaView>
   );
 }

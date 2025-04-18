@@ -56,6 +56,10 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+              {/* <Button
+          title="Settings"
+          onPress={() => router.push('/')}
+        /> */}
       <ScrollView
         // headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
         // headerImage={
