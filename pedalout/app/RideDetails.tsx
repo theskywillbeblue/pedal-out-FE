@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -7,7 +7,6 @@ import {
   useColorScheme,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-// import { useNavigation } from '@react-navigation/native';
 import { router } from 'expo-router';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
@@ -16,12 +15,7 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 export default function RideDetails() {
   const colorScheme = useColorScheme();
   const mapBackground = useThemeColor({ light: '#eee', dark: '#222' });
-  // const navigation = useNavigation();
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
-
-  // export const options = {
-  //   headerShown: false,
-  // };
 
   const handleLongPress = () => {
     router.push('/MapScreen');

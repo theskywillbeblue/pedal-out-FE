@@ -1,29 +1,40 @@
 import { ThemedText } from '@/components/ThemedText';
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
+import { router } from 'expo-router';
 
 type Props = {
   rides: any[];
 };
 
 export default function ImageGridSquares({ rides }: Props) {
-
-  const navigation = useNavigation();
-
   return (
     <View style={styles.grid}>
-
       {rides.slice(0, 8).map((ride) => (
-        <TouchableOpacity onPress={() => navigation.navigate('RideDetails')}>
-        <View key={ride.id} style={styles.square}>
-          <View style={styles.overlay1} />
-          <ThemedText style={styles.rideCardDetails}>
-          <ThemedText style={{fontSize: 19}}>{ride.title}</ThemedText>
-          {'\n'}
-          {new Date(ride.ride_date).toLocaleDateString()}
-          </ThemedText>
-        </View>
+        <TouchableOpacity
+          key={ride.ride_id}
+          onPress={() => router.push('/RideDetails')}
+        >
+          <ImageBackground
+            source={{
+              uri: 'https://media.istockphoto.com/id/1402134774/photo/professional-road-cyclist-on-a-training-ride.jpg?s=612x612&w=0&k=20&c=CB2o_DXMgH15MLa1CEqWwZVtVb3rpRgejV3UFnUwF_U=',
+            }} // update to ride.ride_img_url when api is updated
+            style={styles.square}
+            imageStyle={{ borderRadius: 10 }}
+          >
+            <View style={styles.overlay1} />
+
+            <ThemedText style={styles.rideCardDetails}>
+              <ThemedText style={{ fontSize: 19 }}>{ride.title}</ThemedText>
+              {'\n'}
+              {new Date(ride.ride_date).toLocaleDateString()}
+            </ThemedText>
+          </ImageBackground>
         </TouchableOpacity>
       ))}
       {rides.length === 0 && (
@@ -31,7 +42,6 @@ export default function ImageGridSquares({ rides }: Props) {
           {'\u{1F6B4}'} No rides to show
         </ThemedText>
       )}
-
     </View>
   );
 }
@@ -39,11 +49,11 @@ export default function ImageGridSquares({ rides }: Props) {
 const styles = StyleSheet.create({
   overlay1: {
     position: 'absolute',
-    top: 2,
-    bottom: 2,
-    left: 2,
-    right: 2, // match your borderWidth
-    backgroundColor: 'rgba(36, 54, 40, 0.3)',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0, // match your borderWidth
+    backgroundColor: 'rgba(1, 10, 3, 0.42)',
     borderRadius: 8, // radius - borderWidth
   },
 
@@ -63,7 +73,7 @@ const styles = StyleSheet.create({
 
     flexDirection: 'column',
     justifyContent: 'space-between',
-    gap: 10,
+    gap: 15,
     paddingHorizontal: 0,
     paddingBottom: 20,
     marginTop: 0,

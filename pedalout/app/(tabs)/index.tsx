@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
-import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView'; // Updated import
+import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView'; // Import ThemedView
+import { ThemedView } from '@/components/ThemedView';
 import FloatingSearchBar from '../../components/search';
 import ImageGridSquares from '../../components/ImageGrid_Explore';
 import { getRides } from '../../api.js';
-// import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
@@ -41,8 +40,6 @@ export default function TabOneScreen() {
   // type Props = {
   //   rides: any[];
   // };
-
-  // const navigation = useNavigation();
 
   return (
     <ThemedSafeAreaView style={styles.safeArea}>
