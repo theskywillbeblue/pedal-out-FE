@@ -3,7 +3,6 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from '@react-navigation/native';
-
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -14,6 +13,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { supabase } from '../lib/supabase';
 import { Session } from '@supabase/supabase-js';
 import UserProvider from './context/UserContext';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -70,16 +70,18 @@ export default function RootLayout() {
   if (!appReady) return null;
 
   return (
-    <UserProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <StatusBar style="auto" />
-        <Stack initialRouteName="(tabs)">
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        <Stack.Screen name="MapScreen" />
-        <Stack.Screen name="RideDetails" />
-        </Stack>
-      </ThemeProvider>
-    </UserProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <UserProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <StatusBar style="auto" />
+          <Stack initialRouteName="(tabs)">
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+            <Stack.Screen name="MapScreen" />
+            <Stack.Screen name="RideDetails" />
+          </Stack>
+        </ThemeProvider>
+      </UserProvider>
+    </GestureHandlerRootView>
   );
 }

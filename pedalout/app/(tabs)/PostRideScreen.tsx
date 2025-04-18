@@ -6,7 +6,8 @@ import MapView, { Marker } from 'react-native-maps';
 import { useColorScheme } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import ParallaxScrollView from '@/components/ParallaxScrollView'; // Import your custom ParallaxScrollView
-import { useNavigation } from '@react-navigation/native'; // Import navigation hook
+// import { useNavigation } from '@react-navigation/native'; // Import navigation hook
+import { router } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 
@@ -15,11 +16,10 @@ export default function TabTwoScreen() {
   const mapBackground = useThemeColor({ light: '#eee', dark: '#222' });
 
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
-  const navigation = useNavigation(); // Use navigation hook
+  // const navigation = useNavigation();
 
   const handleLongPress = () => {
-    // Navigate to MapScreen when long-pressed
-    navigation.navigate('MapScreen');
+    router.push('/MapScreen');
   };
 
   return (
