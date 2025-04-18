@@ -45,7 +45,6 @@ export default function RootLayout() {
     };
   }, []);
 
-
   useEffect(() => {
     if (loaded && session !== undefined) {
       SplashScreen.hideAsync();
@@ -72,13 +71,20 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <UserProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
           <StatusBar style="auto" />
           <Stack initialRouteName="(tabs)">
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
             <Stack.Screen name="MapScreen" />
-            <Stack.Screen name="RideDetails" />
+            <Stack.Screen
+              name="RideDetails"
+              options={{
+                headerShown: false,
+              }}
+            />
           </Stack>
         </ThemeProvider>
       </UserProvider>
