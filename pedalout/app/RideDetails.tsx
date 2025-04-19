@@ -11,18 +11,26 @@ import { router } from 'expo-router';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { useLocalSearchParams } from 'expo-router';
+import { lightColors } from '@rneui/themed';
+
+
 
 export default function RideDetails() {
   const colorScheme = useColorScheme();
   const mapBackground = useThemeColor({ light: '#eee', dark: '#222' });
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
+  const { ride } = useLocalSearchParams();
+  const parsedRide = JSON.parse(ride as string);
+  console.log(parsedRide);
+
 
   const handleLongPress = () => {
     router.push('/MapScreen');
   };
 
   return (
-    <ThemedSafeAreaView style={styles.safeArea}>
+    <ThemedSafeAreaView>
       <Pressable style={styles.closeButton} onPress={() => router.back()}>
         <Text style={styles.closeText}>✕</Text>
       </Pressable>
@@ -34,18 +42,21 @@ export default function RideDetails() {
             style={styles.mapPreviewContainer}
           >
             <MapView
-              style={[styles.mapPreview, { backgroundColor: mapBackground }]}
+              style={[styles.mapPreview]}
               initialRegion={{
-                latitude: 51.5072,
-                longitude: -0.1276,
+                latitude: parsedRide.ride_location.lat,
+                longitude: parsedRide.ride_location.lng,
                 latitudeDelta: 0.1,
                 longitudeDelta: 0.1,
               }}
               pointerEvents="none"
             >
               <Marker
-                coordinate={{ latitude: 51.5072, longitude: -0.1276 }}
-                title="Hamster Heath"
+                coordinate={{
+                  latitude: parsedRide.ride_location.lat,
+                  longitude: parsedRide.ride_location.lng,
+                }}
+                title="Hamsterly Forest"
               />
             </MapView>
           </TouchableOpacity>
@@ -54,26 +65,18 @@ export default function RideDetails() {
           light: '#fff',
           dark: '#222',
         }}
-        headerHeight={400}
-        bottomPadding={20}
+        headerHeight={350}
       ></ParallaxScrollView>
     </ThemedSafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
   mapPreviewContainer: {
     height: 400,
     width: '100%',
-    borderRadius: 6,
-    overflow: 'hidden',
-    marginBottom: 0,
   },
   mapPreview: {
-    flex: 1,
     backgroundColor: '#eee',
     width: '100%',
     height: '100%',
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
   closeButton: {
     position: 'absolute',
     top: 50,
-    right: 20,
+    right: 15,
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 20,
     width: 40,

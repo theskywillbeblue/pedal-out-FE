@@ -14,6 +14,7 @@ import { supabase } from '../lib/supabase';
 import { Session } from '@supabase/supabase-js';
 import UserProvider from './context/UserContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -70,24 +71,20 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+    <SafeAreaProvider>
       <UserProvider>
-        <ThemeProvider
-          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-        >
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <StatusBar style="auto" />
           <Stack initialRouteName="(tabs)">
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
             <Stack.Screen name="MapScreen" />
-            <Stack.Screen
-              name="RideDetails"
-              options={{
-                headerShown: false,
-              }}
-            />
+            <Stack.Screen name="RideDetails" options={{ headerShown: false }} />
           </Stack>
         </ThemeProvider>
       </UserProvider>
-    </GestureHandlerRootView>
+    </SafeAreaProvider>
+  </GestureHandlerRootView>
+  
   );
 }

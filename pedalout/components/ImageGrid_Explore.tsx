@@ -18,7 +18,12 @@ export default function ImageGridSquares({ rides }: Props) {
       {rides.slice(0, 8).map((ride) => (
         <TouchableOpacity
           key={ride.ride_id}
-          onPress={() => router.push('/RideDetails')}
+          onPress={() =>
+            router.push({
+              pathname: '/RideDetails',
+              params: { ride: JSON.stringify(ride) },
+            })
+          }
         >
           <ImageBackground
             source={{
