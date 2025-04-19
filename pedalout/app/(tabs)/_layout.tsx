@@ -1,15 +1,15 @@
-import { Tabs } from "expo-router";
-import React from "react";
-import { View, Platform, SafeAreaView, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { HapticTab } from "@/components/HapticTab";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { Tabs } from 'expo-router';
+import React from 'react';
+import { View, Platform, SafeAreaView, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { HapticTab } from '@/components/HapticTab';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 const TabIcon = ({ iconName, color, focused }) => {
   const getIconColor = () => {
     // If the tab is focused, set it to a lighter grey for visibility
     if (focused) {
-      return "#555"; // Slightly darker grey for better visibility in both themes
+      return '#555'; // Slightly darker grey for better visibility in both themes
     }
     return color; // Default color for unfocused tabs
   };
@@ -17,8 +17,8 @@ const TabIcon = ({ iconName, color, focused }) => {
   return (
     <View
       style={{
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         width: 60,
         transform: [{ translateY: -4 }], // shift icon up a bit
       }}
@@ -33,26 +33,28 @@ export default function TabLayout() {
 
   const screenOptions = {
     headerShown: false,
-    tabBarActiveTintColor: "#FFF",
+    tabBarActiveTintColor: '#FFF',
     tabBarButton: HapticTab,
     tabBarStyle: {
-      height: Platform.OS === "android" ? 60 : 80,
+      height: Platform.OS === 'android' ? 60 : 60,
       paddingTop: 0,
-      paddingBottom: Platform.OS === "android" ? 20 : 30,
-      position: "relative",
+      paddingBottom: Platform.OS === 'android' ? 20 : 60,
+      position: 'relative',
       borderTopWidth: 0,
-      backgroundColor: colorScheme === "dark" ? "#111" : "#f8f8f8", // Or your themed background
-      paddingHorizontal: 10,
+      backgroundColor: colorScheme === 'dark' ? '#111' : '#f8f8f8', // Or your themed background
     },
   };
 
   const getTabIconColor = (colorScheme) => {
-    return colorScheme === "dark" ? "#FFF" : "#000"; // Change icon color based on light/dark mode
+    return colorScheme === 'dark' ? '#FFF' : '#000'; // Change icon color based on light/dark mode
   };
 
   return (
     <SafeAreaView
-      style={[styles.safeAreaContainer, { backgroundColor: colorScheme === "dark" ? "#111" : "#f8f8f8" }]}
+      style={[
+        styles.safeAreaContainer,
+        { backgroundColor: colorScheme === 'dark' ? '#111' : '#f8f8f8' },
+      ]}
     >
       <Tabs screenOptions={screenOptions}>
         <Tabs.Screen
@@ -60,7 +62,11 @@ export default function TabLayout() {
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon iconName="bicycle-outline" color={getTabIconColor(colorScheme)} focused={focused} />
+              <TabIcon
+                iconName="bicycle-outline"
+                color={getTabIconColor(colorScheme)}
+                focused={focused}
+              />
             ),
           }}
         />
@@ -69,7 +75,11 @@ export default function TabLayout() {
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon iconName="add-circle-outline" color={getTabIconColor(colorScheme)} focused={focused} />
+              <TabIcon
+                iconName="add-circle-outline"
+                color={getTabIconColor(colorScheme)}
+                focused={focused}
+              />
             ),
           }}
         />
@@ -78,7 +88,11 @@ export default function TabLayout() {
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon iconName="person-circle-outline" color={getTabIconColor(colorScheme)} focused={focused} />
+              <TabIcon
+                iconName="person-circle-outline"
+                color={getTabIconColor(colorScheme)}
+                focused={focused}
+              />
             ),
           }}
         />
@@ -87,7 +101,11 @@ export default function TabLayout() {
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon iconName="chatbubble-ellipses-outline" color={getTabIconColor(colorScheme)} focused={focused} />
+              <TabIcon
+                iconName="chatbubble-ellipses-outline"
+                color={getTabIconColor(colorScheme)}
+                focused={focused}
+              />
             ),
           }}
         />
@@ -96,7 +114,11 @@ export default function TabLayout() {
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon iconName="people-circle-outline" color={getTabIconColor(colorScheme)} focused={focused} />
+              <TabIcon
+                iconName="people-circle-outline"
+                color={getTabIconColor(colorScheme)}
+                focused={focused}
+              />
             ),
           }}
         />
@@ -108,6 +130,6 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
 });

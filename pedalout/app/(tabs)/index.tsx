@@ -43,15 +43,14 @@ export default function TabOneScreen() {
 
   return (
     <ThemedSafeAreaView style={styles.safeArea}>
-      {/* Use ThemedSafeAreaView */}
       <FloatingSearchBar />
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-evenly',
           alignItems: 'center',
-          marginTop: 75,
-          marginBottom: 5,
+          marginTop: 30,
+          marginBottom: 8,
         }}
       >
         <TouchableOpacity onPress={() => router.push('/MapScreen')}>
@@ -64,7 +63,6 @@ export default function TabOneScreen() {
         <ThemedText style={styles.title}>Rides Nearby</ThemedText>
         <ThemedText style={styles.subtitle}>user location</ThemedText>
         <ThemedView>
-          {/* Wrap ImageGridSquares in ThemedView */}
           <ImageGridSquares rides={rides} />
         </ThemedView>
       </ScrollView>
@@ -78,9 +76,8 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingTop: 15, // enough space to avoid overlap with search bar
-
     paddingHorizontal: 16,
-    paddingBottom: 32,
+    paddingBottom: 0,
   },
   title: {
     fontFamily: 'HelveticaRoundedBold',
