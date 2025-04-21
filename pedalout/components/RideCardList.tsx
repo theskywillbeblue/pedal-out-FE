@@ -7,6 +7,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import { router } from 'expo-router';
+import { ThemedView } from './ThemedView';
 
 type Props = {
   rides: any[];
@@ -14,7 +15,7 @@ type Props = {
 
 export default function RideCardList({ rides }: Props) {
   return (
-    <View style={styles.grid}>
+    <ThemedView style={styles.grid}>
       {rides.slice(3, 12).map((ride) => (
         <TouchableOpacity
           key={ride.ride_id}
@@ -28,9 +29,8 @@ export default function RideCardList({ rides }: Props) {
           <ImageBackground
             source={{ uri: ride.ride_img_url }}
             style={styles.square}
-            imageStyle={{ borderRadius: 10 }}
           >
-            <View style={styles.overlay1} />
+            <View style={styles.overlayColour} />
 
             <ThemedText style={styles.rideCardDetails}>
               <ThemedText style={{ fontSize: 19 }}>{ride.title}</ThemedText>
@@ -41,17 +41,17 @@ export default function RideCardList({ rides }: Props) {
         </TouchableOpacity>
       ))}
   
-    </View>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  overlay1: {
+  overlayColour: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0, // match your borderWidth
+    right: 0,
     backgroundColor: 'rgba(32, 68, 39, 0.42)',
   },
 

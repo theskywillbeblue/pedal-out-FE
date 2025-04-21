@@ -23,7 +23,6 @@ export default function TabTwoScreen() {
   };
 
   return (
-    <ThemedSafeAreaView style={styles.safeArea}>
       <ParallaxScrollView
         headerImage={
           <TouchableOpacity
@@ -57,23 +56,19 @@ export default function TabTwoScreen() {
       >
         <PostRide />
       </ParallaxScrollView>
-    </ThemedSafeAreaView>
+    
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
+
   mapPreviewContainer: {
     height: 400, // Adjust the height to 400
     width: '100%',
     borderRadius: 6,
     overflow: 'hidden',
-    marginBottom: 0,
   },
   mapPreview: {
-    flex: 1,
     backgroundColor: '#eee',
     width: '100%',
     height: '100%',

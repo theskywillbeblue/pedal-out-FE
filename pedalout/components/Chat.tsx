@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Chat from '@codsod/react-native-chat';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 type User = {
     _id: number;
@@ -60,11 +59,11 @@ const ChatComponent = () => {
 			<Chat
 				messages={messages}
 				setMessages={(val) => onSendMessage(val)}
-				themeColor='green'
+				themeColor='#4F7942'
 				themeTextColor='white'
 				showSenderAvatar={false}
 				showReceiverAvatar={true}
-				inputBorderColor='green'
+				inputBorderColor='#4F7942'
 				user={{
 					_id: 1,
 					name: 'Vishal Chaturvedi',
@@ -74,18 +73,19 @@ const ChatComponent = () => {
 				placeholder='Enter Your Message'
 				placeholderColor='gray'
 				backgroundImage={
-					'https://media.sciencephoto.com/f0/16/67/51/f0166751-800px-wm.jpg'
+					'https://s1.at.atcdn.net/wp-content/uploads/2024/07/HERO-Northern-Rivers-Rail-Trail-2.jpg'
 				}
 				showEmoji={true}
 				onPressEmoji={() => console.log('Emoji Button Pressed..')}
 				showAttachment={true}
 				onPressAttachment={() => console.log('Attachment Button Pressed..')}
-				timeContainerColor='red'
-				timeContainerTextColor='white'
+				timeContainerColor='grey'
+				timeContainerTextColor='black'
 				// onEndReached={() => alert("You have reached the end of the page")}
 			/>
 	
 	);
 };
+
 
 export default ChatComponent;

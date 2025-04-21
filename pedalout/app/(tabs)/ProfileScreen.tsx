@@ -1,13 +1,19 @@
-import { StyleSheet, Image, Button, Text, View, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  Button,
+  Text,
+  View,
+  ScrollView,
+} from 'react-native';
 import { useContext, useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { UserContext } from '@/app/context/UserContext';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -55,22 +61,8 @@ export default function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-              {/* <Button
-          title="Settings"
-          onPress={() => router.push('/')}
-        /> */}
-      <ScrollView
-        // headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-        // headerImage={
-        //   <IconSymbol
-        //     size={310}
-        //     color="#808080"
-        //     name="chevron.left.forwardslash.chevron.right"
-        //     style={styles.headerImage}
-        //   />
-        // }
-      >
+    <ThemedSafeAreaView>
+      <ScrollView>
         <ThemedView style={styles.titleContainer}>
           <ThemedText type="title">
             Welcome, {profile?.username || user?.email || 'Guest'}!
@@ -119,33 +111,28 @@ export default function ProfileScreen() {
         />
         <Button title="Sign Out" onPress={handleSignOut} color="#e63946" />
       </ScrollView>
-    </SafeAreaView>
+    </ThemedSafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    position: 'absolute',
-  },
   titleContainer: {
     flexDirection: 'row',
     gap: 8,
     marginBottom: 16,
+    alignSelf: 'center',
   },
   image: {
-    width: 160,
-    height: 160,
+    width: 150,
+    height: 150,
     borderRadius: 80,
-    marginVertical: 20,
     alignSelf: 'center',
   },
   infoBox: {
     marginVertical: 20,
     padding: 12,
     borderRadius: 8,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#999',
     gap: 10,
   },
   label: {

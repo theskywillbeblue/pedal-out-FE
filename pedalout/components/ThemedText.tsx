@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   default: {
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 16,
-    lineHeight: 24,
+    lineHeight: 38,
   },
   defaultSemiBold: {
     fontFamily: 'HelveticaRoundedBold',

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
-import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import FloatingSearchBar from '../../components/search';
@@ -8,15 +7,18 @@ import RideCardList from '../../components/RideCardList';
 import { getRides } from '../../api.js';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export const options = {
-  headerShown: false,
-};
+
 
 export default function MainScreen() {
   const [rides, setRides] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // const [user, setUser] = useState(null);
+
+
   useEffect(() => {
     getRides()
       .then((res) => {
@@ -37,33 +39,43 @@ export default function MainScreen() {
     return <ThemedText>Houston, we have a problem!</ThemedText>;
   }
 
+  // getUser()
+  // .then((res) => {
+  //   setUser(res.username);
+  // })
+  // .catch((error) => {
+  //   setError(error);
+  // })
+
 
   return (
-    <ThemedSafeAreaView style={styles.safeArea}>
+    <ThemedView style={styles.safeArea}>
       <FloatingSearchBar />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          alignItems: 'center',
-          marginTop: 30,
-          marginBottom: 8,
-        }}
-      >
-        <TouchableOpacity onPress={() => router.push('/MapScreen')}>
-          <Ionicons name="location-outline" size={24} color="gray" />
-        </TouchableOpacity>
-        <Ionicons name="bicycle-outline" size={24} color="gray" />
-        <Ionicons name="heart-outline" size={24} color="gray" />
-      </View>
+      <SafeAreaView>
+  <ThemedView
+    style={{
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+      marginTop: 32,
+      marginBottom: -12,
+
+    }}
+  >
+    <TouchableOpacity onPress={() => router.push('/MapScreen')}>
+      <Ionicons name="location-outline" size={24} color="gray" />
+    </TouchableOpacity>
+    <Ionicons name="bicycle-outline" size={24} color="gray" />
+    <Ionicons name="heart-outline" size={24} color="gray" />
+  </ThemedView>
+</SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText style={styles.title}>Nearby rides</ThemedText>
-        <ThemedText style={styles.subtitle}>user location</ThemedText>
+        <ThemedText style={styles.title}>Nearby rides <ThemedText style={styles.subtitle}>user location</ThemedText></ThemedText>
         <ThemedView>
           <RideCardList rides={rides} />
         </ThemedView>
       </ScrollView>
-    </ThemedSafeAreaView>
+    </ThemedView>
   );
 }
 
@@ -72,20 +84,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingTop: 15, // avoid overlap with search bar
     paddingHorizontal: 16,
   },
   title: {
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 25,
-    lineHeight: 30,
-    marginBottom: 8,
+    marginBottom: 18,
   },
   subtitle: {
     fontFamily: 'HelveticaRoundedBold',
     color: 'gray',
     fontSize: 16,
-    lineHeight: 20,
-    marginBottom: 20,
   },
 });

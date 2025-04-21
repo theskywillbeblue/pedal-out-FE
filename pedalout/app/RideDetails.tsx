@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -7,13 +7,10 @@ import {
   useColorScheme,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { router } from 'expo-router';
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { router, useLocalSearchParams } from 'expo-router';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { useLocalSearchParams } from 'expo-router';
-import { lightColors } from '@rneui/themed';
-
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 
 export default function RideDetails() {
@@ -22,7 +19,6 @@ export default function RideDetails() {
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
   const { ride } = useLocalSearchParams();
   const parsedRide = JSON.parse(ride as string);
-  console.log(parsedRide);
 
 
   const handleLongPress = () => {

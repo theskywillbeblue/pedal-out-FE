@@ -52,16 +52,16 @@ export default function SignIn() {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.text}>Sign In!</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.headerText}>Sign Up</Text>
       <Image
         source={{
-          uri: 'https://cdn.pixabay.com/photo/2013/07/13/14/05/mountain-bike-162109_1280.png',
+          uri: 'https://cdn.pixabay.com/photo/2013/07/13/13/39/bicycle-161315_960_720.png',
         }}
         style={styles.image}
         resizeMode="contain"
       />
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+      <View style={styles.inputContainer}>
         <Input
           inputStyle={styles.input}
           label="Display Name"
@@ -72,18 +72,18 @@ export default function SignIn() {
           textContentType="nickname"
         />
       </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+      <View style={styles.inputContainer}>
         <Input
           inputStyle={styles.input}
           label="Email"
           leftIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={(text) => setEmail(text)}
           value={email}
-          placeholder="email@address.com"
+          placeholder="email@emailaddress.com"
           autoCapitalize={'none'}
         />
       </View>
-      <View style={styles.verticallySpaced}>
+      <View style={styles.inputContainer}>
         <Input
           inputStyle={styles.input}
           label="Password"
@@ -95,39 +95,47 @@ export default function SignIn() {
           autoCapitalize={'none'}
         />
       </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title="Sign in"
-          disabled={loading}
-          onPress={() => signUpWithEmail()}
-        />
-      </View>
+      <Button
+        title="Sign Up"
+        disabled={loading}
+        onPress={() => signUpWithEmail()}
+        buttonStyle={styles.button}
+      />
     </ScrollView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
-    padding: 12,
+    flexGrow: 1,
+    justifyContent: 'center',
+    padding: 20,
   },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: 'stretch',
-  },
-  mt20: {
-    marginTop: 20,
+  headerText: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   image: {
-    width: 400,
+    width: '100%',
     height: 250,
     marginBottom: 20,
-    borderRadius: 10,
+    borderRadius: 15,
   },
-  text: {
-    fontSize: 40,
+  inputContainer: {
+    marginVertical: 10,
   },
   input: {
-    color: 'white',
+    color: '#fff',
+    borderBottomWidth: 1,
+    paddingLeft: 8,
+  },
+  button: {
+    backgroundColor: '#4CAF50',
+    borderRadius: 5,
+    paddingVertical: 12,
+    marginTop: 20,
   },
 });

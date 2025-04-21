@@ -1,108 +1,141 @@
 import React, { useState } from 'react';
-import { Alert, View, Image, StyleSheet, Text, ScrollView } from 'react-native';
-import { supabase } from '../../lib/supabase';
-import { Button, Input } from '@rneui/themed';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from 'react-native';
+import { Input, Button } from '@rneui/themed';
 import { useRouter } from 'expo-router';
+import { supabase } from '@/lib/supabase';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Auth() {
   const router = useRouter();
+  const colorScheme = useColorScheme();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function signInWithEmail() {
-      setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
-      if (error) Alert.alert(error.message);
-      setLoading(false);
-    }
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+  }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.text}>PedalOut</Text>
-      <Image
-        source={{
-          uri: 'https://cdn.pixabay.com/photo/2013/07/13/13/39/bicycle-161315_960_720.png',
-        }}
-        style={styles.image}
-        resizeMode="contain"
-      />
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input
-        inputStyle={styles.input}
-          label="Email"
-          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-          onChangeText={setEmail}
-          value={email}
-          placeholder="email@address.com"
-          autoCapitalize="none"
-        />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Input
-        inputStyle={styles.input}
-          label="Password"
-          leftIcon={{ type: 'font-awesome', name: 'lock' }}
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry
-          placeholder="Password"
-          autoCapitalize="none"
-        />
-      </View>
-      <Button
-        title="Sign in"
-        onPress={signInWithEmail}
-      />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <ThemedText style={styles.heading}>PedalOut</ThemedText>
 
-            <Text style={styles.text}>Not a member yet?</Text>
-      <View style={styles.verticallySpaced}>
+        <Image
+          source={{
+            uri: 'https://cdn.pixabay.com/photo/2013/07/13/13/39/bicycle-161315_960_720.png',
+          }}
+          style={styles.image}
+          resizeMode="contain"
+        />
+
+        <View style={styles.inputWrapper}>
+          <Input
+            inputStyle={styles.input}
+            label="Email"
+            placeholder="email@emailaddress.com"
+            leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+            onChangeText={setEmail}
+            value={email}
+            autoCapitalize="none"
+          />
+          <Input
+            inputStyle={styles.input}
+            label="Password"
+            placeholder="Password"
+            secureTextEntry
+            leftIcon={{ type: 'font-awesome', name: 'lock' }}
+            onChangeText={setPassword}
+            value={password}
+            autoCapitalize="none"
+          />
+        </View>
+
         <Button
-          style={styles.button}
+          title="Sign In"
+          onPress={signInWithEmail}
+          loading={loading}
+          buttonStyle={styles.signInButton}
+          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333' }}
+        />
+
+        <ThemedText style={styles.subtext}>Not a member yet?</ThemedText>
+
+        <Button
           title="Sign up!"
-          disabled={loading}
           onPress={() => router.push('/authentication/SignUp')}
-                  />
+          buttonStyle={styles.signUpButton}
+          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333' }}
+        />
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
   container: {
-    marginTop: 40,
-    padding: 12,
+    flex: 1,
+    paddingTop: 50,
+    padding: 10,
+    alignItems: 'center',
   },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: 'stretch',
-  },
-  mt20: {
-    marginTop: 20,
+  heading: {
+    fontSize: 40, 
+    fontFamily: 'HelveticaRoundedBold',
+    marginBottom: 20, 
   },
   image: {
-    width: 400,
-    height: 250,
+    width: 300,
+    height: 180,
+    marginBottom: 30,
+  },
+  inputWrapper: {
+    width: '100%',
     marginBottom: 20,
-    borderRadius: 10,
-  },
-  text: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 10,
-    color: 'white'
-  },
-  button: {
-    paddingBottom: 40,
-    marginBottom: 40,
   },
   input: {
-    color: 'white',
+    fontFamily: 'HelveticaRoundedBold',
+    fontSize: 16,
+    color: '#fff',
+  },
+  signInButton: {
+    width: '100%',
+    borderRadius: 10,
+    padding: 12,
+    backgroundColor: '#4F7942',
+    marginBottom: 20,
+  },
+  signUpButton: {
+    width: '100%',
+    borderRadius: 10,
+    padding: 12,
+    backgroundColor: '#4F7942',
+  },
+  subtext: {
+    marginVertical: 12,
+    paddingTop: 5,
+    fontSize: 16,
+    color: 'gray',
+    fontFamily: 'HelveticaRoundedBold',
   },
 });

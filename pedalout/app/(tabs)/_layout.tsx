@@ -19,8 +19,7 @@ const TabIcon = ({ iconName, color, focused }) => {
       style={{
         alignItems: 'center',
         justifyContent: 'center',
-        width: 60,
-        transform: [{ translateY: -4 }], // shift icon up a bit
+        transform: [{ translateY: -3 }],
       }}
     >
       <Ionicons name={iconName} size={30} color={getIconColor()} />
@@ -66,6 +65,7 @@ export default function TabLayout() {
                 iconName="bicycle-outline"
                 color={getTabIconColor(colorScheme)}
                 focused={focused}
+            
               />
             ),
           }}

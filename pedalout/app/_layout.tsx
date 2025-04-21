@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   DarkTheme,
   DefaultTheme,
@@ -7,19 +8,22 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { supabase } from '../lib/supabase';
 import { Session } from '@supabase/supabase-js';
 import UserProvider from './context/UserContext';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
+  const segments = useSegments();
+
   const [loaded] = useFonts({
     Helvetica: require('../assets/fonts/Helvetica.ttf'),
     HelveticaRoundedBold: require('../assets/fonts/helvetica-rounded-bold.otf'),
@@ -28,7 +32,7 @@ export default function RootLayout() {
 
   const [session, setSession] = useState<Session | null>(null);
   const [appReady, setAppReady] = useState(false);
-  const router = useRouter();
+
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -53,7 +57,6 @@ export default function RootLayout() {
     }
   }, [loaded, session]);
 
-  const segments = useSegments();
 
   useEffect(() => {
     if (appReady) {
@@ -70,15 +73,17 @@ export default function RootLayout() {
   if (!appReady) return null;
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView>
     <SafeAreaProvider>
       <UserProvider>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <StatusBar style="auto" />
-          <Stack initialRouteName="(tabs)">
+          <Stack initialRouteName="(tabs)" screenOptions={{
+        headerShown: false,
+      }}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
-            <Stack.Screen name="MapScreen" />
+            <Stack.Screen name="MapScreen" options={{ headerShown: false }}/>
             <Stack.Screen name="RideDetails" options={{ headerShown: false }} />
           </Stack>
         </ThemeProvider>
