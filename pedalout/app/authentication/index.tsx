@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 40, 
     fontFamily: 'HelveticaRoundedBold',
     marginBottom: 20, 
+    lineHeight: 40,
   },
   image: {
     width: 300,

@@ -9,15 +9,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-
-
 export default function MainScreen() {
   const [rides, setRides] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // const [user, setUser] = useState(null);
-
 
   useEffect(() => {
     getRides()
@@ -47,30 +44,38 @@ export default function MainScreen() {
   //   setError(error);
   // })
 
-
   return (
     <ThemedView style={styles.safeArea}>
       <FloatingSearchBar />
       <SafeAreaView>
-  <ThemedView
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-      marginTop: 32,
-      marginBottom: -12,
-
-    }}
-  >
-    <TouchableOpacity onPress={() => router.push('/MapScreen')}>
-      <Ionicons name="location-outline" size={24} color="gray" />
-    </TouchableOpacity>
-    <Ionicons name="bicycle-outline" size={24} color="gray" />
-    <Ionicons name="heart-outline" size={24} color="gray" />
-  </ThemedView>
-</SafeAreaView>
+        <ThemedView
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+            marginTop: 32,
+            marginBottom: -12,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() =>
+              router.push({
+                pathname: '/MapScreen',
+                params: { rides: JSON.stringify(rides) },
+              })
+            }
+          >
+            <Ionicons name="location-outline" size={24} color="gray" />
+          </TouchableOpacity>
+          <Ionicons name="bicycle-outline" size={24} color="gray" />
+          <Ionicons name="heart-outline" size={24} color="gray" />
+        </ThemedView>
+      </SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText style={styles.title}>Nearby rides <ThemedText style={styles.subtitle}>user location</ThemedText></ThemedText>
+        <ThemedText style={styles.title}>
+          Nearby rides{' '}
+          <ThemedText style={styles.subtitle}>user location</ThemedText>
+        </ThemedText>
         <ThemedView>
           <RideCardList rides={rides} />
         </ThemedView>

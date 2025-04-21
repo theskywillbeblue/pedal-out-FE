@@ -2,9 +2,12 @@ import React, { useLayoutEffect } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
+import { useLocalSearchParams } from 'expo-router';
 
 export default function MapScreen() {
   const navigation = useNavigation();
+  const params = useLocalSearchParams();
+  const rides = JSON.parse(params.rides);
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -15,16 +18,26 @@ export default function MapScreen() {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 54.6586,
-          longitude: -1.9325,
+          latitude: 50.7192,
+          longitude: -1.8808,
           latitudeDelta: 0.6,
           longitudeDelta: 0.6,
         }}
       >
-        <Marker title="Hamster Heath" coordinate={{ latitude: 54.6586, longitude: -1.9325 }} />
+        {/*  Map through rides and put marker details on map */}
+        {rides.map((ride) => (
+          <Marker
+            key={ride.ride_id}
+            title={ride.title}
+            coordinate={{
+              latitude: ride.ride_location.lat,
+              longitude: ride.ride_location.lng,
+            }}
+          />
+        ))}
       </MapView>
 
-      {/* ❌ Floating Exit Button */}
+      {/* Floating X Button - we can add this to Sign up page too? */}
       <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
         <Text style={styles.closeText}>✕</Text>
       </Pressable>

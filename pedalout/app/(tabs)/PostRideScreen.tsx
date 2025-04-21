@@ -23,47 +23,45 @@ export default function TabTwoScreen() {
   };
 
   return (
-      <ParallaxScrollView
-        headerImage={
-          <TouchableOpacity
-            onLongPress={handleLongPress}
-            activeOpacity={1}
-            style={styles.mapPreviewContainer}
+    <ParallaxScrollView
+      headerImage={
+        <TouchableOpacity
+          onLongPress={handleLongPress}
+          activeOpacity={1}
+          style={styles.mapPreviewContainer}
+        >
+          <MapView
+            style={[styles.mapPreview, { backgroundColor: mapBackground }]}
+            initialRegion={{
+              latitude: 54.6586,
+              longitude: -1.9325,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1,
+            }}
+            pointerEvents="none"
           >
-            <MapView
-              style={[styles.mapPreview, { backgroundColor: mapBackground }]}
-              initialRegion={{
-                latitude: 51.5072,
-                longitude: -0.1276,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1,
-              }}
-              pointerEvents="none"
-            >
-              <Marker
-                coordinate={{ latitude: 51.5072, longitude: -0.1276 }}
-                title="Hamster Heath"
-              />
-            </MapView>
-          </TouchableOpacity>
-        }
-        headerBackgroundColor={{
-          light: '#fff',
-          dark: '#222',
-        }}
-        headerHeight={400} // Set the header height to 400
-        bottomPadding={20}
-      >
-        <PostRide />
-      </ParallaxScrollView>
-    
+            <Marker
+              coordinate={{ latitude: 54.6586, longitude: -1.9325 }}
+              title="Hamsterly Forest"
+            />
+          </MapView>
+        </TouchableOpacity>
+      }
+      headerBackgroundColor={{
+        light: '#fff',
+        dark: '#222',
+      }}
+      headerHeight={300} // Set the header height to 400
+      bottomPadding={20}
+    >
+      <PostRide />
+    </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-
   mapPreviewContainer: {
-    height: 400, // Adjust the height to 400
+    height: 300, // Adjust the height to 400
     width: '100%',
     borderRadius: 6,
     overflow: 'hidden',

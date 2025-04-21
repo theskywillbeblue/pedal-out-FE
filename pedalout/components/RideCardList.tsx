@@ -33,7 +33,7 @@ export default function RideCardList({ rides }: Props) {
             <View style={styles.overlayColour} />
 
             <ThemedText style={styles.rideCardDetails}>
-              <ThemedText style={{ fontSize: 19 }}>{ride.title}</ThemedText>
+              <ThemedText type='subtitle'>{ride.title}</ThemedText>
               {'\n'}
               {new Date(ride.ride_date).toLocaleDateString()}
             </ThemedText>
