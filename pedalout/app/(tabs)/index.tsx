@@ -4,7 +4,7 @@ import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import FloatingSearchBar from '../../components/search';
-import ImageGridSquares from '../../components/ImageGrid_Explore';
+import RideCardList from '../../components/RideCardList';
 import { getRides } from '../../api.js';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -13,7 +13,7 @@ export const options = {
   headerShown: false,
 };
 
-export default function TabOneScreen() {
+export default function MainScreen() {
   const [rides, setRides] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,9 +37,6 @@ export default function TabOneScreen() {
     return <ThemedText>Houston, we have a problem!</ThemedText>;
   }
 
-  // type Props = {
-  //   rides: any[];
-  // };
 
   return (
     <ThemedSafeAreaView style={styles.safeArea}>
@@ -60,10 +57,10 @@ export default function TabOneScreen() {
         <Ionicons name="heart-outline" size={24} color="gray" />
       </View>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText style={styles.title}>Rides Nearby</ThemedText>
+        <ThemedText style={styles.title}>Nearby rides</ThemedText>
         <ThemedText style={styles.subtitle}>user location</ThemedText>
         <ThemedView>
-          <ImageGridSquares rides={rides} />
+          <RideCardList rides={rides} />
         </ThemedView>
       </ScrollView>
     </ThemedSafeAreaView>
@@ -75,9 +72,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingTop: 15, // enough space to avoid overlap with search bar
+    paddingTop: 15, // avoid overlap with search bar
     paddingHorizontal: 16,
-    paddingBottom: 0,
   },
   title: {
     fontFamily: 'HelveticaRoundedBold',
