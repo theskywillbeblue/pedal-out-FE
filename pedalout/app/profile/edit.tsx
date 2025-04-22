@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, View, Alert, Button } from 'react-native';
+import { ScrollView, View, Alert } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { UserContext } from '../context/UserContext';
 import { StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Input, Text } from '@rneui/themed';
+import { Input, Text, Button } from '@rneui/themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EditUser() {
@@ -64,7 +64,17 @@ export default function EditUser() {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 60 }}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.text}>Edit Your Profile!</Text>
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.text}>Edit Your Profile!</Text>
+        </View>
+        <View style={{ alignItems: 'center' }}>
+          <Button
+            title="Set your search area"
+            buttonStyle={styles.button}
+            titleStyle={styles.buttonText}
+            onPress={() => router.push('/profile/locationSetterMap')}
+          />
+        </View>
         <View style={[styles.verticallySpaced, styles.mt20]}>
           <Input
             inputStyle={styles.input}
@@ -133,9 +143,17 @@ export default function EditUser() {
             autoCapitalize="none"
           />
         </View>
-        <View style={[styles.verticallySpaced, styles.mt20]}>
+        <View
+          style={[
+            styles.verticallySpaced,
+            styles.mt20,
+            { alignItems: 'center' },
+          ]}
+        >
           <Button
             title={loading ? 'Updating...' : 'Update'}
+            buttonStyle={[styles.button, styles.updateButton]}
+            titleStyle={styles.buttonText}
             disabled={loading}
             onPress={editUserDetails}
           />
@@ -170,5 +188,22 @@ const styles = StyleSheet.create({
   },
   input: {
     color: 'white',
+  },
+  button: {
+    width: '90%',
+    borderRadius: 10,
+    padding: 12,
+    backgroundColor: '#4F7942',
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  updateButton: {
+    width: '90%',
+    backgroundColor: '#e63946',
+  },
+  buttonText: {
+    textAlign: 'center',
+    width: '100%',
   },
 });
