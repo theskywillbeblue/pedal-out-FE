@@ -29,6 +29,8 @@ export const UserContext = createContext<UserContextType>({
   refreshProfile: async () => {},
 });
 
+ 
+
 // export const UserContext = createContext({
 //   user: User || null,
 //   profile: UserProfile || null,
@@ -82,6 +84,7 @@ export default function UserProvider({ children }) {
     };
   }, []);
 
+
   const refreshProfile = async (userId = user?.user?.id) => {
     if (!userId) return;
 
@@ -100,3 +103,5 @@ export default function UserProvider({ children }) {
     </UserContext.Provider>
   );
 }
+
+

@@ -5,8 +5,8 @@ import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import MapView, { MapPressEvent, Marker } from 'react-native-maps';
 import { useColorScheme } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import ParallaxScrollView from '@/components/ParallaxScrollView'; // Import your custom ParallaxScrollView
-// import { useNavigation } from '@react-navigation/native'; // Import navigation hook
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+
 import { router } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
@@ -19,7 +19,7 @@ export default function TabTwoScreen() {
   ]);
 
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
-  // const navigation = useNavigation();
+
 
   const onLocationSelect = (event: MapPressEvent) => {
     console.log(event.nativeEvent.coordinate);
