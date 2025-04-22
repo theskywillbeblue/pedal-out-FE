@@ -10,6 +10,7 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { router } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function TabTwoScreen() {
   const colorScheme = useColorScheme();
@@ -17,25 +18,27 @@ export default function TabTwoScreen() {
   const [markerCoordinates, setMarkerCoordinates] = useState([
     54.6586, -1.9325,
   ]);
+  const [open, setOpen] = useState(false);
 
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
 
 
   const onLocationSelect = (event: MapPressEvent) => {
-    console.log(event.nativeEvent.coordinate);
     setMarkerCoordinates([
       event.nativeEvent.coordinate.latitude,
       event.nativeEvent.coordinate.longitude,
     ]);
   };
-
   return (
-    <ParallaxScrollView
-      headerImage={
-        <TouchableOpacity
-          activeOpacity={1}
-          style={styles.mapPreviewContainer}
-        >
+    <ThemedSafeAreaView>
+      <ScrollView
+        contentContainerStyle={{ padding: 16 }}
+        nestedScrollEnabled={false}
+        scrollEnabled={!open}
+        horizontal={false}
+      >
+        {/* Your scrollable content goes here */}
+        <TouchableOpacity activeOpacity={1} style={styles.mapPreviewContainer}>
           <MapView
             style={[styles.mapPreview, { backgroundColor: mapBackground }]}
             initialRegion={{
@@ -56,19 +59,14 @@ export default function TabTwoScreen() {
             />
           </MapView>
         </TouchableOpacity>
-      }
-      headerBackgroundColor={{
-        light: '#fff',
-        dark: '#222',
-      }}
-      headerHeight={300} // Set the header height to 400
-      bottomPadding={20}
-    >
-      <PostRide
-        latitude={markerCoordinates[0]}
-        longitude={markerCoordinates[1]}
-      />
-    </ParallaxScrollView>
+        <PostRide
+          latitude={markerCoordinates[0]}
+          longitude={markerCoordinates[1]}
+          open={open}
+          setOpen={setOpen}
+        />
+      </ScrollView>
+    </ThemedSafeAreaView>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -19,51 +19,57 @@ import { Picker } from '@react-native-picker/picker';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Ionicons } from '@expo/vector-icons';
+import { UserContext } from '../app/context/UserContext';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { router } from 'expo-router';
 
-type Coordinates = {
+type PostRideProps = {
   latitude: number;
   longitude: number;
+  open: boolean;
+  setOpen: object;
 };
 
-export default function PostRide(props: Coordinates) {
-  // const { control, handleSubmit, reset } = useForm<FormData>({
-  //   defaultValues: {
-  //     title: '',
-  //     description: '',
-  //     tags: '',
-  //   },
-  // });
-  // const [date, setDate] = useState(new Date());
+export default function PostRide(props: PostRideProps) {
+  const currentUser = useContext(UserContext);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [selectedDiscipline, setSelectedDiscipline] = useState(null);
+  const [disciplines, setDisciplines] = useState([
+    { label: 'Downhill', value: 'Downhill' },
+    { label: 'Gravel', value: 'Gravel' },
+    { label: 'Enduro', value: 'Enduro' },
+    { label: 'Cross Country', value: 'Cross Country' },
+    { label: 'Park', value: 'Park' },
+    { label: 'Casual', value: 'Casual' },
+  ]);
 
   const handleFormSubmit = async (values: any) => {
     try {
-      console.log(values, '<<<< values');
+      // console.log(values, '<<<< values');
       const rideData = {
-        author: 'some-user-id-or-name', // replace with actual logic
+        author: currentUser.profile.username,
         title: values.title,
         description: values.description,
-        discipline: values.discipline, // can make this dynamic
+        discipline: values.discipline,
         is_public: values.isPublic,
-        ride_date: values.date,
-        ride_time: values.time,
+        ride_date: values.date.toDateString(),
+        ride_time: values.time.toTimeString(),
         ride_location: {
           lat: props.latitude,
           lng: props.longitude,
         },
       };
-      console.log(rideData, '<<<< rideData');
-
-      // await postRide(rideData);
+      // console.log(rideData, '<<<< rideData');
+      await postRide(rideData);
       Alert.alert('Success', 'Ride posted!');
       // resetForm();
+      router.push("/(tabs)");
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Could not post ride.');
     }
   };
-
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const borderColor = useThemeColor({}, 'text'); // Theme border color
@@ -88,7 +94,7 @@ export default function PostRide(props: Coordinates) {
           values,
           setFieldValue,
         }) => (
-          <View style={{ padding: 20 }}>
+          <ThemedView style={{ padding: 20 }}>
             <ThemedTextInput
               style={[styles.title, { borderColor }]}
               onChangeText={handleChange('title')}
@@ -107,20 +113,20 @@ export default function PostRide(props: Coordinates) {
               placeholderTextColor={textColor}
             />
 
-            <Text>Discipline:</Text>
-            <Picker
-              onValueChange={handleChange('discipline')}
-              onBlur={handleBlur('discipline')}
-              selectedValue={values.discipline}
-            >
-              <Picker.Item label="Downhill" value="Downhill" />
-              <Picker.Item label="Gravel" value="Gravel" />
-              <Picker.Item label="Mountain" value="Mountain" />
-              <Picker.Item label="Enduro" value="Enduro" />
-              <Picker.Item label="Cross Country" value="Cross Country" />
-              <Picker.Item label="Park" value="Park" />
-              <Picker.Item label="Casual" value="Casual" />
-            </Picker>
+            <Text style={[{ color: textColor }]}>Discipline:</Text>
+            <DropDownPicker
+              open={props.open}
+              value={values.discipline}
+              items={disciplines}
+              setOpen={props.setOpen}
+              setValue={(callback) => {
+                const value = callback(values.discipline);
+                setFieldValue('discipline', value);
+              }}
+              setItems={setDisciplines}
+              placeholder={'Choose a discipline.'}
+              horizontal={true}
+            />
 
             <Pressable
               onPress={() => setFieldValue('isPublic', !values.isPublic)}
@@ -131,14 +137,16 @@ export default function PostRide(props: Coordinates) {
                 size={24}
                 color={values.isPublic ? '#007AFF' : '#aaa'}
               />
-              <Text style={{ marginLeft: 8 }}>Public Ride</Text>
+              <Text style={[{ marginLeft: 8, color: textColor }]}>Public Ride</Text>
             </Pressable>
 
             <Pressable
               style={[styles.datePicker, { height: 35, borderColor }]}
               onPress={() => setShowDatePicker(true)}
             >
-              <Text>{values.date.toDateString()}</Text>
+              <Text style={[styles.dateText, { color: textColor }]}>
+                {values.date.toDateString()}
+              </Text>
             </Pressable>
             {showDatePicker && (
               <DateTimePicker
@@ -158,7 +166,9 @@ export default function PostRide(props: Coordinates) {
               style={[styles.datePicker, { height: 35, borderColor }]}
               onPress={() => setShowTimePicker(true)}
             >
-              <Text>{values.time.toTimeString().split(' ')[0]}</Text>
+              <Text style={[styles.dateText, { color: textColor }]}>
+                {values.time.toTimeString().split(' ')[0]}
+              </Text>
             </Pressable>
             {showTimePicker && (
               <DateTimePicker
@@ -173,11 +183,8 @@ export default function PostRide(props: Coordinates) {
                 }}
               />
             )}
-
-            <View style={{ marginTop: 20 }}>
-              <Button onPress={handleSubmit} title="Submit" />
-            </View>
-          </View>
+            <Button onPress={handleSubmit} title="Submit" />
+          </ThemedView>
         )}
       </Formik>
     </ThemedView>
