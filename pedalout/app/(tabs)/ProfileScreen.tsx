@@ -17,39 +17,7 @@ import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const user = useContext(UserContext);
-  const [profile, setProfile] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   if (user?.id) {
-  //     fetchUserProfile();
-  //   }
-  // }, [user]);
-
-  const fetchUserProfile = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from('user_profile')
-      .select('*')
-      .eq('user_id', user.id)
-      .single();
-    if (error) {
-      console.error('Error fetching profile:', error.message);
-    } else {
-      setProfile(data);
-    }
-
-    setLoading(false);
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      if (user?.id) {
-        fetchUserProfile();
-      }
-    }, [user?.id]),
-  );
+  const { user, profile, loading } = useContext(UserContext);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -59,6 +27,14 @@ export default function ProfileScreen() {
       router.replace('/authentication');
     }
   };
+
+  if (loading) {
+    return (
+      <ThemedSafeAreaView>
+        <ThemedText>Loading...</ThemedText>
+      </ThemedSafeAreaView>
+    );
+  }
 
   return (
     <ThemedSafeAreaView>
@@ -103,6 +79,7 @@ export default function ProfileScreen() {
         </ThemedView>
         <Button
           title="Open Gallery"
+          buttonStyle={styles.signInButton}
           onPress={() => router.push('/profile/gallery')}
         />
         <Button
@@ -141,5 +118,14 @@ const styles = StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
     marginBottom: 6,
+  },
+  signInButton: {
+    width: '100%',
+    borderRadius: 10,
+    padding: 12,
+    backgroundColor: '#4F7942',
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

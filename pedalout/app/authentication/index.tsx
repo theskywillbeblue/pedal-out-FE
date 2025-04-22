@@ -125,12 +125,16 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: '#4F7942',
     marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   signUpButton: {
     width: '100%',
     borderRadius: 10,
     padding: 12,
     backgroundColor: '#4F7942',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   subtext: {
     marginVertical: 12,

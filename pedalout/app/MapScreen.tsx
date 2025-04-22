@@ -1,13 +1,17 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useContext } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { useLocalSearchParams } from 'expo-router';
+import { UserContext } from './context/UserContext';
 
 export default function MapScreen() {
   const navigation = useNavigation();
   const params = useLocalSearchParams();
   const rides = JSON.parse(params.rides);
+  const { profile } = useContext(UserContext);
+  const userLat = parseFloat(profile.user_coordinate.lat);
+  const userLng = parseFloat(profile.user_coordinate.lng);
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -18,8 +22,8 @@ export default function MapScreen() {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 50.7192,
-          longitude: -1.8808,
+          latitude: userLat || 50.7192,
+          longitude: userLng || -1.8808,
           latitudeDelta: 0.6,
           longitudeDelta: 0.6,
         }}

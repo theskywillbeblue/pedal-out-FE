@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { Platform, StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import FloatingSearchBar from '../../components/search';
@@ -8,8 +8,10 @@ import { getRides } from '../../api.js';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { UserContext } from '../context/UserContext';
 
 export default function MainScreen() {
+  const { profile } = useContext(UserContext);
   const [rides, setRides] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,15 +50,7 @@ export default function MainScreen() {
     <ThemedView style={styles.safeArea}>
       <FloatingSearchBar />
       <SafeAreaView>
-        <ThemedView
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-            marginTop: 32,
-            marginBottom: -12,
-          }}
-        >
+        <ThemedView style={styles.iconBar}>
           <TouchableOpacity
             onPress={() =>
               router.push({
@@ -74,7 +68,7 @@ export default function MainScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <ThemedText style={styles.title}>
           Nearby rides{' '}
-          <ThemedText style={styles.subtitle}>user location</ThemedText>
+          <ThemedText style={styles.subtitle}>{profile?.location || 'Location Unknown'}</ThemedText>
         </ThemedText>
         <ThemedView>
           <RideCardList rides={rides} />
@@ -87,9 +81,12 @@ export default function MainScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    marginTop: Platform.OS === 'android' ? 24 : 0,
   },
   scrollContent: {
     paddingHorizontal: 16,
+    paddingTop: 12,
+    marginTop: Platform.OS === 'android' ? 0 : 0,
   },
   title: {
     fontFamily: 'HelveticaRoundedBold',
@@ -101,4 +98,12 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontSize: 16,
   },
+  iconBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    marginTop: Platform.OS === 'android' ? 20 : 32,
+    marginBottom: Platform.OS === 'android' ? 0 : -12,
+    paddingVertical: 12,
+  }
 });
