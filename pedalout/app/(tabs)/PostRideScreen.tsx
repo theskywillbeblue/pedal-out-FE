@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import PostRide from '@/components/PostRidePanel';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { MapPressEvent, Marker } from 'react-native-maps';
 import { useColorScheme } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import ParallaxScrollView from '@/components/ParallaxScrollView'; // Import your custom ParallaxScrollView
@@ -14,19 +14,25 @@ import { ThemedText } from '@/components/ThemedText';
 export default function TabTwoScreen() {
   const colorScheme = useColorScheme();
   const mapBackground = useThemeColor({ light: '#eee', dark: '#222' });
+  const [markerCoordinates, setMarkerCoordinates] = useState([
+    54.6586, -1.9325,
+  ]);
 
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
   // const navigation = useNavigation();
 
-  const handleLongPress = () => {
-    router.push('/MapScreen');
+  const onLocationSelect = (event: MapPressEvent) => {
+    console.log(event.nativeEvent.coordinate);
+    setMarkerCoordinates([
+      event.nativeEvent.coordinate.latitude,
+      event.nativeEvent.coordinate.longitude,
+    ]);
   };
 
   return (
     <ParallaxScrollView
       headerImage={
         <TouchableOpacity
-          onLongPress={handleLongPress}
           activeOpacity={1}
           style={styles.mapPreviewContainer}
         >
@@ -39,10 +45,14 @@ export default function TabTwoScreen() {
               longitudeDelta: 0.1,
             }}
             pointerEvents="none"
+            onPress={onLocationSelect}
           >
             <Marker
-              coordinate={{ latitude: 54.6586, longitude: -1.9325 }}
-              title="Hamsterly Forest"
+              coordinate={{
+                latitude: markerCoordinates[0],
+                longitude: markerCoordinates[1],
+              }}
+              title=""
             />
           </MapView>
         </TouchableOpacity>
@@ -54,7 +64,10 @@ export default function TabTwoScreen() {
       headerHeight={300} // Set the header height to 400
       bottomPadding={20}
     >
-      <PostRide />
+      <PostRide
+        latitude={markerCoordinates[0]}
+        longitude={markerCoordinates[1]}
+      />
     </ParallaxScrollView>
   );
 }
