@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     marginTop: Platform.OS === 'android' ? 20 : 32,
-    marginBottom: Platform.OS === 'android' ? 0 : -12,
+    marginBottom: Platform.OS === 'android' ? 0 : -32,
     paddingVertical: 12,
   }
 });

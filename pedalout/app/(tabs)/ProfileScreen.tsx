@@ -34,8 +34,8 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
-        <ThemedText style={styles.heading}>
-          Welcome, {profile?.username || user?.email || 'Guest'}!
+        <ThemedText type='title' style={styles.heading}>
+          Welcome,{'\n'}{profile?.username || user?.email || 'Guest'}!
         </ThemedText>
 
         <Image
@@ -50,33 +50,35 @@ export default function ProfileScreen() {
 
         <View style={styles.infoBox}>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Email:</ThemedText>
-            <Text>{user?.email || 'Guest'}</Text>
+            <ThemedText style={styles.label}>Email: </ThemedText>
+            <ThemedText type='tabText'>{user?.email || 'Guest'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Name:</ThemedText>
-            <Text>{profile?.full_name || 'No name set'}</Text>
+            <ThemedText style={styles.label}>Name: </ThemedText>
+            <ThemedText type='tabText'>{profile?.full_name || 'No name set'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Age:</ThemedText>
-            <Text>{profile?.user_age || 'No age set'}</Text>
+            <ThemedText style={styles.label}>Age: </ThemedText>
+            <ThemedText type='tabText'>{profile?.user_age || 'No age set'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Location:</ThemedText>
-            <Text>{profile?.location || 'No location set'}</Text>
+            <ThemedText style={styles.label}>Location: </ThemedText>
+            <ThemedText type='tabText'>{profile?.location || 'No location set'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Bio:</ThemedText>
-            <Text>{profile?.user_bio || 'No bio made'}</Text>
+            <ThemedText style={styles.label}>Bio: </ThemedText>
+            <ThemedText type='tabText'>{profile?.user_bio || 'No bio made'}</ThemedText>
           </View>
         </View>
 
-        <Button
+{/* Gallery function to add when functionality available */}
+        {/* <Button
           title="Open Gallery"
           buttonStyle={styles.button}
           titleStyle={styles.buttonText}
           onPress={() => router.push('/profile/gallery')}
-        />
+        /> */}
+
         <Button
           title="Edit Profile"
           buttonStyle={styles.button}
@@ -104,28 +106,39 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   heading: {
-    fontSize: 40,
-    fontFamily: 'HelveticaRoundedBold',
     marginBottom: 20,
     lineHeight: 40,
+    textAlign: 'center',
   },
   image: {
     width: 150,
     height: 150,
     borderRadius: 75,
     marginBottom: 20,
+    borderWidth: 3,
+    borderColor: '#fff', 
+    // Drop shadow (iOS)
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    // Drop shadow (Android)
+    elevation: 8,
   },
   infoBox: {
-    width: '100%',
+    width: '90%',
     padding: 20,
     marginBottom: 20,
     borderRadius: 10,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#BEBEBE',
+    borderWidth: 3,
+    borderColor: '#fff', 
   },
   infoRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
+    fontFamily: 'HelveticaRoundedBold',
+    justifyContent: 'flex-start',
+    alignContent: 'center',
   },
   label: {
     fontFamily: 'HelveticaRoundedBold',
@@ -133,16 +146,17 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   button: {
-    width: '90%',
-    borderRadius: 10,
+    width: '80%',
+    borderRadius: 8,
     padding: 12,
     backgroundColor: '#4F7942',
-    marginBottom: 20,
+    marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center'
   },
   signOutButton: {
-    width: '90%',
+    width: '80%',
     backgroundColor: '#e63946',
   },
   buttonText: {

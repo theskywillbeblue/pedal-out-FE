@@ -10,7 +10,6 @@ import { Input, Button } from '@rneui/themed';
 import { useRouter } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Auth() {
@@ -113,30 +112,33 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   inputWrapper: {
-    width: '100%',
+    width: '95%',
     marginBottom: 20,
   },
   input: {
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 16,
     color: '#fff',
+    marginLeft: 10
   },
   signInButton: {
-    width: '90%',
+    width: '80%',
     borderRadius: 10,
     padding: 12,
     backgroundColor: '#4F7942',
-    marginBottom: 20,
+    marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   signUpButton: {
-    width: '90%',
+    width: '80%',
     borderRadius: 10,
     padding: 12,
     backgroundColor: '#4F7942',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center'
   },
   subtext: {
     marginVertical: 12,

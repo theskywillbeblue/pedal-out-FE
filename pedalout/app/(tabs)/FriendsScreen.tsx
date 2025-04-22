@@ -115,7 +115,7 @@ export default function FriendsScreen() {
   }
 
   return (<ThemedSafeAreaView style={{ flex: 1}}>
-    <ThemedText type="title" style={styles.title}>Friends</ThemedText>
+    <ThemedText type="title" style={styles.title}>Connections</ThemedText>
     <View style={styles.columnsContainer}>
       {/* Following */}
       <View style={styles.column}>
@@ -181,8 +181,12 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     marginBottom: 8,
     alignSelf: 'center',
+    textShadowColor: 'rgb(0, 0, 0)',
+  textShadowOffset: { width: 1, height: 1 },
+  textShadowRadius: 5,
   },
   avatarPlaceholder: {
+    alignSelf: 'center',
     width: 75,
     height: 75,
     borderRadius: 55,
@@ -194,6 +198,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 600,
     color: '#BEBEBE',
+    marginBottom: 3,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -219,9 +224,9 @@ const styles = StyleSheet.create({
   columnsContainer: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 10,
+    paddingHorizontal: 22,
     gap: 7,
-   
+
   },
   column: {
     flex: 1,
@@ -232,6 +237,6 @@ const styles = StyleSheet.create({
   },
   figures: {
     fontSize: 14,
-    alignSelf: 'center',
+    textAlign: 'center',
   }
 });
