@@ -10,8 +10,8 @@ export default function MapScreen() {
   const params = useLocalSearchParams();
   const rides = JSON.parse(params.rides); 
   const { profile } = useContext(UserContext);
-  const userLat = parseFloat(profile.user_coordinate.lat);
-  const userLng = parseFloat(profile.user_coordinate.lng);
+  const userLat = parseFloat(profile?.user_coordinate?.lat);
+  const userLng = parseFloat(profile?.user_coordinate?.lng);
 
 
 

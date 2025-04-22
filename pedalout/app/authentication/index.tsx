@@ -72,7 +72,8 @@ export default function Auth() {
           onPress={signInWithEmail}
           loading={loading}
           buttonStyle={styles.signInButton}
-          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333' }}
+          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333', textAlign: 'center',
+            width: '100%', }}
         />
 
         <ThemedText style={styles.subtext}>Not a member yet?</ThemedText>
@@ -81,7 +82,8 @@ export default function Auth() {
           title="Sign up!"
           onPress={() => router.push('/authentication/SignUp')}
           buttonStyle={styles.signUpButton}
-          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333' }}
+          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333', textAlign: 'center',
+            width: '100%', }}
         />
       </View>
     </SafeAreaView>
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   signInButton: {
-    width: '100%',
+    width: '90%',
     borderRadius: 10,
     padding: 12,
     backgroundColor: '#4F7942',
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   signUpButton: {
-    width: '100%',
+    width: '90%',
     borderRadius: 10,
     padding: 12,
     backgroundColor: '#4F7942',
