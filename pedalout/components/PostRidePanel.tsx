@@ -64,9 +64,12 @@ export default function PostRide(props: Coordinates) {
     }
   };
 
+  const backgroundColor = useThemeColor({}, 'background');
+  const textColor = useThemeColor({}, 'text');
+  const borderColor = useThemeColor({}, 'text'); // Theme border color
+
   return (
-    <ScrollView className="flex flex-col gap-4">
-      {/* ... all your form fields ... */}
+    <ThemedView className="flex flex-col gap-4">
       <Formik
         initialValues={{
           title: '',
@@ -86,20 +89,22 @@ export default function PostRide(props: Coordinates) {
           setFieldValue,
         }) => (
           <View style={{ padding: 20 }}>
-            <Text>Title:</Text>
-            <TextInput
-              style={{ borderBottomWidth: 1, marginBottom: 20 }}
+            <ThemedTextInput
+              style={[styles.title, { borderColor }]}
               onChangeText={handleChange('title')}
               onBlur={handleBlur('title')}
               value={values.title}
+              placeholder="Enter Title"
+              placeholderTextColor={textColor}
             />
 
-            <Text>Description:</Text>
-            <TextInput
-              style={{ borderBottomWidth: 1, marginBottom: 20 }}
+            <ThemedTextInput
+              style={[styles.description, { borderColor }]}
               onChangeText={handleChange('description')}
               onBlur={handleBlur('description')}
               value={values.description}
+              placeholder="Enter Description"
+              placeholderTextColor={textColor}
             />
 
             <Text>Discipline:</Text>
@@ -117,15 +122,6 @@ export default function PostRide(props: Coordinates) {
               <Picker.Item label="Casual" value="Casual" />
             </Picker>
 
-            <Text>Public Ride:</Text>
-            {/* <Picker
-              onValueChange={handleChange('isPublic')}
-              onBlur={handleBlur('isPublic')}
-              selectedValue={values.isPublic}
-            >
-              <Picker.Item label="Yes" value="true" />
-              <Picker.Item label="No" value="false" />
-            </Picker> */}
             <Pressable
               onPress={() => setFieldValue('isPublic', !values.isPublic)}
               style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -138,11 +134,12 @@ export default function PostRide(props: Coordinates) {
               <Text style={{ marginLeft: 8 }}>Public Ride</Text>
             </Pressable>
 
-            <Text>Date:</Text>
-            <Button
-              title={values.date.toDateString()}
+            <Pressable
+              style={[styles.datePicker, { height: 35, borderColor }]}
               onPress={() => setShowDatePicker(true)}
-            />
+            >
+              <Text>{values.date.toDateString()}</Text>
+            </Pressable>
             {showDatePicker && (
               <DateTimePicker
                 value={values.date}
@@ -157,11 +154,12 @@ export default function PostRide(props: Coordinates) {
               />
             )}
 
-            <Text>Time:</Text>
-            <Button
-              title={values.time.toTimeString().split(' ')[0]}
+            <Pressable
+              style={[styles.datePicker, { height: 35, borderColor }]}
               onPress={() => setShowTimePicker(true)}
-            />
+            >
+              <Text>{values.time.toTimeString().split(' ')[0]}</Text>
+            </Pressable>
             {showTimePicker && (
               <DateTimePicker
                 value={values.time}
@@ -182,6 +180,89 @@ export default function PostRide(props: Coordinates) {
           </View>
         )}
       </Formik>
-    </ScrollView>
+    </ThemedView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {},
+  title: {
+    fontSize: 16,
+    textAlignVertical: 'top',
+    width: '90%',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 10,
+    marginBottom: 8, // Reduced from 16
+  },
+  input: {
+    width: '75%',
+    textAlignVertical: 'top',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 10,
+    marginBottom: 8, // Reduced from 16
+    fontSize: 12,
+  },
+  discipline: {
+    width: '70%',
+    textAlignVertical: 'top',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 5,
+    marginBottom: 8,
+    fontSize: 12,
+  },
+  description: {
+    fontSize: 12,
+    textAlignVertical: 'top',
+    width: '100%',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 10,
+    marginBottom: 8, // Reduced from 16
+  },
+  dateText: {
+    fontSize: 11,
+    padding: 10,
+  },
+  datePicker: {
+    width: '70%',
+    borderWidth: 1,
+    borderRadius: 6,
+    marginBottom: 8, // Reduced from 16
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  placeholderButton: {
+    flex: 1,
+  },
+  button: {
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 10,
+    alignItems: 'center',
+    flex: 0.3,
+    marginHorizontal: 8,
+  },
+  button2: {
+    backgroundColor: '#24A0ED',
+    padding: 10,
+    borderRadius: 6,
+    alignItems: 'center',
+    flex: 0.8,
+    marginHorizontal: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  buttonTextDark: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
+});

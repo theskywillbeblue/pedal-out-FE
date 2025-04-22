@@ -21,10 +21,6 @@ export default function TabTwoScreen() {
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
   // const navigation = useNavigation();
 
-  const handleLongPress = () => {
-    // router.push('/MapScreen');
-  };
-
   const onLocationSelect = (event: MapPressEvent) => {
     console.log(event.nativeEvent.coordinate);
     setMarkerCoordinates([
@@ -37,7 +33,6 @@ export default function TabTwoScreen() {
     <ParallaxScrollView
       headerImage={
         <TouchableOpacity
-          onLongPress={handleLongPress}
           activeOpacity={1}
           style={styles.mapPreviewContainer}
         >
