@@ -4,9 +4,6 @@ const supabaseApi = axios.create({
 	baseURL: 'https://pedal-out-be.onrender.com/api',
 });
 
-const mongoApi = axios.create({
-	baseURL: 'https://mongo-blah-blah-blah',
-});
 
 // Supabase api requests
 
@@ -108,7 +105,7 @@ async function postCommentOnRideById(ride_id, comment) {
 
 async function addFriend(username, newFriendUsername) {
 	try {
-		const response = await mongoApi.post(`/friends/${username}`, {
+		const response = await supabaseApi.post(`/friends/${username}`, {
 			body: newFriendUsername,
 		});
 		return response.data;
@@ -119,7 +116,7 @@ async function addFriend(username, newFriendUsername) {
 
 async function getFriends(username) {
 	try {
-		const response = await mongoApi.get(`/friends/${username}`);
+		const response = await supabaseApi.get(`/friends/${username}`);
 		return response.data;
 	} catch (err) {
 		throw err;
