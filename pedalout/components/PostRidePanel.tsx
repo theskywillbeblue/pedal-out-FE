@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -19,6 +19,7 @@ import { Picker } from '@react-native-picker/picker';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Ionicons } from '@expo/vector-icons';
+import { UserContext } from '../app/context/UserContext';
 
 type Coordinates = {
   latitude: number;
@@ -26,36 +27,28 @@ type Coordinates = {
 };
 
 export default function PostRide(props: Coordinates) {
-  // const { control, handleSubmit, reset } = useForm<FormData>({
-  //   defaultValues: {
-  //     title: '',
-  //     description: '',
-  //     tags: '',
-  //   },
-  // });
-  // const [date, setDate] = useState(new Date());
+  const currentUser = useContext(UserContext);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   const handleFormSubmit = async (values: any) => {
     try {
-      console.log(values, '<<<< values');
+      // console.log(values, '<<<< values');
       const rideData = {
-        author: 'some-user-id-or-name', // replace with actual logic
+        author: currentUser.profile.username,
         title: values.title,
         description: values.description,
-        discipline: values.discipline, // can make this dynamic
+        discipline: values.discipline,
         is_public: values.isPublic,
-        ride_date: values.date,
-        ride_time: values.time,
+        ride_date: values.date.toDateString(),
+        ride_time: values.time.toTimeString(),
         ride_location: {
           lat: props.latitude,
           lng: props.longitude,
         },
       };
-      console.log(rideData, '<<<< rideData');
-
-      // await postRide(rideData);
+      // console.log(rideData, '<<<< rideData');
+      await postRide(rideData);
       Alert.alert('Success', 'Ride posted!');
       // resetForm();
     } catch (error) {

@@ -22,7 +22,6 @@ export default function TabTwoScreen() {
   // const navigation = useNavigation();
 
   const onLocationSelect = (event: MapPressEvent) => {
-    console.log(event.nativeEvent.coordinate);
     setMarkerCoordinates([
       event.nativeEvent.coordinate.latitude,
       event.nativeEvent.coordinate.longitude,
