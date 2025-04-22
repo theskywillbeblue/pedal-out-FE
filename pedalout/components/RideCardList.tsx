@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  Text
 } from 'react-native';
 import { router } from 'expo-router';
 import { ThemedView } from './ThemedView';
@@ -32,11 +33,11 @@ export default function RideCardList({ rides }: Props) {
           >
             <View style={styles.overlayColour} />
 
-            <ThemedText style={styles.rideCardDetails}>
-              <ThemedText type='subtitle'>{ride.title}</ThemedText>
+            <Text style={styles.rideCardDetails}>
+              <Text style={styles.subtitle}>{ride.title}</Text>
               {'\n'}
               {new Date(ride.ride_date).toLocaleDateString()}
-            </ThemedText>
+            </Text>
           </ImageBackground>
         </TouchableOpacity>
       ))}
@@ -77,8 +78,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     left: 20,
+    color: '#fff',
+    padding: 4
   },
-
+  subtitle: {
+    fontFamily: 'HelveticaRoundedBold',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff'
+  },
   default: {
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 16,
