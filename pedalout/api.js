@@ -143,6 +143,33 @@ async function removeAllFriends() {
 	}
 }
 
+async function getAllChatsByUsername(username) {
+	try {
+		const response = await supabaseApi.get(`/friends/${username}`);
+		return response;
+	} catch (err) {
+		throw err;
+	}
+}
+
+async function getMessagesByChatId(chatId) {
+	try {
+		const response = await supabaseApi.get(`/friends/${chatId}`);
+		return response;
+	} catch (err) {
+		throw err;
+	}
+}
+
+async function postNewMessage(chatId) {
+	try {
+		const response = await supabaseApi.post(`/friends/${chatId}`);
+		return response;
+	} catch (err) {
+		throw err;
+	}
+}
+
 export {
 	getRides,
 	postRide,
@@ -155,4 +182,7 @@ export {
 	getFriends,
 	removeFriend,
 	removeAllFriends,
+	getAllChatsByUsername,
+	getMessagesByChatId,
+	postNewMessage,
 };

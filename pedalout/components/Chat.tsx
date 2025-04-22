@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Chat from '@codsod/react-native-chat';
 
+// get all messages (setMessages) and show them in reverse order
+// post new message
+
 type User = {
     _id: number;
     name: string;
@@ -13,7 +16,7 @@ type User = {
     user: User;
   };
 
-const ChatComponent = () => {
+const ChatComponent = (openedMessage) => {
 	const [messages, setMessages] = useState<Message[]>([]);
 
 	useEffect(() => {
