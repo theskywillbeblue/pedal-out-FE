@@ -4,6 +4,7 @@ import {
   Text,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
@@ -11,6 +12,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import { getFriends } from '../../api.js';
 import { supabase } from '@/lib/supabase';
+import { router } from 'expo-router';
 
 export default function FriendsScreen() {
   const profile = useContext(UserContext);
@@ -18,13 +20,15 @@ export default function FriendsScreen() {
   const [followers, setFollowers] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [avatars, setAvatars] = useState([]);
-  const [fullName, setFullName] = useState([]);
+  const [followerAvatars, setFollowerAvatars] = useState([]);
+  const [followerNames, setFollowerNames] = useState([]);
+  const [followingAvatars, setFollowingAvatars] = useState([]);
+  const [followingNames, setFollowingNames] = useState([]);
 
-  // console.log(profile.username);
+  // 
 
   useEffect(() => {
-    getFriends('n0ah_ahm3d_mtb')
+    getFriends('sophiaP_2025xyzq')
       .then((res) => {
         setFollowers(res.usersFollowers);
         setFollowing(res.followedUsers);
@@ -32,15 +36,16 @@ export default function FriendsScreen() {
       .catch((error) => {
         setError(error);
 
-        throw New(error);
+        throw (error);
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
+  // get Followers
   useEffect(() => {
-    async function getAvatars() {
+    async function getFollowerData() {
       try {
         const { data, error } = await supabase
           .from('user_profile')
@@ -57,17 +62,49 @@ export default function FriendsScreen() {
           [follower.username]: follower.full_name
         }));
 
-        setFullName(usernameFullName);
-        setAvatars(usernameAvatar);
+        setFollowerNames(usernameFullName);
+        setFollowerAvatars(usernameAvatar);
       } catch (error) {
-        console.error('Error fetching avatars:', error);
+        
       }
     }
 
     if (followers.length > 0) {
-      getAvatars();
+      getFollowerData();
     }
   }, [followers]);
+
+
+  // get Following
+  useEffect(() => {
+    async function getFollowingData() {
+      try {
+        const { data, error } = await supabase
+          .from('user_profile')
+          .select('username, avatar_img, full_name')
+          .in('username', following);
+
+        if (error) throw error;
+
+        const usernameAvatar = data.map((followed) => ({
+          [followed.username]: followed.avatar_img,
+        }));
+
+        const usernameFullName = data.map((followed) => ({
+          [followed.username]: followed.full_name
+        }));
+
+        setFollowingNames(usernameFullName);
+        setFollowingAvatars(usernameAvatar);
+      } catch (error) {
+        
+      }
+    }
+
+    if (followers.length > 0) {
+      getFollowingData();
+    }
+  }, [following]);
 
 
   if (isLoading) {
@@ -82,19 +119,24 @@ export default function FriendsScreen() {
     <View style={styles.columnsContainer}>
       {/* Following */}
       <View style={styles.column}>
-        <ThemedText style={styles.sectionHeader}>Following</ThemedText>
+        <ThemedText style={styles.sectionHeader}>Following{'\n'}<Text style={styles.figures}>({following.length})</Text></ThemedText>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.columnContent}
         >
           {following.map((followee) => {
-            const avatar_img = avatars.find((entry) => followee in entry)?.[followee];
-            const full_name = fullName.find((entry) => followee in entry)?.[followee];
+            const avatar_img = followingAvatars.find((entry) => followee in entry)?.[followee];
+            const full_name = followingNames.find((entry) => followee in entry)?.[followee];
   
             return (
+              
               <View key={followee} style={styles.avatarCard}>
+                <TouchableOpacity  onPress={() =>
+                              router.push({pathname: '../FriendsProfile', params: { username: followee }})}>
+
                 <ThemedText style={styles.avatarName}>{full_name}</ThemedText>
                 <Image style={styles.avatarPlaceholder} source={{ uri: avatar_img }} />
+                </TouchableOpacity>
               </View>
             );
           })}
@@ -103,20 +145,23 @@ export default function FriendsScreen() {
   
       {/* Followers */}
       <View style={styles.column}>
-        <ThemedText style={styles.sectionHeader}>Followers</ThemedText>
+        <ThemedText style={styles.sectionHeader}>Followers{'\n'}<Text style={styles.figures}>({followers.length})</Text></ThemedText>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.columnContent}
         >
           {followers.map((follower) => {
-            const avatar_img = avatars.find((entry) => follower in entry)?.[follower];
-            const full_name = fullName.find((entry) => follower in entry)?.[follower];
+            const avatar_img = followerAvatars.find((entry) => follower in entry)?.[follower];
+            const full_name = followerNames.find((entry) => follower in entry)?.[follower];
   
             return (
               <View key={follower} style={styles.avatarCard}>
+                  <TouchableOpacity  onPress={() =>
+                              router.push({pathname: '../FriendsProfile', params: { username: follower }})}>
+                 <ThemedText style={styles.avatarName}>{full_name}</ThemedText>
                  <Image style={styles.avatarPlaceholder} source={{ uri: avatar_img }} />
-                  <ThemedText style={styles.avatarName}>{full_name}</ThemedText>
-               
+                 
+                 </TouchableOpacity>
               
               </View>
             );
@@ -149,9 +194,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 600,
     color: '#BEBEBE',
-    paddingTop: 3,
   },
   sectionHeader: {
+    flexDirection: 'row',
     fontSize: 22,
     alignSelf: 'center',
     marginBottom: 20,
@@ -160,13 +205,13 @@ const styles = StyleSheet.create({
   },
 
   avatarCard: {
-    width: 150,
+    width: 140,
     alignItems: 'center',
     marginBottom: 12,
     backgroundColor: '#222',
     borderRadius: 10,
-    paddingBottom: 5,
-    paddingTop: 8,
+    paddingBottom: 10,
+    paddingTop: 6,
     boxShadow: '#000',
     shadowOffset: { width: 2, height: 5 },
     shadowOpacity: 0.3,
@@ -185,4 +230,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 40,
   },
+  figures: {
+    fontSize: 14,
+    alignSelf: 'center',
+  }
 });

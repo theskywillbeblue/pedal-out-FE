@@ -85,6 +85,7 @@ export default function RootLayout() {
             <Stack.Screen name="+not-found" />
             <Stack.Screen name="MapScreen" options={{ headerShown: false }}/>
             <Stack.Screen name="RideDetails" options={{ headerShown: false }} />
+            <Stack.Screen name="FriendsProfile" options={{ headerShown: false }} />
           </Stack>
         </ThemeProvider>
       </UserProvider>
