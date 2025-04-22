@@ -161,9 +161,9 @@ async function getMessagesByChatId(chatId) {
 	}
 }
 
-async function postNewMessage(chatId) {
+async function postNewMessage(chatId, request) {
 	try {
-		const response = await supabaseApi.post(`/friends/${chatId}`);
+		const response = await supabaseApi.post(`/friends/${chatId}`, request);
 		return response;
 	} catch (err) {
 		throw err;

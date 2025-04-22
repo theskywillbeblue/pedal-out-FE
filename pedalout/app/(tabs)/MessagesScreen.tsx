@@ -16,6 +16,7 @@ export default function TabFourScreen() {
   // on click of one of these images, the user should be taken to the /chats/:chatId with GET request
   // set state to setOpenMessage to the first chatId and then on click, this is changed and invokes the component to change
 
+  const [chatInfo, setChatInfo] = useState([]);
   const [chatIds, setChatIds] = useState([]);
   const [chatPartners, setChatPartners] = useState([]);
   const [chatImages, setChatImages] = useState([]);
@@ -27,6 +28,7 @@ export default function TabFourScreen() {
   useEffect(() => {
     getAllChatsByUsername("jwilson_rider42795") //hardcoded right now
     .then((res) => {
+      setChatInfo(res);
       const myChatIds = res.map((chat) => {
         return chat[0];
       })
@@ -83,7 +85,7 @@ export default function TabFourScreen() {
             </View>
           })}
         </ScrollView>
-				<ChatComponent openedMessage={openedMessage}></ChatComponent>
+				<ChatComponent openedMessage={openedMessage} user={loggedInUser} chatPartner={chatInfo[openedMessage]}></ChatComponent>
 			</SafeAreaProvider>
 		
 	);
