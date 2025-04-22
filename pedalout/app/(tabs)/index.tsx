@@ -21,6 +21,7 @@ export default function MainScreen() {
   useEffect(() => {
     getRides()
       .then((res) => {
+      
         setRides(res.rides);
       })
       .catch((error) => {

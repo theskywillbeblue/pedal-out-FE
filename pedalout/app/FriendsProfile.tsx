@@ -1,17 +1,15 @@
 import React, { useLayoutEffect, useContext } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { useLocalSearchParams } from 'expo-router';
 import { UserContext } from './context/UserContext';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 
-export default function MapScreen() {
+export default function FriendsProfile() {
   const navigation = useNavigation();
   const params = useLocalSearchParams();
-  const rides = JSON.parse(params.rides); 
-  const { profile } = useContext(UserContext);
-  const userLat = parseFloat(profile?.user_coordinate?.lat);
-  const userLng = parseFloat(profile?.user_coordinate?.lng);
+  const friend = params.username;
 
 
 
@@ -20,42 +18,20 @@ export default function MapScreen() {
   }, [navigation]);
 
   return (
+    <ThemedSafeAreaView>
     <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: userLat || 50.7192,
-          longitude: userLng || -1.8808,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
-        }}
-      >
-        {/*  Map through rides and put marker details on map */}
-        {rides.map((ride) =>  (
-          
-          <Marker
-            key={ride.ride_id}
-            title={ride.title}
-            coordinate={{
-              latitude: ride.ride_location.lat,
-              longitude: ride.ride_location.lng,
-            }}
-          />
-        ))}
-
-      </MapView>
-
       {/* Floating X Button - we can add this to Sign up page too? */}
       <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
         <Text style={styles.closeText}>✕</Text>
       </Pressable>
+      <ThemedText>{friend}</ThemedText>
     </View>
+    </ThemedSafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  map: { flex: 1 },
   closeButton: {
     position: 'absolute',
     top: 50,
