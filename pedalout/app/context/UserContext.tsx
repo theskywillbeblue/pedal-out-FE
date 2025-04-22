@@ -12,11 +12,12 @@ interface UserProfile {
   user_age: number;
   location: string;
   user_bio: string;
+  user_coordinate: object;
 }
 
 interface UserContextType {
-  user: User | null;
-  profile: UserProfile | null;
+  user: User;
+  profile: UserProfile;
   loading: boolean;
   refreshProfile: () => Promise<void>;
 }
