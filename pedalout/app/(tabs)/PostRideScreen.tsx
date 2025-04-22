@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
 import PostRide from '@/components/PostRidePanel';
-import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import MapView, { MapPressEvent, Marker } from 'react-native-maps';
-import { useColorScheme } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-
-import { router } from 'expo-router';
-import { ThemedView } from '@/components/ThemedView';
-import { ThemedText } from '@/components/ThemedText';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ThemedText } from '@/components/ThemedText';
 
 export default function TabTwoScreen() {
   const colorScheme = useColorScheme();
@@ -30,13 +25,16 @@ export default function TabTwoScreen() {
     ]);
   };
   return (
-    <ThemedSafeAreaView>
+    <SafeAreaProvider>
       <ScrollView
-        contentContainerStyle={{ padding: 16 }}
         nestedScrollEnabled={false}
         scrollEnabled={!open}
         horizontal={false}
       >
+    
+      <ThemedText style={styles.closeText}>Select the location and post your ride</ThemedText>
+  
+           
         {/* Your scrollable content goes here */}
         <TouchableOpacity activeOpacity={1} style={styles.mapPreviewContainer}>
           <MapView
@@ -47,7 +45,6 @@ export default function TabTwoScreen() {
               latitudeDelta: 0.1,
               longitudeDelta: 0.1,
             }}
-            pointerEvents="none"
             onPress={onLocationSelect}
           >
             <Marker
@@ -66,20 +63,28 @@ export default function TabTwoScreen() {
           setOpen={setOpen}
         />
       </ScrollView>
-    </ThemedSafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   mapPreviewContainer: {
-    height: 300, // Adjust the height to 400
+    height: 280, 
     width: '100%',
     borderRadius: 6,
     overflow: 'hidden',
   },
   mapPreview: {
     backgroundColor: '#eee',
-    width: '100%',
     height: '100%',
+  },
+  closeText: {
+    position: 'absolute',
+    textAlign: 'center',
+    alignSelf: 'center',
+    marginTop: 16,             
+    color: '#fff',
+    fontSize: 18,
+    zIndex: 10,
   },
 });

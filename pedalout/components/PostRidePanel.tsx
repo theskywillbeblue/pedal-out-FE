@@ -1,40 +1,65 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import {
-  View,
   Text,
   Pressable,
   StyleSheet,
   Button,
   Alert,
   Platform,
+  View,
+  Modal,
 } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
 import { ThemedView } from '@/components/ThemedView';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { postRide } from '../api';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import { Picker } from '@react-native-picker/picker';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import { Formik } from 'formik';
 import { Ionicons } from '@expo/vector-icons';
 import { UserContext } from '../app/context/UserContext';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { router } from 'expo-router';
+import { format } from 'date-fns';
+import * as Yup from 'yup';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type PostRideProps = {
   latitude: number;
   longitude: number;
   open: boolean;
-  setOpen: object;
+  setOpen: (open: boolean) => void;
 };
+
+export const RideValidationSchema = Yup.object().shape({
+  title: Yup.string()
+    .required('Ride title is required')
+    .min(10, 'Title must be at least 10 characters')
+    .max(40, 'Title must be less than 40 characters'),
+
+  description: Yup.string()
+    .required('Description is required')
+    .min(30, 'Description must be at least 30 characters')
+    .max(300, 'Description must be less than 300 characters'),
+
+  date: Yup.date()
+    .required('Date is required')
+    .min(new Date(), 'Date cannot be in the past'),
+});
+
+export interface RideFormValues {
+  title: string;
+  description: string;
+  discipline: string;
+  isPublic: boolean;
+  date: Date;
+  time: Date;
+}
 
 export default function PostRide(props: PostRideProps) {
   const currentUser = useContext(UserContext);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [selectedDiscipline, setSelectedDiscipline] = useState(null);
+  const [hasPickedTime, setHasPickedTime] = useState(false);
   const [disciplines, setDisciplines] = useState([
     { label: 'Downhill', value: 'Downhill' },
     { label: 'Gravel', value: 'Gravel' },
@@ -46,7 +71,6 @@ export default function PostRide(props: PostRideProps) {
 
   const handleFormSubmit = async (values: any) => {
     try {
-      // console.log(values, '<<<< values');
       const rideData = {
         author: currentUser.profile.username,
         title: values.title,
@@ -60,31 +84,32 @@ export default function PostRide(props: PostRideProps) {
           lng: props.longitude,
         },
       };
-      // console.log(rideData, '<<<< rideData');
+
       await postRide(rideData);
       Alert.alert('Success', 'Ride posted!');
-      // resetForm();
-      router.push("/(tabs)");
+
+      router.push('/(tabs)');
     } catch (error) {
-      console.error(error);
       Alert.alert('Error', 'Could not post ride.');
     }
   };
+
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
-  const borderColor = useThemeColor({}, 'text'); // Theme border color
+  const borderColor = useThemeColor({}, 'text');
 
   return (
-    <ThemedView className="flex flex-col gap-4">
+    <ThemedView style={styles.formContainer}>
       <Formik
         initialValues={{
           title: '',
           description: '',
-          discipline: 'Downhill',
+          discipline: null,
           isPublic: true,
           date: new Date(),
           time: new Date(),
         }}
+        validationSchema={RideValidationSchema}
         onSubmit={handleFormSubmit}
       >
         {({
@@ -92,28 +117,25 @@ export default function PostRide(props: PostRideProps) {
           handleBlur,
           handleSubmit,
           values,
+          errors,
+          touched,
           setFieldValue,
         }) => (
           <ThemedView style={{ padding: 20 }}>
+            {/* Ride Title */}
             <ThemedTextInput
               style={[styles.title, { borderColor }]}
               onChangeText={handleChange('title')}
               onBlur={handleBlur('title')}
               value={values.title}
-              placeholder="Enter Title"
+              placeholder="Ride Title"
               placeholderTextColor={textColor}
             />
+            {errors.title && touched.title && (
+              <Text style={styles.errorText}>{errors.title}</Text>
+            )}
 
-            <ThemedTextInput
-              style={[styles.description, { borderColor }]}
-              onChangeText={handleChange('description')}
-              onBlur={handleBlur('description')}
-              value={values.description}
-              placeholder="Enter Description"
-              placeholderTextColor={textColor}
-            />
-
-            <Text style={[{ color: textColor }]}>Discipline:</Text>
+            {/* Ride Discipline */}
             <DropDownPicker
               open={props.open}
               value={values.discipline}
@@ -124,37 +146,89 @@ export default function PostRide(props: PostRideProps) {
                 setFieldValue('discipline', value);
               }}
               setItems={setDisciplines}
-              placeholder={'Choose a discipline.'}
+              placeholder={'Pick a discipline'}
+              placeholderStyle={{
+                color: '#000',
+                fontStyle: 'italic',
+              }}
               horizontal={true}
+              style={styles.dropdown}
             />
 
+            {/* Ride Description */}
+            <ThemedTextInput
+              style={[styles.description, { borderColor }]}
+              onChangeText={handleChange('description')}
+              onBlur={handleBlur('description')}
+              value={values.description}
+              placeholder="Ride Description"
+              placeholderTextColor={textColor}
+              multiline={true}
+              numberOfLines={4}
+            />
+            {touched.description && errors.description && (
+              <Text style={styles.errorText}>{errors.description}</Text>
+            )}
+
+            {/*  Public Checkbox */}
             <Pressable
               onPress={() => setFieldValue('isPublic', !values.isPublic)}
-              style={{ flexDirection: 'row', alignItems: 'center' }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginVertical: 10,
+              }}
             >
               <Ionicons
                 name={values.isPublic ? 'checkbox' : 'square-outline'}
                 size={24}
                 color={values.isPublic ? '#007AFF' : '#aaa'}
               />
-              <Text style={[{ marginLeft: 8, color: textColor }]}>Public Ride</Text>
-            </Pressable>
-
-            <Pressable
-              style={[styles.datePicker, { height: 35, borderColor }]}
-              onPress={() => setShowDatePicker(true)}
-            >
-              <Text style={[styles.dateText, { color: textColor }]}>
-                {values.date.toDateString()}
+              <Text style={[{ marginLeft: 8, color: textColor }]}>
+                Public Ride (everyone can see and join)
               </Text>
             </Pressable>
-            {showDatePicker && (
+
+            {/* Date Picker Button */}
+            <View style={styles.dateTimeContainer}>
+              <Pressable
+                style={[styles.dateTimePickers, { borderColor }]}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <Text style={[styles.inputHeadings, { color: textColor }]}>
+                  {format(values.date, 'EEE MMM dd yyyy')}
+                </Text>
+              </Pressable>
+
+              {/* Time Picker Button */}
+              <Pressable
+                style={[styles.dateTimePickers, { borderColor }]}
+                onPress={() => setShowTimePicker(true)}
+              >
+                <Text style={[styles.inputHeadings, { color: textColor }]}>
+                  {hasPickedTime
+                    ? format(values.time, 'HH:mm:ss')
+                    : 'Pick a time'}
+                </Text>
+              </Pressable>
+            </View>
+
+            <View style={styles.dateErrorContainer}>
+              <View style={{ flex: 1 }}>
+                {touched.date && errors.date && (
+                  <Text style={styles.errorText}>{errors.date}</Text>
+                )}
+              </View>
+            </View>
+
+            {/* Android Date Picker */}
+            {showDatePicker && Platform.OS === 'android' && (
               <DateTimePicker
                 value={values.date}
                 mode="date"
                 display="default"
                 onChange={(event, selectedDate) => {
-                  setShowDatePicker(Platform.OS === 'ios');
+                  setShowDatePicker(false);
                   if (selectedDate) {
                     setFieldValue('date', selectedDate);
                   }
@@ -162,28 +236,112 @@ export default function PostRide(props: PostRideProps) {
               />
             )}
 
-            <Pressable
-              style={[styles.datePicker, { height: 35, borderColor }]}
-              onPress={() => setShowTimePicker(true)}
-            >
-              <Text style={[styles.dateText, { color: textColor }]}>
-                {values.time.toTimeString().split(' ')[0]}
-              </Text>
-            </Pressable>
-            {showTimePicker && (
+            {/* iOS Date Picker in Modal */}
+            {Platform.OS === 'ios' && (
+              <Modal
+                visible={showDatePicker}
+                transparent={true}
+                animationType="slide"
+              >
+                <View style={styles.modalContainer}>
+                  <View style={[styles.modalContent, { backgroundColor }]}>
+                    <Text style={[styles.modalTitle, { color: textColor }]}>
+                      Select Date
+                    </Text>
+                    <DateTimePicker
+                      value={values.date}
+                      mode="date"
+                      display="spinner"
+                      onChange={(event, selectedDate) => {
+                        if (selectedDate) {
+                          setFieldValue('date', selectedDate);
+                        }
+                      }}
+                      style={{ width: '100%' }}
+                    />
+                    <View style={styles.buttonContainer}>
+                      <Button
+                        title="Cancel"
+                        onPress={() => setShowDatePicker(false)}
+                      />
+                      <Button
+                        title="Done"
+                        onPress={() => setShowDatePicker(false)}
+                      />
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            )}
+
+            {/* Android Time Picker */}
+            {showTimePicker && Platform.OS === 'android' && (
               <DateTimePicker
                 value={values.time}
                 mode="time"
                 display="default"
                 onChange={(event, selectedTime) => {
-                  setShowTimePicker(Platform.OS === 'ios');
+                  setShowTimePicker(false);
                   if (selectedTime) {
+                    setHasPickedTime(true);
                     setFieldValue('time', selectedTime);
                   }
                 }}
               />
             )}
-            <Button onPress={handleSubmit} title="Submit" />
+
+            {/* iOS Time Picker in Modal */}
+            {Platform.OS === 'ios' && (
+              <Modal
+                visible={showTimePicker}
+                transparent={true}
+                animationType="slide"
+              >
+                <View style={styles.modalContainer}>
+                  <View style={[styles.modalContent, { backgroundColor }]}>
+                    <Text style={[styles.modalTitle, { color: textColor }]}>
+                      Select Time
+                    </Text>
+                    <DateTimePicker
+                      value={values.time}
+                      mode="time"
+                      display="spinner"
+                      onChange={(event, selectedTime) => {
+                        if (selectedTime) {
+                          setHasPickedTime(true);
+                          setFieldValue('time', selectedTime);
+                        }
+                      }}
+                      style={{ width: '100%' }}
+                    />
+                    <View style={styles.buttonContainer}>
+                      <Button
+                        title="Cancel"
+                        onPress={() => setShowTimePicker(false)}
+                      />
+                      <Button
+                        title="Done"
+                        onPress={() => setShowTimePicker(false)}
+                      />
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            )}
+
+<TouchableOpacity
+  onPress={handleSubmit}
+  style={{
+    backgroundColor: '#4CAF50',
+    paddingVertical: 12,
+    borderRadius: 6,
+    marginTop: 20,
+    alignSelf: 'center',
+    width: '70%',
+  }}
+>
+  <Text style={{ color: '#fff', fontSize: '17', fontWeight: 'bold', textAlign: 'center' }}>Post Ride!</Text>
+</TouchableOpacity>
           </ThemedView>
         )}
       </Formik>
@@ -192,84 +350,83 @@ export default function PostRide(props: PostRideProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  formContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    gap: 4,
+  },
   title: {
     fontSize: 16,
     textAlignVertical: 'top',
-    width: '90%',
-    borderWidth: 1,
+    width: '100%',
+    borderWidth: 0.5,
     borderRadius: 6,
     padding: 10,
-    marginBottom: 8, // Reduced from 16
-  },
-  input: {
-    width: '75%',
-    textAlignVertical: 'top',
-    borderWidth: 1,
-    borderRadius: 6,
-    padding: 10,
-    marginBottom: 8, // Reduced from 16
-    fontSize: 12,
-  },
-  discipline: {
-    width: '70%',
-    textAlignVertical: 'top',
-    borderWidth: 1,
-    borderRadius: 6,
-    padding: 5,
-    marginBottom: 8,
-    fontSize: 12,
+    marginBottom: 12,
   },
   description: {
-    fontSize: 12,
+    fontSize: 16,
     textAlignVertical: 'top',
     width: '100%',
-    borderWidth: 1,
+    height: 80,
+    borderWidth: 0.5,
     borderRadius: 6,
     padding: 10,
-    marginBottom: 8, // Reduced from 16
+    marginBottom: 6,
   },
-  dateText: {
-    fontSize: 11,
-    padding: 10,
+  dateTimeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+    marginBottom: 8
   },
-  datePicker: {
-    width: '70%',
-    borderWidth: 1,
+  dateTimePickers: {
+    width: '48%',
+    height: 40,
+    borderWidth: 0.5,
     borderRadius: 6,
-    marginBottom: 8, // Reduced from 16
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputHeadings: {
+    fontSize: 14,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
   },
-  placeholderButton: {
-    flex: 1,
+  errorText: {
+    color: '#FF3B30',
+    fontSize: 12,
+    marginBottom: 8,
+    marginLeft: 5,
   },
-  button: {
-    borderWidth: 1,
+  dateErrorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  dropdown: {
+    height: 40,
+    borderWidth: 0.5,
     borderRadius: 6,
     padding: 10,
-    alignItems: 'center',
-    flex: 0.3,
-    marginHorizontal: 8,
-  },
-  button2: {
-    backgroundColor: '#24A0ED',
-    padding: 10,
-    borderRadius: 6,
-    alignItems: 'center',
-    flex: 0.8,
-    marginHorizontal: 8,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  buttonTextDark: {
-    fontSize: 16,
-    textAlign: 'center',
+    marginBottom: 25,
   },
 });
