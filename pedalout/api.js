@@ -36,8 +36,6 @@ async function postRide(newRide) {
       title: newRide.title,
       participants: `{"${newRide.author}"}`,
     };
-    console.log(requestBody, "<<<< requestBody");
-
     const response = await supabaseApi.post('/rides', requestBody);
     return response.data;
   } catch (err) {
