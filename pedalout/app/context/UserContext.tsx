@@ -7,7 +7,7 @@ interface UserProfile {
   username: string;
   user_id: string;
   full_name: string;
-  avatar_url?: string;
+  avatar_url: string;
   avatar_img: string;
   user_age: number;
   location: string;
@@ -16,8 +16,8 @@ interface UserProfile {
 }
 
 interface UserContextType {
-  user: User;
-  profile: UserProfile;
+  user: User | null;
+  profile: UserProfile | null;
   loading: boolean;
   refreshProfile: () => Promise<void>;
 }
@@ -28,13 +28,6 @@ export const UserContext = createContext<UserContextType>({
   loading: true,
   refreshProfile: async () => {},
 });
-
-// export const UserContext = createContext({
-//   user: User || null,
-//   profile: UserProfile || null,
-//   refreshProfile: async () => {},
-//   loading: true,
-// });
 
 export default function UserProvider({ children }) {
   const [user, setUser] = useState({ user: null, profile: null });
