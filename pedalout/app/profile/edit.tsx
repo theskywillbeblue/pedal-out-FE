@@ -8,7 +8,7 @@ import { Input, Text } from '@rneui/themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EditUser() {
-  const user = useContext(UserContext);
+  const { user, profile, refreshProfile } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [displayName, setDisplayName] = useState('');
   const [userAge, setUserAge] = useState('');
@@ -19,29 +19,15 @@ export default function EditUser() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (!user?.id) return;
-
-      const { data, error } = await supabase
-        .from('user_profile')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) {
-        console.error('Error fetching profile:', error.message);
-      } else if (data) {
-        setDisplayName(data.username || '');
-        setUserFullName(data.full_name || '');
-        setUserAge(data.user_age?.toString() || '');
-        setLocation(data.location || '');
-        setAvatarUrl(data.avatar_img || '');
-        setUserBio(data.user_bio || '');
-      }
-    };
-
-    fetchProfile();
-  }, [user?.id]);
+    if (profile) {
+      setDisplayName(profile.username || '');
+      setUserFullName(profile.full_name || '');
+      setUserAge(profile.user_age?.toString() || '');
+      setLocation(profile.location || '');
+      setAvatarUrl(profile.avatar_img || '');
+      setUserBio(profile.user_bio || '');
+    }
+  }, [profile]);
 
   async function editUserDetails() {
     if (!user) return;
@@ -54,16 +40,17 @@ export default function EditUser() {
         username: displayName,
         full_name: userFullName,
         user_age: userAge,
-        location: location,
+        location,
         avatar_img: avatarUrl,
         user_bio: userBio,
       })
-      .eq('user_id', user?.id);
+      .eq('user_id', user.id);
 
     if (error) {
       Alert.alert('Error', error.message);
     } else {
       Alert.alert('Success', 'Details updated!');
+      await refreshProfile(); // Refresh context after update
       router.back();
     }
 
