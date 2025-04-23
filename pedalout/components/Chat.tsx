@@ -109,7 +109,7 @@ import { Platform } from 'react-native';
 				}
 				showEmoji={false}
 				onPressEmoji={() => console.log('Emoji Button Pressed..')}
-				showAttachment={true}
+				showAttachment={false}
 				onPressAttachment={() => console.log('Attachment Button Pressed..')}
 				timeContainerColor='grey'
 				timeContainerTextColor='black'

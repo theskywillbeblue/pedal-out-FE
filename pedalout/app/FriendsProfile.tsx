@@ -20,49 +20,48 @@ export default function Friendsfriend() {
   const navigation = useNavigation();
   const params = useLocalSearchParams();
   const friendName = params.username;
-  const [friend, setFriend] = useState({});
   const [isFollowed, setIsFollowed] = useState(false);
-  const [following, setFollowing] = useState([]);
+  const [friendsFollowing, setFriendsFollowing] = useState([]);
+  const [friendsFollowers, setFriendsFollowers] = useState([]);
+  const [friendProfile, setFriendProfile] = useState([]);
   const { profile } = useContext(UserContext);
+  const loggedInUser = profile.username;
 
   useEffect(() => {
-    let followingCopy;
-    let friendCopy;
-    const fetchFriend = async () => {
-      try {
+    getFriends(friendName)
+    .then((res) => {
+      setFriendsFollowing(res.followedUsers);
+      setFriendsFollowers(res.usersFollowers);
+      getFriendProfile();
+
+      if(res.usersFollowers.includes(loggedInUser)) {
+        setIsFollowed(true);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+  }, [loggedInUser]);
+
+  const getFriendProfile = async () => {
+    try {
         const { data, error } = await supabase
           .from('user_profile')
           .select('*')
           .eq('username', friendName)
           .single();
-        return data;
-      } catch (error) {
-        console.error(error);
-        return error;
-      }
-    };
 
-    getFriends(profile.username)
-      .then((res) => {
-        setFollowing(res.followedUsers);
-        followingCopy = res.followedUsers;
-      })
-      .then(() => {
-        return fetchFriend();
-      })
-      .then((friendProfile) => {
-        setFriend(friendProfile);
-        friendCopy = friendProfile;
-      })
-      .then(() => {
-        if (followingCopy.includes(friendCopy.username)) {
-          setIsFollowed(true);
+        if(error) {
+          console.error(`Error fetching profile for ${friendName}:`, error.message);
+          return null;
         }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+        setFriendProfile(data);
+        return data || null;
+
+      } catch (err) {
+      console.error('Failed to fetch friend profile:', err);
+    }
+  };
       
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -71,10 +70,10 @@ export default function Friendsfriend() {
   const handleFollowPress = async () => {
     try {
       if (isFollowed) {
-        await removeFriend(profile.username, friend.username);
+        await removeFriend(loggedInUser, friendName);
         setIsFollowed(!isFollowed);
       } else {
-        await addFriend(profile.username, friend.username);
+        await addFriend(loggedInUser, friendName);
         setIsFollowed(!isFollowed);
       }
     } catch (err) {
@@ -95,13 +94,13 @@ export default function Friendsfriend() {
           </Pressable>
         </View>
         <ThemedText type="title" style={styles.heading}>
-          {friend?.username || friend?.email}!
+          {friendProfile?.full_name}
         </ThemedText>
 
         <Image
           source={{
             uri:
-              friend?.avatar_img ||
+            friendProfile?.avatar_img ||
               'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
           }}
           style={styles.image}
@@ -110,31 +109,31 @@ export default function Friendsfriend() {
 
         <View style={styles.infoBox}>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Email: </ThemedText>
-            <ThemedText type="tabText">{friend?.email}</ThemedText>
+            <ThemedText style={styles.label}>Username: </ThemedText>
+            <ThemedText type="tabText">{friendProfile?.username}</ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText style={styles.label}>Name: </ThemedText>
             <ThemedText type="tabText">
-              {friend?.full_name || 'No name set'}
+              {friendProfile?.full_name || 'No name set'}
             </ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText style={styles.label}>Age: </ThemedText>
             <ThemedText type="tabText">
-              {friend?.user_age || 'No age set'}
+              {friendProfile?.user_age || 'No age set'}
             </ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText style={styles.label}>Location: </ThemedText>
             <ThemedText type="tabText">
-              {friend?.location || 'No location set'}
+              {friendProfile?.location || 'No location set'}
             </ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText style={styles.label}>Bio: </ThemedText>
             <ThemedText type="tabText">
-              {friend?.user_bio || 'No bio made'}
+              {friendProfile?.user_bio || 'No bio made'}
             </ThemedText>
           </View>
         </View>
