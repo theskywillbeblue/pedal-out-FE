@@ -65,7 +65,7 @@ import { Platform } from 'react-native';
 			username: user
 		}
 	  
-		postNewMessage(openedMessage, messageRequest)
+		postNewMessage(messageRequest, openedMessage,)
 		  .then(() => {
 			const newFormattedMessage: Message = {
 			  _id: messages.length + 1,

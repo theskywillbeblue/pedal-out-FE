@@ -8,12 +8,12 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ScrollView } from 'react-native-gesture-handler';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@rneui/themed';
-import { addFriend, getFriends, removeFriend } from '@/api';
+import { addFriend, getAllChatsByUsername, getFriends, postNewMessage, removeFriend } from '@/api';
 import { UserContext } from './context/UserContext';
 
 export default function Friendsfriend() {
@@ -24,6 +24,9 @@ export default function Friendsfriend() {
   const [friendsFollowing, setFriendsFollowing] = useState([]);
   const [friendsFollowers, setFriendsFollowers] = useState([]);
   const [friendProfile, setFriendProfile] = useState([]);
+  const [chatInfo, setChatInfo] = useState([]);
+  const [chatIds, setChatIds] = useState([]);
+  const [chatPartners, setChatPartners] = useState([]);
   const { profile } = useContext(UserContext);
   const loggedInUser = profile.username;
 
@@ -80,6 +83,51 @@ export default function Friendsfriend() {
       console.error(err);
     }
   };
+
+  const handleChatPress = async () => {
+    try {
+      const {chatInfo} = await getAllChatsByUsername(loggedInUser);
+      const myChatIds = chatInfo.map((chat) => {
+        return chat[0];
+      })
+      const myChatPartners = chatInfo.map((chat) => {
+        return chat[1];
+      })
+
+      setChatInfo(chatInfo);
+      setChatIds(myChatIds);
+      setChatPartners(myChatPartners);
+
+      const existingIndex = myChatPartners.findIndex((partner) => partner === friendName);
+
+      if(existingIndex !== -1) {
+        const existingChatId = myChatIds[existingIndex];
+        router.push({pathname: '/MessagesScreen', params: {chatId: existingChatId}});
+      }
+        else {
+          const messageRequest = {
+            message: "",
+            chatPartner: friendName,
+            username: loggedInUser
+          };
+
+          await postNewMessage(messageRequest);
+
+          const newResult = await getAllChatsByUsername(loggedInUser);
+          const newChatInfo = newResult.chatInfo;
+          const newChatIds = newChatInfo.map((chat) => {
+            return chat[0];
+          })
+          setChatInfo(newChatInfo);
+          setChatIds(newChatIds);
+
+          const newestChatId = newChatIds[newChatIds.length -1];
+          router.push({pathname: '/MessagesScreen', params: {chatId: newestChatId}})
+        }
+      } catch (err) {
+        console.error('Error fetching chat:', err);
+      }
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -143,6 +191,12 @@ export default function Friendsfriend() {
           buttonStyle={styles.button}
           titleStyle={styles.buttonText}
           onPress={handleFollowPress}
+        />
+        <Button
+          title='Go to Chat'
+          buttonStyle={styles.button}
+          titleStyle={styles.buttonText}
+          onPress={handleChatPress}
         />
       </ScrollView>
     </SafeAreaView>
