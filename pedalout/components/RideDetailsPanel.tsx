@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import ParticipantsArray from './ParticipantsArray';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ScreenHeight } from '@rneui/themed/dist/config';
 import { useState } from 'react';
@@ -52,6 +53,7 @@ function RideDetailsPanel() {
         {parsedRide.participants.length} participants
       </ThemedText>
 
+        <ParticipantsArray />
       {/* <View style={styles.buttoncontainer}>
           <Pressable style={[styles.buttonplaceholder, { borderColor }]}>
             <ThemedText style={[styles.buttonplaceholdertext, { color: textColor }]}>

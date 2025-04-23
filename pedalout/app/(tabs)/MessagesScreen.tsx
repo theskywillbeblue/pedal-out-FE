@@ -68,7 +68,7 @@ export default function TabFourScreen() {
     }
 }
 
-  function handleChatChange(index) {
+  function handleChatChange(index: number) {
     setOpenMessage(chatIds[index]);
   }
 

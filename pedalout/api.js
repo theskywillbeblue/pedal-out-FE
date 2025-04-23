@@ -195,4 +195,3 @@ export {
 }
 
 export default Geocoder;
-
