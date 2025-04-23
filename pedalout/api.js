@@ -110,7 +110,7 @@ async function postCommentOnRideById(ride_id, comment) {
 async function addFriend(username, newFriendUsername) {
   try {
     const response = await supabaseApi.post(`/friends/${username}`, {
-      body: newFriendUsername,
+      followingUsername: newFriendUsername,
     });
     return response.data;
   } catch (err) {
@@ -129,8 +129,10 @@ async function getFriends(username) {
 
 async function removeFriend(username, personToUnfriend) {
   try {
+    console.log(personToUnfriend);
+    
     const response = await supabaseApi.delete(`/friends/${username}`, {
-      body: personToUnfriend,
+      followingUsername: personToUnfriend,
     });
     return response;
   } catch (err) {
