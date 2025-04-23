@@ -191,7 +191,8 @@ export {
 	removeAllFriends,
 	getAllChatsByUsername,
 	getMessagesByChatId,
-	postNewMessage,
+	postNewMessage
+}
 
 export default Geocoder;
 
