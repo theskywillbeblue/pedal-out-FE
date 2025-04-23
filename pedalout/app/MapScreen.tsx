@@ -1,8 +1,8 @@
 import React, { useLayoutEffect, useContext } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Callout, Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { UserContext } from './context/UserContext';
 
 export default function MapScreen() {
@@ -12,7 +12,7 @@ export default function MapScreen() {
   const { profile } = useContext(UserContext);
   const userLat = parseFloat(profile?.user_coordinate?.lat);
   const userLng = parseFloat(profile?.user_coordinate?.lng);
-
+  const router = useRouter();
 
 
   useLayoutEffect(() => {
@@ -35,12 +35,20 @@ export default function MapScreen() {
           
           <Marker
             key={ride.ride_id}
-            title={ride.title}
             coordinate={{
               latitude: ride.ride_location.lat,
               longitude: ride.ride_location.lng,
             }}
-          />
+          >
+            <Callout onPress={() =>
+              router.push({
+                pathname: '/RideDetails',
+                params: { ride: JSON.stringify(ride) },
+              })
+            }>
+              <Text>{ride.title}</Text>
+            </Callout>
+          </Marker>
         ))}
 
       </MapView>

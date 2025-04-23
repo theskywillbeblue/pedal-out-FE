@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
 
     fontSize: 14,
     width: '100%',
-    height: 50,
     borderRadius: 6,
     paddingVertical: 0,
     paddingHorizontal: 10,

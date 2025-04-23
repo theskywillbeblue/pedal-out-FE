@@ -15,7 +15,7 @@ import { supabase } from '@/lib/supabase';
 import { router } from 'expo-router';
 
 export default function FriendsScreen() {
-  const profile = useContext(UserContext);
+  const { profile } = useContext(UserContext);
   const [following, setFollowing] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [isLoading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ export default function FriendsScreen() {
   const colorScheme = useColorScheme();
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
 
-const username = profile.profile.username
+const username = profile.username
 
   useEffect(() => {
     getFriends(username)

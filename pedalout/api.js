@@ -130,7 +130,7 @@ async function getFriends(username) {
 async function removeFriend(username, personToUnfriend) {
   try {    
     const response = await supabaseApi.delete(`/friends/${username}`, {
-      followingUsername: personToUnfriend,
+      params: {followingUsername: personToUnfriend},
     });
     return response;
   } catch (err) {
@@ -149,9 +149,7 @@ async function removeAllFriends() {
 
 async function getAllChatsByUsername(username) {
 	try {
-		// console.log('in the api')
 		const response = await supabaseApi.get(`/chats`, { params: { username } });
-		// console.log(response.data);
 		return response.data;
 	} catch (err) {
 		console.log(err);
