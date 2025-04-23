@@ -1,12 +1,10 @@
-import { StyleSheet, Image, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Image, View, ScrollView } from 'react-native';
 import { Button } from '@rneui/themed';
-import { useContext, useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useContext } from 'react';
 import { UserContext } from '@/app/context/UserContext';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -34,8 +32,9 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
-        <ThemedText type='title' style={styles.heading}>
-          Welcome,{'\n'}{profile?.username || user?.email || 'Guest'}!
+        <ThemedText type="title" style={styles.heading}>
+          Welcome,{'\n'}
+          {profile?.username || user?.email || 'Guest'}!
         </ThemedText>
 
         <Image
@@ -51,27 +50,35 @@ export default function ProfileScreen() {
         <View style={styles.infoBox}>
           <View style={styles.infoRow}>
             <ThemedText style={styles.label}>Email: </ThemedText>
-            <ThemedText type='tabText'>{user?.email || 'Guest'}</ThemedText>
+            <ThemedText type="tabText">{user?.email || 'No email set'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText style={styles.label}>Name: </ThemedText>
-            <ThemedText type='tabText'>{profile?.full_name || 'No name set'}</ThemedText>
+            <ThemedText type="tabText">
+              {profile?.full_name || 'No name set'}
+            </ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText style={styles.label}>Age: </ThemedText>
-            <ThemedText type='tabText'>{profile?.user_age || 'No age set'}</ThemedText>
+            <ThemedText type="tabText">
+              {profile?.user_age || 'No age set'}
+            </ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText style={styles.label}>Location: </ThemedText>
-            <ThemedText type='tabText'>{profile?.location || 'No location set'}</ThemedText>
+            <ThemedText type="tabText">
+              {profile?.location || 'No location set'}
+            </ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText style={styles.label}>Bio: </ThemedText>
-            <ThemedText type='tabText'>{profile?.user_bio || 'No bio made'}</ThemedText>
+            <ThemedText type="tabText">
+              {profile?.user_bio || 'No bio made'}
+            </ThemedText>
           </View>
         </View>
 
-{/* Gallery function to add when functionality available */}
+        {/* Gallery function to add when functionality available */}
         {/* <Button
           title="Open Gallery"
           buttonStyle={styles.button}
@@ -116,7 +123,7 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     marginBottom: 20,
     borderWidth: 3,
-    borderColor: '#fff', 
+    borderColor: '#fff',
     // Drop shadow (iOS)
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -132,7 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#BEBEBE',
     borderWidth: 3,
-    borderColor: '#fff', 
+    borderColor: '#fff',
   },
   infoRow: {
     flexDirection: 'row',
@@ -153,7 +160,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   signOutButton: {
     width: '80%',

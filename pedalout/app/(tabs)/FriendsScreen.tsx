@@ -1,10 +1,10 @@
 import {
   StyleSheet,
   View,
-  Text,
   ScrollView,
   Image,
-  TouchableOpacity, useColorScheme
+  TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
@@ -27,7 +27,7 @@ export default function FriendsScreen() {
   const colorScheme = useColorScheme();
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
 
-const username = profile.profile.username;
+  const username = profile.profile.username;
 
   useEffect(() => {
     getFriends(username)
@@ -38,7 +38,7 @@ const username = profile.profile.username;
       .catch((error) => {
         setError(error);
 
-        throw (error);
+        throw error;
       })
       .finally(() => {
         setLoading(false);
@@ -61,21 +61,18 @@ const username = profile.profile.username;
         }));
 
         const usernameFullName = data.map((follower) => ({
-          [follower.username]: follower.full_name
+          [follower.username]: follower.full_name,
         }));
 
         setFollowerNames(usernameFullName);
         setFollowerAvatars(usernameAvatar);
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
 
     if (followers.length > 0) {
       getFollowerData();
     }
   }, [followers]);
-
 
   // get Following
   useEffect(() => {
@@ -93,20 +90,19 @@ const username = profile.profile.username;
         }));
 
         const usernameFullName = data.map((followed) => ({
-          [followed.username]: followed.full_name
+          [followed.username]: followed.full_name,
         }));
 
         setFollowingNames(usernameFullName);
         setFollowingAvatars(usernameAvatar);
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
 
     if (followers.length > 0) {
       getFollowingData();
     }
   }, [following]);
+
 
 
   if (isLoading) {
@@ -116,91 +112,126 @@ const username = profile.profile.username;
     return <ThemedText>Houston, we have a problem!</ThemedText>;
   }
 
-  return (<ThemedSafeAreaView style={{ flex: 1}}>
-    <ThemedText type="title" style={styles.title}>Connections</ThemedText>
-    <View style={styles.columnsContainer}>
-      {/* Following */}
-      <View style={styles.column}>
-        <ThemedText style={styles.sectionHeader}>Following{'\n'}<ThemedText style={styles.figures}>({following.length})</ThemedText></ThemedText>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.columnContent}
-        >
-          {following.map((followee) => {
-            const avatar_img = followingAvatars.find((entry) => followee in entry)?.[followee];
-            const full_name = followingNames.find((entry) => followee in entry)?.[followee];
-  
-            return (
-              
-              <View key={followee} style={styles.avatarCard}>
-                <TouchableOpacity  onPress={() =>
-                              router.push({pathname: '../FriendsProfile', params: { username: followee }})}>
+  return (
+    <ThemedSafeAreaView style={{ flex: 1 }}>
+      <ThemedText type="title" style={styles.title}>
+        Connections
+      </ThemedText>
+      <View style={styles.columnsContainer}>
+        {/* Following */}
+        <View style={styles.column}>
+          <ThemedText style={styles.sectionHeader}>
+            Following{'\n'}
+            <ThemedText style={styles.figures}>({following.length})</ThemedText>
+          </ThemedText>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.columnContent}
+          >
+            {following.map((followee) => {
+              const avatar_img = followingAvatars.find(
+                (entry) => followee in entry,
+              )?.[followee];
+              const full_name = followingNames.find(
+                (entry) => followee in entry,
+              )?.[followee];
 
-                <ThemedText style={styles.avatarName}>{full_name}</ThemedText>
-                <Image style={styles.avatarPlaceholder} source={{ uri: avatar_img }} />
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-        </ScrollView>
+              return (
+                <View key={followee} style={styles.avatarCard}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      router.push({
+                        pathname: '../FriendsProfile',
+                        params: { username: followee },
+                      })
+                    }
+                  >
+                    <View style={styles.avatarWrapper}>
+                      <Image
+                        style={styles.avatarImage}
+                        source={{ uri: avatar_img }}
+                      />
+                      <View style={styles.nameOverlay}>
+                        <ThemedText style={styles.nameText}>
+                          {full_name}
+                        </ThemedText>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </ScrollView>
+        </View>
+
+        {/* Followers */}
+        <View style={styles.column}>
+          <ThemedText style={styles.sectionHeader}>
+            Followers{'\n'}
+            <ThemedText style={styles.figures}>({followers.length})</ThemedText>
+          </ThemedText>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.columnContent}
+          >
+            {followers.map((follower) => {
+              const avatar_img = followerAvatars.find(
+                (entry) => follower in entry,
+              )?.[follower];
+              const full_name = followerNames.find(
+                (entry) => follower in entry,
+              )?.[follower];
+
+
+              return (
+                <View key={follower} style={styles.avatarCard}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      router.push({
+                        pathname: '../FriendsProfile',
+                        params: { username: follower },
+                      })
+                    }
+                  >
+                    <View style={styles.avatarWrapper}>
+                      <Image
+                        style={styles.avatarImage}
+                        source={{ uri: avatar_img }}
+                      />
+                      <View style={styles.nameOverlay}>
+                        <ThemedText style={styles.nameText}>
+                          {full_name}
+                        </ThemedText>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </ScrollView>
+        </View>
       </View>
-  
-      {/* Followers */}
-      <View style={styles.column}>
-        <ThemedText style={styles.sectionHeader}>Followers{'\n'}<ThemedText style={styles.figures}>({followers.length})</ThemedText></ThemedText>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.columnContent}
-        >
-          {followers.map((follower) => {
-            const avatar_img = followerAvatars.find((entry) => follower in entry)?.[follower];
-            const full_name = followerNames.find((entry) => follower in entry)?.[follower];
-  
-            return (
-              <View key={follower} style={styles.avatarCard}>
-                  <TouchableOpacity  onPress={() =>
-                              router.push({pathname: '../FriendsProfile', params: { username: follower }})}>
-                 <ThemedText style={styles.avatarName}>{full_name}</ThemedText>
-                 <Image style={styles.avatarPlaceholder} source={{ uri: avatar_img }} />
-                 
-                 </TouchableOpacity>
-              
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
-    </View>
-  </ThemedSafeAreaView>
+    </ThemedSafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-
   title: {
     fontFamily: 'HelveticaRoundedBold',
-    fontSize: 28,
-    lineHeight: 30,
-    marginBottom: 8,
-    alignSelf: 'center',
-    backgroundColor: '#D3D3D3',
-    padding: 10,
-    borderRadius: 10,
-  },
-  avatarPlaceholder: {
-    alignSelf: 'center',
-    width: 75,
-    height: 75,
-    borderRadius: 55,
-    backgroundColor: '#ccc',
-  },
-
-  avatarName: {
-    fontFamily: 'HelveticaRounded',
-    fontSize: 13,
-    fontWeight: 600,
-    color: '#BEBEBE',
-    marginBottom: 3,
+    fontSize: 32,
+    textAlign: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    marginBottom: 16,
+    backgroundColor: '#f0f0f5',
+    opacity: 0.8,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 5, // Android shadow
+    color: '#333',
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -209,35 +240,66 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 20,
   },
-
   avatarCard: {
-    width: 140,
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 12,
-    backgroundColor: '#222',
     borderRadius: 10,
-    paddingBottom: 10,
-    paddingTop: 6,
-    boxShadow: '#000',
+    shadowColor: '#000',
     shadowOffset: { width: 2, height: 5 },
     shadowOpacity: 0.3,
+    backgroundColor: 'transparent', // Optional: for spacing
   },
   columnsContainer: {
     flex: 1,
     flexDirection: 'row',
     paddingHorizontal: 22,
     gap: 7,
-
   },
   column: {
     flex: 1,
   },
-  columnContent: {
-    alignItems: 'center',
-    paddingBottom: 40,
-  },
   figures: {
     fontSize: 14,
     textAlign: 'center',
-  }
+  },
+  avatarWrapper: {
+    position: 'relative',
+    width: 100,
+    height: 100,
+    borderRadius: 55,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 55,
+  },
+  nameOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    paddingVertical: 6,
+    paddingHorizontal: 6,
+    alignItems: 'center',
+    minHeight: 30,
+    maxWidth: 100,
+  },
+  nameText: {
+    maxWidth: 80,
+    lineHeight: 14,
+    fontSize: 11,
+    color: '#fff',
+    fontWeight: '400',
+    textAlign: 'center',
+    width: '100%',
+    minHeight: 28,
+    paddingTop: 2,
+    paddingBottom: 2,
+  },
 });
+
+
