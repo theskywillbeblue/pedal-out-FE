@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: 'rgba(32, 68, 39, 0.42)',
   },
-
   square: {
     alignContent: 'center',
     height: 240,
@@ -91,8 +90,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff'
   },
-  default: {
-    fontFamily: 'HelveticaRoundedBold',
-    fontSize: 16,
-  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 15,
+    opacity: 0.8,
+  }
 });
