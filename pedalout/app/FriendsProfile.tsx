@@ -5,13 +5,12 @@ import { useLocalSearchParams } from 'expo-router';
 import { UserContext } from './context/UserContext';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
+import { useSearchParams } from 'expo-router/build/hooks';
 
 export default function FriendsProfile() {
   const navigation = useNavigation();
-  const params = useLocalSearchParams();
+  const { username } = route.params;
   const friend = params.username;
-
-
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
