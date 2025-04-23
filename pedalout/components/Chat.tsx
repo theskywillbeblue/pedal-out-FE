@@ -107,7 +107,7 @@ import { Platform } from 'react-native';
 				backgroundImage={
 					'https://s1.at.atcdn.net/wp-content/uploads/2024/07/HERO-Northern-Rivers-Rail-Trail-2.jpg'
 				}
-				showEmoji={true}
+				showEmoji={false}
 				onPressEmoji={() => console.log('Emoji Button Pressed..')}
 				showAttachment={true}
 				onPressAttachment={() => console.log('Attachment Button Pressed..')}
