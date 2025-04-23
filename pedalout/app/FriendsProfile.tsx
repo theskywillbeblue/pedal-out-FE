@@ -63,17 +63,6 @@ export default function Friendsfriend() {
         console.error(err);
       });
   }, []);
-
-  // useEffect(() => {
-  //   console.log(isFollowed, '<<<<<<<< before');
-  //   console.log(friend.username, '<<<<<<<< name');
-  //   console.log(following, '<<<<<<<< following');
-  //   if (following.includes(toString(friend.username))) {
-  //     console.log('t');
-  //     setIsFollowed(true);
-  //   }
-  //   console.log(isFollowed, '<<<<<<<< after');
-  // }, [isFollowed]);
       
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -81,9 +70,6 @@ export default function Friendsfriend() {
 
   const handleFollowPress = async () => {
     try {
-      console.log(profile.username, "<<<< current user");
-      console.log(friend.username, "<<<< friend");
-      
       if (isFollowed) {
         await removeFriend(profile.username, friend.username);
         setIsFollowed(!isFollowed);
