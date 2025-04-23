@@ -4,7 +4,7 @@ import {
   Text,
   ScrollView,
   Image,
-  TouchableOpacity,
+  TouchableOpacity, useColorScheme
 } from 'react-native';
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
@@ -24,11 +24,13 @@ export default function FriendsScreen() {
   const [followerNames, setFollowerNames] = useState([]);
   const [followingAvatars, setFollowingAvatars] = useState([]);
   const [followingNames, setFollowingNames] = useState([]);
+  const colorScheme = useColorScheme();
+  const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
 
-  // 
+const username = profile.profile.username;
 
   useEffect(() => {
-    getFriends('sophiaP_2025xyzq')
+    getFriends(username)
       .then((res) => {
         setFollowers(res.usersFollowers);
         setFollowing(res.followedUsers);
@@ -108,10 +110,10 @@ export default function FriendsScreen() {
 
 
   if (isLoading) {
-    return <Text>Fetching your friends...</Text>;
+    return <ThemedText>Fetching your friends...</ThemedText>;
   }
   if (error) {
-    return <Text>Houston, we have a problem!</Text>;
+    return <ThemedText>Houston, we have a problem!</ThemedText>;
   }
 
   return (<ThemedSafeAreaView style={{ flex: 1}}>
@@ -119,7 +121,7 @@ export default function FriendsScreen() {
     <View style={styles.columnsContainer}>
       {/* Following */}
       <View style={styles.column}>
-        <ThemedText style={styles.sectionHeader}>Following{'\n'}<Text style={styles.figures}>({following.length})</Text></ThemedText>
+        <ThemedText style={styles.sectionHeader}>Following{'\n'}<ThemedText style={styles.figures}>({following.length})</ThemedText></ThemedText>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.columnContent}
@@ -145,7 +147,7 @@ export default function FriendsScreen() {
   
       {/* Followers */}
       <View style={styles.column}>
-        <ThemedText style={styles.sectionHeader}>Followers{'\n'}<Text style={styles.figures}>({followers.length})</Text></ThemedText>
+        <ThemedText style={styles.sectionHeader}>Followers{'\n'}<ThemedText style={styles.figures}>({followers.length})</ThemedText></ThemedText>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.columnContent}
@@ -181,9 +183,9 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     marginBottom: 8,
     alignSelf: 'center',
-    textShadowColor: 'rgb(0, 0, 0)',
-  textShadowOffset: { width: 1, height: 1 },
-  textShadowRadius: 5,
+    backgroundColor: '#D3D3D3',
+    padding: 10,
+    borderRadius: 10,
   },
   avatarPlaceholder: {
     alignSelf: 'center',
@@ -206,7 +208,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 20,
     marginTop: 20,
-    color: '#fff',
   },
 
   avatarCard: {
