@@ -24,7 +24,7 @@ export default function RideCardList({ rides }: Props) {
           onPress={() =>
             router.push({
               pathname: '/RideDetails',
-              params: { ride: JSON.stringify(ride) },
+              params: { ride: JSON.stringify(ride) }, 
             })
           }
         >
