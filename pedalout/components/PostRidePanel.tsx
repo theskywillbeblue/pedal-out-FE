@@ -232,7 +232,7 @@ export default function PostRide(props: PostRideProps) {
                 mode="date"
                 display="default"
                 onChange={(event, selectedDate) => {
-                  setShowTimePicker(false);
+                  setShowDatePicker(false);
                   if (selectedDate) {
                     setHasPickedDate(true);
                     setFieldValue('date', selectedDate);
