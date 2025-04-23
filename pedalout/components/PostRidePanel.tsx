@@ -334,7 +334,6 @@ export default function PostRide(props: PostRideProps) {
                 </View>
               </Modal>
             )}
-
 <TouchableOpacity
   onPress={handleSubmit}
   style={{
@@ -385,7 +384,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 8,
-    marginBottom: 8
+    marginBottom: 8,
   },
   dateTimePickers: {
     width: '48%',

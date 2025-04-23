@@ -1,8 +1,13 @@
 import axios from 'axios';
+import Geocoder from 'react-native-geocoding';
 
 const supabaseApi = axios.create({
   baseURL: 'https://pedal-out-be.onrender.com/api',
 });
+
+// Google Maps api key
+
+Geocoder.init('AIzaSyDT2-TcbuafxCQy7iKHe-J6RsHNQBtw-yw');
 
 // Supabase api requests
 
@@ -141,6 +146,8 @@ async function removeAllFriends() {
     throw err;
   }
 }
+
+export default Geocoder;
 
 export {
   getRides,
