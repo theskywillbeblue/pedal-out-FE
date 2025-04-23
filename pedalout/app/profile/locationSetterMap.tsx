@@ -2,11 +2,10 @@ import React, { useLayoutEffect, useContext, useState } from 'react';
 import { View, StyleSheet, Pressable, Text, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
-import { useLocalSearchParams } from 'expo-router';
 import { UserContext } from '../context/UserContext';
 import { supabase } from '../../lib/supabase';
 import { useRouter } from 'expo-router';
-import Geocoder from 'react-native-geocoder';
+import Geocoder from '../../api';
 
 export default function LocSetMap() {
   const navigation = useNavigation();
@@ -14,17 +13,8 @@ export default function LocSetMap() {
   const [userLat, setUserLat] = useState(null);
   const [userLng, setUserLng] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [userAddress, setUserAddress] = useState('');
   const router = useRouter();
-
-  var pos = {
-    lat: 40.7809261,
-    lng: -73.9637594
-  };
-  
-  Geocoder.geocodePosition(pos).then(res => {
-      alert(res[0].formattedAddress);
-  })
-  .catch(error => alert(error));
 
   async function handleLocationSelect() {
     if (!user) return;
@@ -39,22 +29,42 @@ export default function LocSetMap() {
 
     setLoading(true);
 
-    const { error } = await supabase
-      .from('user_profile')
-      .update({
-        user_coordinate: { lat: userLat, lng: userLng },
-      })
-      .eq('user_id', user.id);
+    try {
+      const response = await Geocoder.from(userLat, userLng);
 
-    if (error) {
-      Alert.alert('Error', error.message);
-    } else {
-      Alert.alert('Success', 'Details updated!');
-      await refreshProfile();
-      router.back();
+      const components = response?.results?.[0]?.address_components || [];
+
+      const postalTownComponent = components.find((comp) =>
+        comp.types.includes('postal_town'),
+      );
+
+      const city = postalTownComponent?.long_name || 'Unknown location';
+
+      setUserAddress(city);
+
+      const { error } = await supabase
+        .from('user_profile')
+        .update({
+          user_coordinate: { lat: userLat, lng: userLng },
+          location: city,
+        })
+        .eq('user_id', user.id);
+
+      if (error) {
+        Alert.alert('Error', error.message);
+      } else {
+        Alert.alert('Success', 'Details updated!');
+        await refreshProfile();
+        router.back();
+      }
+    } catch (error) {
+      Alert.alert(
+        'Geocoding or Update Error',
+        error.message || 'Something went wrong',
+      );
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   useLayoutEffect(() => {
@@ -77,17 +87,22 @@ export default function LocSetMap() {
           setUserLng(longitude);
         }}
       >
-        {userLat && userLng ? (
+        {userLat && userLng && (
           <Marker coordinate={{ latitude: userLat, longitude: userLng }} />
-        ) : null}
+        )}
       </MapView>
-  
+      {userLat && userLng && userAddress !== '' && (
+        <View style={styles.addressBox}>
+          <Text style={styles.addressText}>{userAddress}</Text>
+        </View>
+      )}
+
       <Pressable style={styles.updateButton} onPress={handleLocationSelect}>
         <Text style={styles.updateButtonText}>Update Location</Text>
       </Pressable>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
@@ -110,4 +125,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-})
+  addressBox: {
+    position: 'absolute',
+    bottom: 130,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 8,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    zIndex: 10,
+    maxWidth: '90%',
+    alignSelf: 'center',
+  },
+  addressText: {
+    fontSize: 14,
+    color: '#333',
+  },
+});

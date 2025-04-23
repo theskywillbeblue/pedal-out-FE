@@ -13,7 +13,7 @@ export default function EditUser() {
   const [displayName, setDisplayName] = useState('');
   const [userAge, setUserAge] = useState('');
   const [userFullName, setUserFullName] = useState('');
-  const [location, setLocation] = useState('');
+  // const [location, setLocation] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
   const [userBio, setUserBio] = useState('');
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function EditUser() {
       setDisplayName(profile.username || '');
       setUserFullName(profile.full_name || '');
       setUserAge(profile.user_age?.toString() || '');
-      setLocation(profile.location || '');
+      // setLocation(profile.location || '');
       setAvatarUrl(profile.avatar_img || '');
       setUserBio(profile.user_bio || '');
     }
@@ -40,7 +40,7 @@ export default function EditUser() {
         username: displayName,
         full_name: userFullName,
         user_age: userAge,
-        location,
+        // location,
         avatar_img: avatarUrl,
         user_bio: userBio,
       })
@@ -67,14 +67,7 @@ export default function EditUser() {
         <View style={{ alignItems: 'center' }}>
           <Text style={styles.text}>Edit Your Profile!</Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
-          <Button
-            title="Set your search area"
-            buttonStyle={styles.button}
-            titleStyle={styles.buttonText}
-            onPress={() => router.push('/profile/locationSetterMap')}
-          />
-        </View>
+
         <View style={[styles.verticallySpaced, styles.mt20]}>
           <Input
             inputStyle={styles.input}
@@ -111,7 +104,7 @@ export default function EditUser() {
           />
         </View>
 
-        <View style={styles.verticallySpaced}>
+        {/* <View style={styles.verticallySpaced}>
           <Input
             inputStyle={styles.input}
             label="Location"
@@ -120,7 +113,7 @@ export default function EditUser() {
             value={location}
             placeholder="Where in the world?"
           />
-        </View>
+        </View> */}
         <View style={styles.verticallySpaced}>
           <Input
             inputStyle={styles.input}
@@ -150,6 +143,14 @@ export default function EditUser() {
             { alignItems: 'center' },
           ]}
         >
+                  <View style={{ alignItems: 'center' }}>
+          <Button
+            title="Set your location"
+            buttonStyle={styles.button}
+            titleStyle={styles.buttonText}
+            onPress={() => router.push('/profile/locationSetterMap')}
+          />
+        </View>
           <Button
             title={loading ? 'Updating...' : 'Update'}
             buttonStyle={[styles.button, styles.updateButton]}
