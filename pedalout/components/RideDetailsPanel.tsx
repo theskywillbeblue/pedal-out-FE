@@ -3,18 +3,26 @@ import { View, Pressable, StyleSheet, Button } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { router, useLocalSearchParams } from 'expo-router';
+
+
 
 function RideDetailsPanel() {
+  const { ride } = useLocalSearchParams();
+    const parsedRide = JSON.parse(ride as string);
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const borderColor = useThemeColor({}, 'text');
   const invertedBorderColor = useThemeColor({ light: '#000', dark: '#fff' }, 'text');
 
   return (
+
+    
+
     <ThemedView style={styles.container}>
       
         <ThemedText style={[styles.title, { borderColor }]}>
-          Ride Title Goes Here
+          {parsedRide.title}
         </ThemedText>
 
         <ThemedText style={[styles.desc2, { borderColor }]}>
@@ -22,17 +30,17 @@ function RideDetailsPanel() {
         </ThemedText>
 
         <ThemedText style={[styles.desc2, { borderColor }]}>
-          9th Apr 2025 6:00pm
+          {parsedRide.ride_date} {'\n'} {parsedRide.ride_time}
         </ThemedText>
 
         <ThemedText style={[styles.desc2, { borderColor }]}>
-          Tags: template literal
+          Discipline: {parsedRide.ride_tags}
         </ThemedText>
 
         <View style={[styles.divider, {borderBottomColor: invertedBorderColor}]} />
 
         <ThemedText style={[styles.description, { borderColor }]}>
-          Ride Description Goes Here
+          {parsedRide.description}
         </ThemedText>
         <ThemedText style={[styles.desc2, { borderColor }]}>
           friends list from Chat
