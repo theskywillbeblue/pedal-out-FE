@@ -27,7 +27,7 @@ export default function FriendsScreen() {
   const colorScheme = useColorScheme();
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
 
-  const username = profile.profile.username;
+const username = profile.profile.username
 
   useEffect(() => {
     getFriends(username)
