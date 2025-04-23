@@ -77,7 +77,6 @@ import { Platform } from 'react-native';
 			  },
 			};
 			setMessages((prevMessages: any) => [newFormattedMessage, ...prevMessages]);
-			console.log(messages);
 		  })
 		  .catch((err) => {
 			setError(err);
