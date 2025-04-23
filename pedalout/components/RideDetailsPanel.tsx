@@ -12,9 +12,19 @@ import TouchableOpacity from 'react-native-gesture-handler';
 
 function RideDetailsPanel() {
   const [chatImages, setChatImages] = useState<string[]>([]);
-
   const { ride } = useLocalSearchParams();
   const parsedRide = JSON.parse(ride as string);
+  const formattedDate = new Date(parsedRide.ride_date).toLocaleDateString('en-GB', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+  const formattedTime = new Date(`1970-01-01T${parsedRide.ride_time}Z`).toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const borderColor = useThemeColor({}, 'text');
@@ -29,12 +39,12 @@ function RideDetailsPanel() {
         {parsedRide.title}
       </ThemedText>
 
-      <ThemedText style={[styles.desc2, { borderColor }]}>
+      {/* <ThemedText style={[styles.desc2, { borderColor }]}>
         address from geocode ????
-      </ThemedText>
+      </ThemedText> */}
 
       <ThemedText style={[styles.desc2, { borderColor }]}>
-        {parsedRide.ride_date} {'\n'} {parsedRide.ride_time}
+      {formattedDate} at {formattedTime}
       </ThemedText>
 
       <ThemedText style={[styles.desc2, { borderColor }]}>
@@ -49,18 +59,13 @@ function RideDetailsPanel() {
         {parsedRide.description}
       </ThemedText>
 
+      <ThemedView style={styles.spaceContainer} />
+
       <ThemedText style={[styles.desc2, { borderColor }]}>
         {parsedRide.participants.length} participants
       </ThemedText>
 
         <ParticipantsArray />
-      {/* <View style={styles.buttoncontainer}>
-          <Pressable style={[styles.buttonplaceholder, { borderColor }]}>
-            <ThemedText style={[styles.buttonplaceholdertext, { color: textColor }]}>
-              useless button
-            </ThemedText>
-          </Pressable>
-        </View> */}
 
       <ThemedView style={styles.spaceContainer} />
 
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     width: '100%',
     paddingVertical: 0,
     paddingHorizontal: 6,
@@ -82,6 +87,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   desc2: {
+    fontFamily: 'Inter_400Regular',
     fontSize: 12,
     width: '100%',
     height: 25,
@@ -90,6 +96,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   description: {
+    fontFamily: 'Inter_400Regular',
+
     fontSize: 14,
     width: '100%',
     height: 50,
