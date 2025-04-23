@@ -5,39 +5,35 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useContext, useEffect, useState } from 'react';
 import { getAllChatsByUsername } from '@/api';
 import { UserContext } from '../context/UserContext';
-import { router } from 'expo-router';
+import { supabase } from '@/lib/supabase';
 
 export default function TabFourScreen() {
-  // const { username } = useLocalSearchParams<{ username: string }>();
   const { profile } = useContext(UserContext);
   const loggedInUser = profile.username;
-
-  // bring in username from usercontext, find chats and the other participants avatar_img, map through and create an avatar for each below
-  // on click of one of these images, the user should be taken to the /chats/:chatId with GET request
-  // set state to setOpenMessage to the first chatId and then on click, this is changed and invokes the component to change
-
   const [chatInfo, setChatInfo] = useState([]);
   const [chatIds, setChatIds] = useState([]);
   const [chatPartners, setChatPartners] = useState([]);
-  const [chatImages, setChatImages] = useState([]);
+  const [chatImages, setChatImages] = useState<string[]>([]);
   const [openedMessage, setOpenMessage] = useState(chatIds[0]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
 
   useEffect(() => {
-    getAllChatsByUsername("jwilson_rider42795") //hardcoded right now
+    getAllChatsByUsername(loggedInUser)
     .then((res) => {
-      setChatInfo(res);
-      const myChatIds = res.map((chat) => {
+      const returnedChatInfo = res.chatInfo;
+      setChatInfo(returnedChatInfo);
+      const myChatIds = returnedChatInfo.map((chat) => {
         return chat[0];
       })
       setChatIds(myChatIds);
-      const myChatPartners = res.map((chat) => {
+      setOpenMessage(myChatIds[0]);
+      const myChatPartners = returnedChatInfo.map((chat) => {
         return chat[1];
       })
       setChatPartners(myChatPartners);
-      getChatPartnerAvatars(chatPartners);
+      getChatPartnerAvatars(myChatPartners);
     })
     .catch((err) => {
       setError(err);
@@ -48,12 +44,29 @@ export default function TabFourScreen() {
     })
   }, [loggedInUser]);
 
-  function getChatPartnerAvatars(chatPartners) {
-    const avatars = chatPartners.map((chatPartner) => {
-      return profile[chatPartner].avatar_img;
-    })
-    setChatImages(avatars);
-  }
+  async function getChatPartnerAvatars(chatPartners) {
+    try {
+      const avatarPromises = chatPartners.map(async (chatPartner) => {
+        const { data, error } = await supabase
+                  .from('user_profile')
+                  .select('avatar_img')
+                  .eq('username', chatPartner)
+                  .single();
+        
+        if(error) {
+          console.error(`Error fetching avatar for ${chatPartner}:`, error.message);
+          return null;
+        }
+          
+        return data?.avatar_img || null;
+      });
+        const avatars = await Promise.all(avatarPromises);
+        const filteredAvatars = avatars.filter(Boolean);
+        setChatImages(filteredAvatars);
+    } catch (err) {
+      console.error('Failed to fetch chat partner avatars:', err);
+    }
+}
 
   function handleChatChange(index) {
     setOpenMessage(chatIds[index]);
@@ -66,7 +79,6 @@ export default function TabFourScreen() {
     return <Text>Houston, we have a problem!</Text>;
   }
 
-
 	return (
 	
 			<SafeAreaProvider>
@@ -78,14 +90,20 @@ export default function TabFourScreen() {
           contentContainerStyle={styles.avatarContainer}
         >
           {chatImages.map((image, index) => {
-            return <View style={styles.avatarPlaceholder}>
+            return <View key={index} style={styles.avatarPlaceholder}>
               <TouchableOpacity key={index} onPress={() => handleChatChange(index)}>
               <Image source={{ uri: image }} style={styles.avatarPlaceholder}/>
               </TouchableOpacity>
             </View>
           })}
         </ScrollView>
-				<ChatComponent openedMessage={openedMessage} user={loggedInUser} chatPartner={chatInfo[openedMessage]}></ChatComponent>
+        {openedMessage && chatInfo.length > 0 && (
+          <ChatComponent 
+            openedMessage={openedMessage} 
+            user={loggedInUser} 
+            chatPartner={chatInfo.find(([chat]) => chat === openedMessage)?.[1] || ''}
+          />
+        )}
 			</SafeAreaProvider>
 		
 	);

@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import Chat from '@codsod/react-native-chat';
-import { getMessagesByChatId } from '@/api';
-import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
-
-// get all messages (setMessages) and show them in reverse order
-// post new message
-
-  interface Message {
-	_id?: string;
-	chatId: string;
-	participants: string[];
-	sentBy: string;
-	message: string;
-	sentAt: string;
-  }
+import { getMessagesByChatId, postNewMessage } from '@/api';
+import { KeyboardAvoidingView, Text, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 
   interface ChatComponentProps {
 	openedMessage: string;
 	user: string;
 	chatPartner: string;
   }
+
+  type User = {
+    _id: number;
+    name: string;
+  };
+  
+  type Message = {
+    _id: number;
+    text: string;
+    createdAt: Date;
+    user: User;
+  };
 
   const ChatComponent: React.FC<ChatComponentProps> = ({ openedMessage, user, chatPartner }) => {
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -29,7 +30,17 @@ import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'rea
 	useEffect(() => {
 		getMessagesByChatId(openedMessage)
 		.then((res) => {
-			setMessages(res);
+			const formattedMessages = res.map((message, index) => ({
+				_id: index,
+				text: message.message,
+				createdAt: new Date(message.sentAt),
+				user: {
+					_id: message.sentBy === user ? 1 : 2,
+					name: message.sentBy,
+				}
+			}));
+			const sortedMessages = formattedMessages.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+			setMessages(sortedMessages);
 		})
 		.catch((err) => {
 			setError(err);
@@ -46,15 +57,7 @@ import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'rea
 	  if (error) {
 		return <Text>Houston, we have a problem!</Text>;
 	  }
-
 	  const onSendMessage = (text: string) => {
-		const messageToSend = {
-		  chatId: openedMessage,
-		  participants: [user, chatPartner],
-		  sentBy: user,
-		  message: text,
-		  sentAt: new Date().toISOString(),
-		};
 
 		const messageRequest = {
 			message: text,
@@ -62,13 +65,19 @@ import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'rea
 			username: user
 		}
 	  
-		postMessage(openedMessage, messageRequest)
-		  .then((res) => {
-			const newMessageWithId: Message = {
-			  _id: res.insertedId,
-			  ...messageToSend
+		postNewMessage(openedMessage, messageRequest)
+		  .then(() => {
+			const newFormattedMessage: Message = {
+			  _id: messages.length + 1,
+			  text: text,
+			  createdAt: new Date(),
+			  user: {
+				_id: 1,
+				name: user,
+			  },
 			};
-			setMessages((prevMessages) => [newMessageWithId, ...prevMessages]);
+			setMessages((prevMessages: any) => [newFormattedMessage, ...prevMessages]);
+			console.log(messages);
 		  })
 		  .catch((err) => {
 			setError(err);
@@ -77,7 +86,9 @@ import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'rea
 	  };
 
 	return (
-
+		<KeyboardAvoidingView style={styles.keyboard}
+		behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+		keyboardVerticalOffset={Platform.OS === 'ios' ? 45 : 0}>
 			<Chat
 				messages={messages}
 				setMessages={(val) => onSendMessage(val)}
@@ -86,7 +97,10 @@ import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'rea
 				showSenderAvatar={false}
 				showReceiverAvatar={true}
 				inputBorderColor='#4F7942'
-				user={user}
+				user={{
+					_id: 1,
+					name: user
+				  }}
 				backgroundColor='white'
 				inputBackgroundColor='white'
 				placeholder='Enter Your Message'
@@ -101,92 +115,14 @@ import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'rea
 				timeContainerColor='grey'
 				timeContainerTextColor='black'
 			/>
+		</KeyboardAvoidingView>
 	);
 };
 
-// type User = {
-//     _id: number;
-//     name: string;
-//   };
-  
-//   type Message = {
-//     _id: number;
-//     text: string;
-//     createdAt: Date;
-//     user: User;
-//   };
-
-// const ChatComponent = (openedMessage) => {
-// 	const [messages, setMessages] = useState<Message[]>([]);
-
-// 	useEffect(() => {
-// 		setMessages([
-// 			{
-// 				_id: 1,
-// 				text: 'Hey!',
-// 				createdAt: new Date(),
-// 				user: {
-// 					_id: 2,
-// 					name: 'James',
-// 				},
-// 			},
-// 			{
-// 				_id: 2,
-// 				text: 'Heyyyyyy James!',
-// 				createdAt: new Date(),
-// 				user: {
-// 					_id: 1,
-// 					name: 'Vishal Chaturvedi',
-// 				},
-// 			},
-// 		]);
-// 	}, []);
-
-// 	const onSendMessage = (text) => {
-// 		setMessages((prevMessages: any) => [
-// 			{
-// 				_id: prevMessages.length + 1,
-// 				text,
-// 				createdAt: new Date(),
-// 				user: {
-// 					_id: 1,
-// 					name: 'Vishu Chaturvedi',
-// 				},
-// 			},
-// 			...prevMessages,
-// 		]);
-// 	};
-
-// 	return (
-
-// 			<Chat
-// 				messages={messages}
-// 				setMessages={(val) => onSendMessage(val)}
-// 				themeColor='#4F7942'
-// 				themeTextColor='white'
-// 				showSenderAvatar={false}
-// 				showReceiverAvatar={true}
-// 				inputBorderColor='#4F7942'
-// 				user={{
-// 					_id: 1,
-// 					name: 'Vishal Chaturvedi',
-// 				}}
-// 				backgroundColor='white'
-// 				inputBackgroundColor='white'
-// 				placeholder='Enter Your Message'
-// 				placeholderColor='gray'
-// 				backgroundImage={
-// 					'https://s1.at.atcdn.net/wp-content/uploads/2024/07/HERO-Northern-Rivers-Rail-Trail-2.jpg'
-// 				}
-// 				showEmoji={true}
-// 				onPressEmoji={() => console.log('Emoji Button Pressed..')}
-// 				showAttachment={true}
-// 				onPressAttachment={() => console.log('Attachment Button Pressed..')}
-// 				timeContainerColor='grey'
-// 				timeContainerTextColor='black'
-// 			/>
-// 	);
-// };
-
+const styles = StyleSheet.create({
+  keyboard: {
+	flex: 1
+  }
+});
 
 export default ChatComponent;

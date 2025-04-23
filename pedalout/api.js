@@ -145,17 +145,20 @@ async function removeAllFriends() {
 
 async function getAllChatsByUsername(username) {
 	try {
-		const response = await supabaseApi.get(`/friends/${username}`);
-		return response;
+		// console.log('in the api')
+		const response = await supabaseApi.get(`/chats`, { params: { username } });
+		// console.log(response.data);
+		return response.data;
 	} catch (err) {
+		console.log(err);
 		throw err;
 	}
 }
 
 async function getMessagesByChatId(chatId) {
 	try {
-		const response = await supabaseApi.get(`/friends/${chatId}`);
-		return response;
+		const response = await supabaseApi.get(`/chats/${chatId}`);
+		return response.data;
 	} catch (err) {
 		throw err;
 	}
@@ -163,7 +166,7 @@ async function getMessagesByChatId(chatId) {
 
 async function postNewMessage(chatId, request) {
 	try {
-		const response = await supabaseApi.post(`/friends/${chatId}`, request);
+		const response = await supabaseApi.post(`/chats/${chatId}`, request);
 		return response;
 	} catch (err) {
 		throw err;
