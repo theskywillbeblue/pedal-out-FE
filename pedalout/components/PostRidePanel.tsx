@@ -344,6 +344,7 @@ export default function PostRide(props: PostRideProps) {
     marginTop: 20,
     alignSelf: 'center',
     width: '70%',
+    marginBottom: 20,
   }}
 >
   <Text style={{ color: '#fff', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Post Ride!</Text>
