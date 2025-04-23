@@ -128,9 +128,7 @@ async function getFriends(username) {
 }
 
 async function removeFriend(username, personToUnfriend) {
-  try {
-    console.log(personToUnfriend);
-    
+  try {    
     const response = await supabaseApi.delete(`/friends/${username}`, {
       followingUsername: personToUnfriend,
     });
