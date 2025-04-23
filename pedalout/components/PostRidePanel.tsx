@@ -86,12 +86,15 @@ export default function PostRide(props: PostRideProps) {
         },
       };
 
-      await postRide(rideData);
+      const { newRide } = await postRide(rideData);
+
       Alert.alert('Success', 'Ride posted!');
 
-      router.push('/(tabs)');
+      router.push({
+        pathname: '/RideDetails',
+        params: { ride: JSON.stringify(newRide) },
+      });
     } catch (error) {
-    
       Alert.alert('Error', 'Could not post ride.');
     }
   };
@@ -199,8 +202,8 @@ export default function PostRide(props: PostRideProps) {
               >
                 <Text style={[styles.inputHeadings, { color: textColor }]}>
                   {hasPickedDate
-                  ? format(values.date, 'EEE MMM dd yyyy')
-                  : 'Date'}
+                    ? format(values.date, 'EEE MMM dd yyyy')
+                    : 'Date'}
                 </Text>
               </Pressable>
 
@@ -210,9 +213,7 @@ export default function PostRide(props: PostRideProps) {
                 onPress={() => setShowTimePicker(true)}
               >
                 <Text style={[styles.inputHeadings, { color: textColor }]}>
-                  {hasPickedTime
-                    ? format(values.time, 'HH:mm')
-                    : 'Time'}
+                  {hasPickedTime ? format(values.time, 'HH:mm') : 'Time'}
                 </Text>
               </Pressable>
             </View>
@@ -334,20 +335,29 @@ export default function PostRide(props: PostRideProps) {
                 </View>
               </Modal>
             )}
-<TouchableOpacity
-  onPress={handleSubmit}
-  style={{
-    backgroundColor: '#4CAF50',
-    paddingVertical: 12,
-    borderRadius: 6,
-    marginTop: 20,
-    alignSelf: 'center',
-    width: '70%',
-    marginBottom: 20,
-  }}
->
-  <Text style={{ color: '#fff', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Post Ride!</Text>
-</TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={{
+                backgroundColor: '#4CAF50',
+                paddingVertical: 12,
+                borderRadius: 6,
+                marginTop: 20,
+                alignSelf: 'center',
+                width: '70%',
+                marginBottom: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 17,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}
+              >
+                Post Ride!
+              </Text>
+            </TouchableOpacity>
           </ThemedView>
         )}
       </Formik>
