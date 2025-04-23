@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
-  Text
+  Text,
 } from 'react-native';
 import { router } from 'expo-router';
 import { ThemedView } from './ThemedView';
@@ -41,7 +41,6 @@ export default function RideCardList({ rides }: Props) {
           </ImageBackground>
         </TouchableOpacity>
       ))}
-  
     </ThemedView>
   );
 }
@@ -79,16 +78,12 @@ const styles = StyleSheet.create({
     bottom: 16,
     left: 20,
     color: '#fff',
-    padding: 4
+    padding: 4,
   },
   subtitle: {
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff'
-  },
-  default: {
-    fontFamily: 'HelveticaRoundedBold',
-    fontSize: 16,
+    color: '#fff',
   },
 });
