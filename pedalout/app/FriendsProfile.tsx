@@ -74,7 +74,7 @@ export default function Friendsfriend() {
   //   }
   //   console.log(isFollowed, '<<<<<<<< after');
   // }, [isFollowed]);
-
+      
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);

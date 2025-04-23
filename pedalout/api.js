@@ -149,18 +149,51 @@ async function removeAllFriends() {
   }
 }
 
-export default Geocoder;
+async function getAllChatsByUsername(username) {
+	try {
+		// console.log('in the api')
+		const response = await supabaseApi.get(`/chats`, { params: { username } });
+		// console.log(response.data);
+		return response.data;
+	} catch (err) {
+		console.log(err);
+		throw err;
+	}
+}
+
+async function getMessagesByChatId(chatId) {
+	try {
+		const response = await supabaseApi.get(`/chats/${chatId}`);
+		return response.data;
+	} catch (err) {
+		throw err;
+	}
+}
+
+async function postNewMessage(chatId, request) {
+	try {
+		const response = await supabaseApi.post(`/chats/${chatId}`, request);
+		return response;
+	} catch (err) {
+		throw err;
+	}
+}
 
 export {
-  getRides,
-  postRide,
-  patchRideById,
-  getCommentsByRideId,
-  postCommentOnRideById,
-  patchCommentById,
-  deleteCommentById,
-  addFriend,
-  getFriends,
-  removeFriend,
-  removeAllFriends,
-};
+	getRides,
+	postRide,
+	patchRideById,
+	getCommentsByRideId,
+	postCommentOnRideById,
+	patchCommentById,
+	deleteCommentById,
+    addFriend,
+	getFriends,
+	removeFriend,
+	removeAllFriends,
+	getAllChatsByUsername,
+	getMessagesByChatId,
+	postNewMessage
+}
+
+export default Geocoder;
