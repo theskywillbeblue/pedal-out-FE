@@ -1,113 +1,118 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React from 'react';
+import { View, Pressable, StyleSheet, Button } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedText } from './ThemedText';
-
-import { useThemeColor } from '@/hooks/useThemeColor'; // Import the useThemeColor hook
-import { ThemedView } from '@/components/ThemedView'; // Import ThemedView
+import { ThemedView } from '@/components/ThemedView';
 
 function RideDetailsPanel() {
- 
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
- 
+  const borderColor = useThemeColor({}, 'text');
+  const invertedBorderColor = useThemeColor({ light: '#000', dark: '#fff' }, 'text');
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor }]}>
+    <ThemedView style={styles.container}>
       
-      <ThemedText> Test</ThemedText>
-      
-      <View style={{ height: 180 }} />
-    </ThemedView>
+        <ThemedText style={[styles.title, { borderColor }]}>
+          Ride Title Goes Here
+        </ThemedText>
+
+        <ThemedText style={[styles.desc2, { borderColor }]}>
+          address from geocode
+        </ThemedText>
+
+        <ThemedText style={[styles.desc2, { borderColor }]}>
+          9th Apr 2025 6:00pm
+        </ThemedText>
+
+        <ThemedText style={[styles.desc2, { borderColor }]}>
+          Tags: template literal
+        </ThemedText>
+
+        <View style={[styles.divider, {borderBottomColor: invertedBorderColor}]} />
+
+        <ThemedText style={[styles.description, { borderColor }]}>
+          Ride Description Goes Here
+        </ThemedText>
+        <ThemedText style={[styles.desc2, { borderColor }]}>
+          friends list from Chat
+
+        </ThemedText>
+
+        <View style={styles.buttoncontainer}>
+          <Pressable style={[styles.buttonplaceholder, { borderColor }]}>
+            <ThemedText style={[styles.buttonplaceholdertext, { color: textColor }]}>
+              useless button
+            </ThemedText>
+          </Pressable>
+        </View>
+
+        
+
+        <Button title="Join" />
+      </ThemedView>
+    
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-    },
-    title: {
-        fontSize: 16,
+  container: {
+    padding: 0,
+  },
+  title: {
+    fontSize: 16,
+    width: '100%',
+    paddingVertical: 0,
+    paddingHorizontal: 6,
+    borderRadius: 6,
+    lineHeight: 20,
+  },
+  desc2: {
+    fontSize: 12,
+    width: '100%',
+    height: 25,
+    borderRadius: 6,
+    paddingVertical: 0,
+    paddingHorizontal: 10,
+  },
+  description: {
+    fontSize: 14,
+    width: '100%',
+    height: 50,
+    borderRadius: 6,
+    paddingVertical: 0,
+    paddingHorizontal: 10,
+  },
+  divider: {
+    borderBottomWidth: 1,   // Thickness of the line
+    marginVertical: 12,
+    width: '100%',
+  },
 
-        textAlignVertical: 'top',
-        width: '90%',
-        borderWidth: 1,
-        borderRadius: 6,
-        padding: 10,
-        marginBottom: 8, // Reduced from 16
-      },
-    input: {
-        width: '75%',
-      textAlignVertical: 'top',
-      borderWidth: 1,
-      borderRadius: 6,
-      padding: 10,
-      marginBottom: 8, // Reduced from 16
-      fontSize: 12,
-    },
-    tags: {
-        width: '70%',
-        textAlignVertical: 'top',
-        borderWidth: 1,
-        borderRadius: 6,
-        padding: 5,
-        marginBottom: 8,
-        fontSize: 12,
-      },
-    description: {
-        fontSize: 12,
-
-        textAlignVertical: 'top',
-        width: '100%',
-        borderWidth: 1,
-        borderRadius: 6,
-        padding: 10,
-        marginBottom: 8, // Reduced from 16
-      },
-    dateText: {
-      fontSize: 11,
-      padding: 10,
-    },
-    datePicker: {
-        width: '70%',
-        
-      borderWidth: 1,
-      borderRadius: 6,
-      marginBottom: 8, // Reduced from 16
-    },
-    
-  buttonContainer: {
+  buttoncontainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginVertical: 0,
   },
-  placeholderButton: {
-    flex: 1,
-  },
-  button: {
-    borderWidth: 1,
+  buttonplaceholder: {
+    width: '48%',
+    height: 36,
+    borderWidth: 0.5,
     borderRadius: 6,
-    padding: 10,
+    justifyContent: 'center',
     alignItems: 'center',
-    flex: 0.3,
-    marginHorizontal: 8,
   },
-  button2: {
-    backgroundColor: '#24A0ED',
-    padding: 10,
-    borderRadius: 6,
-    alignItems: 'center',
-    flex: 0.8,
-    marginHorizontal: 8,
+  buttonplaceholdertext: {
+    fontSize: 14,
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
+  modalContainer: {
+    marginTop: 2,
   },
-  buttonTextDark: {
-    fontSize: 16,
-    textAlign: 'center',
+  modalContent: {
+    borderRadius: 8,
+    padding: 16,
   },
 });
+
 
 export default RideDetailsPanel;
