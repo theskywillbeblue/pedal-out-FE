@@ -329,19 +329,28 @@ export default function PostRide(props: PostRideProps) {
               </Modal>
             )}
 
-<TouchableOpacity
-  onPress={handleSubmit}
-  style={{
-    backgroundColor: '#4CAF50',
-    paddingVertical: 12,
-    borderRadius: 6,
-    marginTop: 20,
-    alignSelf: 'center',
-    width: '70%',
-  }}
->
-  <Text style={{ color: '#fff', fontSize: '17', fontWeight: 'bold', textAlign: 'center' }}>Post Ride!</Text>
-</TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={{
+                backgroundColor: '#4CAF50',
+                paddingVertical: 12,
+                borderRadius: 6,
+                marginTop: 20,
+                alignSelf: 'center',
+                width: '70%',
+              }}
+            >
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 17,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}
+              >
+                Post Ride!
+              </Text>
+            </TouchableOpacity>
           </ThemedView>
         )}
       </Formik>
@@ -378,7 +387,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 8,
-    marginBottom: 8
+    marginBottom: 8,
   },
   dateTimePickers: {
     width: '48%',
