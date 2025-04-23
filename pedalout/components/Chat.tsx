@@ -49,7 +49,7 @@ import { Platform } from 'react-native';
 		.finally(() => {
 			setLoading(false);
 		})
-	}, [openedMessage]);
+	}, [openedMessage, messages]);
 
 	if (isLoading) {
 		return <Text>Fetching chat...</Text>;
@@ -77,7 +77,6 @@ import { Platform } from 'react-native';
 			  },
 			};
 			setMessages((prevMessages: any) => [newFormattedMessage, ...prevMessages]);
-			console.log(messages);
 		  })
 		  .catch((err) => {
 			setError(err);
