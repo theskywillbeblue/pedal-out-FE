@@ -5,10 +5,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
-  Text
+  Text,
 } from 'react-native';
 import { router } from 'expo-router';
 import { ThemedView } from './ThemedView';
+import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
   rides: any[];
@@ -33,6 +34,10 @@ export default function RideCardList({ rides }: Props) {
           >
             <View style={styles.overlayColour} />
 
+            <View style={styles.iconContainer}>
+              <Ionicons name="people-circle-outline" size={24} color="white" />
+              <ThemedText>{ride.participants.length}</ThemedText>            
+            </View>
             <Text style={styles.rideCardDetails}>
               <Text style={styles.subtitle}>{ride.title}</Text>
               {'\n'}
@@ -41,7 +46,6 @@ export default function RideCardList({ rides }: Props) {
           </ImageBackground>
         </TouchableOpacity>
       ))}
-  
     </ThemedView>
   );
 }
@@ -79,16 +83,18 @@ const styles = StyleSheet.create({
     bottom: 16,
     left: 20,
     color: '#fff',
-    padding: 4
+    padding: 4,
   },
   subtitle: {
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff'
+    color: '#fff',
   },
-  default: {
-    fontFamily: 'HelveticaRoundedBold',
-    fontSize: 16,
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 15,
+    opacity: 0.7,
   },
 });
