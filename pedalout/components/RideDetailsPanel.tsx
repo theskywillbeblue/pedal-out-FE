@@ -3,6 +3,7 @@ import { View, Pressable, StyleSheet, Button } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import ParticipantsArray from './ParticipantsArray';
 
 function RideDetailsPanel() {
   const backgroundColor = useThemeColor({}, 'background');
@@ -39,15 +40,7 @@ function RideDetailsPanel() {
 
         </ThemedText>
 
-        <View style={styles.buttoncontainer}>
-          <Pressable style={[styles.buttonplaceholder, { borderColor }]}>
-            <ThemedText style={[styles.buttonplaceholdertext, { color: textColor }]}>
-              useless button
-            </ThemedText>
-          </Pressable>
-        </View>
-
-        
+        <ParticipantsArray />
 
         <Button title="Join" />
       </ThemedView>
