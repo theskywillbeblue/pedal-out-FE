@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { ThemedView } from './ThemedView';
+import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
   rides: any[];
@@ -33,6 +34,10 @@ export default function RideCardList({ rides }: Props) {
           >
             <View style={styles.overlayColour} />
 
+            <View style={styles.iconContainer}>
+              <Ionicons name="people-circle-outline" size={24} color="white" />
+              <ThemedText>{ride.participants.length}</ThemedText>            
+            </View>
             <Text style={styles.rideCardDetails}>
               <Text style={styles.subtitle}>{ride.title}</Text>
               {'\n'}
@@ -84,6 +89,10 @@ const styles = StyleSheet.create({
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#fff'
+  },
+  default: {
+    fontFamily: 'HelveticaRoundedBold',
+    fontSize: 16,
   },
 });
