@@ -60,6 +60,7 @@ export default function PostRide(props: PostRideProps) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [hasPickedTime, setHasPickedTime] = useState(false);
+  const [hasPickedDate, setHasPickedDate] = useState(false);
   const [disciplines, setDisciplines] = useState([
     { label: 'Downhill', value: 'Downhill' },
     { label: 'Gravel', value: 'Gravel' },
@@ -90,6 +91,7 @@ export default function PostRide(props: PostRideProps) {
 
       router.push('/(tabs)');
     } catch (error) {
+    
       Alert.alert('Error', 'Could not post ride.');
     }
   };
@@ -180,12 +182,12 @@ export default function PostRide(props: PostRideProps) {
               }}
             >
               <Ionicons
-                name={values.isPublic ? 'checkbox' : 'square-outline'}
+                name={!values.isPublic ? 'checkbox' : 'square-outline'}
                 size={24}
-                color={values.isPublic ? '#007AFF' : '#aaa'}
+                color={!values.isPublic ? '#007AFF' : '#aaa'}
               />
               <Text style={[{ marginLeft: 8, color: textColor }]}>
-                Public Ride (everyone can see and join)
+                Private Ride (only visible to followers)
               </Text>
             </Pressable>
 
@@ -196,7 +198,9 @@ export default function PostRide(props: PostRideProps) {
                 onPress={() => setShowDatePicker(true)}
               >
                 <Text style={[styles.inputHeadings, { color: textColor }]}>
-                  {format(values.date, 'EEE MMM dd yyyy')}
+                  {hasPickedDate
+                  ? format(values.date, 'EEE MMM dd yyyy')
+                  : 'Date'}
                 </Text>
               </Pressable>
 
@@ -207,8 +211,8 @@ export default function PostRide(props: PostRideProps) {
               >
                 <Text style={[styles.inputHeadings, { color: textColor }]}>
                   {hasPickedTime
-                    ? format(values.time, 'HH:mm:ss')
-                    : 'Pick a time'}
+                    ? format(values.time, 'HH:mm')
+                    : 'Time'}
                 </Text>
               </Pressable>
             </View>
@@ -228,8 +232,9 @@ export default function PostRide(props: PostRideProps) {
                 mode="date"
                 display="default"
                 onChange={(event, selectedDate) => {
-                  setShowDatePicker(false);
+                  setShowTimePicker(false);
                   if (selectedDate) {
+                    setHasPickedDate(true);
                     setFieldValue('date', selectedDate);
                   }
                 }}
@@ -254,6 +259,7 @@ export default function PostRide(props: PostRideProps) {
                       display="spinner"
                       onChange={(event, selectedDate) => {
                         if (selectedDate) {
+                          setHasPickedDate(true);
                           setFieldValue('date', selectedDate);
                         }
                       }}
@@ -340,7 +346,7 @@ export default function PostRide(props: PostRideProps) {
     width: '70%',
   }}
 >
-  <Text style={{ color: '#fff', fontSize: '17', fontWeight: 'bold', textAlign: 'center' }}>Post Ride!</Text>
+  <Text style={{ color: '#fff', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Post Ride!</Text>
 </TouchableOpacity>
           </ThemedView>
         )}

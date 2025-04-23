@@ -39,7 +39,6 @@ async function postRide(newRide) {
     const response = await supabaseApi.post('/rides', requestBody);
     return response.data;
   } catch (err) {
-    console.error(err);
     throw err;
   }
 }

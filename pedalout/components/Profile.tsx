@@ -72,7 +72,7 @@ export default function Profile({ navigation }: { navigation: any }) {
 
       <View style={styles.infoBox}>
         <Text style={styles.infoText}>
-          <Text style={styles.label}>Email:</Text> {user?.email || 'Guest'}
+          <Text style={styles.label}>Email:</Text> {user?.email || 'No email set'}
         </Text>
         <Text style={styles.infoText}>
           <Text style={styles.label}>Name:</Text>{' '}

@@ -52,7 +52,7 @@ export default function TabTwoScreen() {
                 latitude: markerCoordinates[0],
                 longitude: markerCoordinates[1],
               }}
-              title=""
+              title="Ride Location"
             />
           </MapView>
         </TouchableOpacity>
