@@ -63,6 +63,8 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontFamily: 'HelveticaRoundedBold',
-    fontSize: 13,
+    fontSize: 14,
+    fontWeight: '100',
+    lineHeight: 26,
   },
 });

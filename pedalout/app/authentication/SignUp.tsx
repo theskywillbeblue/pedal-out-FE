@@ -129,7 +129,6 @@ const styles = StyleSheet.create({
   },
   input: {
     color: '#fff',
-    borderBottomWidth: 1,
     paddingLeft: 8,
   },
   button: {

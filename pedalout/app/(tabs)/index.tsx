@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Platform, StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  ScrollView,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import FloatingSearchBar from '../../components/search';
@@ -21,7 +27,6 @@ export default function MainScreen() {
   useEffect(() => {
     getRides()
       .then((res) => {
-      
         setRides(res.rides);
       })
       .catch((error) => {
@@ -69,7 +74,9 @@ export default function MainScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <ThemedText style={styles.title}>
           Nearby rides{' '}
-          <ThemedText style={styles.subtitle}>{profile?.location || 'Location Unknown'}</ThemedText>
+          <ThemedText style={styles.subtitle}>
+            {profile?.location || 'Location Unknown'}
+          </ThemedText>
         </ThemedText>
         <ThemedView>
           <RideCardList rides={rides} />
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     marginTop: Platform.OS === 'android' ? 20 : 32,
-    marginBottom: Platform.OS === 'android' ? 0 : -12,
+    marginBottom: Platform.OS === 'android' ? 0 : -32,
     paddingVertical: 12,
-  }
+  },
 });

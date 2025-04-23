@@ -10,7 +10,6 @@ import { Input, Button } from '@rneui/themed';
 import { useRouter } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Auth() {
@@ -72,7 +71,8 @@ export default function Auth() {
           onPress={signInWithEmail}
           loading={loading}
           buttonStyle={styles.signInButton}
-          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333' }}
+          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333', textAlign: 'center',
+            width: '100%', }}
         />
 
         <ThemedText style={styles.subtext}>Not a member yet?</ThemedText>
@@ -81,7 +81,8 @@ export default function Auth() {
           title="Sign up!"
           onPress={() => router.push('/authentication/SignUp')}
           buttonStyle={styles.signUpButton}
-          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333' }}
+          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333', textAlign: 'center',
+            width: '100%', }}
         />
       </View>
     </SafeAreaView>
@@ -111,30 +112,33 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   inputWrapper: {
-    width: '100%',
+    width: '95%',
     marginBottom: 20,
   },
   input: {
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 16,
     color: '#fff',
+    marginLeft: 10
   },
   signInButton: {
-    width: '100%',
+    width: '80%',
     borderRadius: 10,
     padding: 12,
     backgroundColor: '#4F7942',
-    marginBottom: 20,
+    marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   signUpButton: {
-    width: '100%',
+    width: '80%',
     borderRadius: 10,
     padding: 12,
     backgroundColor: '#4F7942',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center'
   },
   subtext: {
     marginVertical: 12,
