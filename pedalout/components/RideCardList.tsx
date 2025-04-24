@@ -18,7 +18,7 @@ type Props = {
 export default function RideCardList({ rides }: Props) {
   return (
     <ThemedView style={styles.grid}>
-      {rides.slice(3, 12).map((ride) => (
+      {rides.slice(3, 20).map((ride) => (
         <TouchableOpacity
           key={ride.ride_id}
           onPress={() =>
