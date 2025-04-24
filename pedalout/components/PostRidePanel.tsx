@@ -338,7 +338,7 @@ export default function PostRide(props: PostRideProps) {
             <TouchableOpacity
               onPress={handleSubmit}
               style={{
-                backgroundColor: '#4CAF50',
+                backgroundColor: '#1B4D3E',
                 paddingVertical: 12,
                 borderRadius: 6,
                 marginTop: 20,

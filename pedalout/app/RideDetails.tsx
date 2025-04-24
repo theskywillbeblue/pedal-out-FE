@@ -27,9 +27,7 @@ export default function RideDetails() {
   const handleLongPress = () => {
     router.push({
       pathname: '/MapScreen',
-      params: {
-        rides: JSON.stringify([parsedRide]),
-      },
+      params: { rides: JSON.stringify([parsedRide]) },
     });
   };
 
@@ -70,7 +68,7 @@ export default function RideDetails() {
                     latitude: parsedRide.ride_location.lat,
                     longitude: parsedRide.ride_location.lng,
                   }}
-                  title="Hamsterly Forest"
+                  title={parsedRide.title}
                 />
               </MapView>
             </TouchableOpacity>
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 50,
+    top: 60,
     right: 15,
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 20,

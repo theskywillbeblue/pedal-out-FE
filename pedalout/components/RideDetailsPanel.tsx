@@ -1,26 +1,36 @@
-import React from 'react';
-import { View, Pressable, StyleSheet, Button } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Pressable, StyleSheet, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Button } from '@rneui/themed';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParticipantsArray from './ParticipantsArray';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, useRouter } from 'expo-router';
 import { ScreenHeight } from '@rneui/themed/dist/config';
 import { useState } from 'react';
 import TouchableOpacity from 'react-native-gesture-handler';
+import { UserContext } from '@/app/context/UserContext';
+import { patchRideById } from '@/api';
 
 function RideDetailsPanel() {
+  const { profile } = useContext(UserContext);
   const [chatImages, setChatImages] = useState<string[]>([]);
   const { ride } = useLocalSearchParams();
   const parsedRide = JSON.parse(ride as string);
-  const formattedDate = new Date(parsedRide.ride_date).toLocaleDateString('en-GB', {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-  const formattedTime = new Date(`1970-01-01T${parsedRide.ride_time}Z`).toLocaleTimeString([], {
+  const router = useRouter();
+  const formattedDate = new Date(parsedRide.ride_date).toLocaleDateString(
+    'en-GB',
+    {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    },
+  );
+  const formattedTime = new Date(
+    `1970-01-01T${parsedRide.ride_time}Z`,
+  ).toLocaleTimeString([], {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,
@@ -33,6 +43,19 @@ function RideDetailsPanel() {
     'text',
   );
 
+  const handleJoinRide = async () => {
+    try {
+      await patchRideById(parsedRide.ride_id, {
+        participants: profile.username,
+      });
+      Alert.alert('Success', 'You have joined this ride!');
+      router.replace('/');
+    } catch (err) {
+      Alert.alert('Error', 'Something went wrong.');
+      console.error(err);
+    }
+  };
+
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={[styles.title, { borderColor }]}>
@@ -44,7 +67,7 @@ function RideDetailsPanel() {
       </ThemedText> */}
 
       <ThemedText style={[styles.desc2, { borderColor }]}>
-      {formattedDate} at {formattedTime}
+        {formattedDate} at {formattedTime}
       </ThemedText>
 
       <ThemedText style={[styles.desc2, { borderColor }]}>
@@ -62,14 +85,22 @@ function RideDetailsPanel() {
       <ThemedView style={styles.spaceContainer} />
 
       <ThemedText style={[styles.desc2, { borderColor }]}>
-       {parsedRide.participants.length}  {parsedRide.participants.length === 1 ? 'participant' : 'participants'}
+        {parsedRide.participants.length}{' '}
+        {parsedRide.participants.length === 1 ? 'participant' : 'participants'}
       </ThemedText>
 
-        <ParticipantsArray />
+      <ParticipantsArray />
 
       <ThemedView style={styles.spaceContainer} />
 
-      <Button title="Join" />
+      {!parsedRide.participants.includes(profile.username) ? (
+        <Button
+          onPress={handleJoinRide}
+          title="Join this ride"
+          buttonStyle={styles.button}
+          titleStyle={styles.buttonText}
+        />
+      ) : null}
     </ThemedView>
   );
 }
@@ -83,6 +114,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 0,
     paddingHorizontal: 6,
+    marginBottom: 5,
     borderRadius: 6,
     lineHeight: 20,
   },
@@ -143,16 +175,19 @@ const styles = StyleSheet.create({
     zIndex: 10,
     paddingVertical: 10,
   },
-  avatarContainer: {
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    gap: 16,
+  button: {
+    width: '60%',
+    borderRadius: 10,
+    padding: 12,
+    backgroundColor: '#1B4D3E',
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
-  avatarPlaceholder: {
-    width: 70,
-    height: 70,
-    borderRadius: 40,
-    backgroundColor: '#ccc',
+  buttonText: {
+    textAlign: 'center',
+    width: '100%',
   },
 });
 

@@ -15,6 +15,8 @@ import { supabase } from '@/lib/supabase';
 import { Button } from '@rneui/themed';
 import { addFriend, getAllChatsByUsername, getFriends, postNewMessage, removeFriend } from '@/api';
 import { UserContext } from './context/UserContext';
+import { useColorScheme } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 export default function Friendsfriend() {
   const navigation = useNavigation();
@@ -29,6 +31,12 @@ export default function Friendsfriend() {
   const [chatPartners, setChatPartners] = useState([]);
   const { profile } = useContext(UserContext);
   const loggedInUser = profile.username;
+
+   const colorScheme = useColorScheme();
+  
+    const borderColor = useThemeColor({ light: '#ccc', dark: '#444' });
+    const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
+    const textColor = colorScheme === 'dark' ?   '#fff': '#000';
 
   useEffect(() => {
     getFriends(friendName)
@@ -84,51 +92,6 @@ export default function Friendsfriend() {
     }
   };
 
-  const handleChatPress = async () => {
-    try {
-      const {chatInfo} = await getAllChatsByUsername(loggedInUser);
-      const myChatIds = chatInfo.map((chat) => {
-        return chat[0];
-      })
-      const myChatPartners = chatInfo.map((chat) => {
-        return chat[1];
-      })
-
-      setChatInfo(chatInfo);
-      setChatIds(myChatIds);
-      setChatPartners(myChatPartners);
-
-      const existingIndex = myChatPartners.findIndex((partner) => partner === friendName);
-
-      if(existingIndex !== -1) {
-        const existingChatId = myChatIds[existingIndex];
-        router.push({pathname: '/MessagesScreen', params: {chatId: existingChatId}});
-      }
-        else {
-          const messageRequest = {
-            message: "",
-            chatPartner: friendName,
-            username: loggedInUser
-          };
-
-          await postNewMessage(messageRequest);
-
-          const newResult = await getAllChatsByUsername(loggedInUser);
-          const newChatInfo = newResult.chatInfo;
-          const newChatIds = newChatInfo.map((chat) => {
-            return chat[0];
-          })
-          setChatInfo(newChatInfo);
-          setChatIds(newChatIds);
-
-          const newestChatId = newChatIds[newChatIds.length -1];
-          router.push({pathname: '/MessagesScreen', params: {chatId: newestChatId}})
-        }
-      } catch (err) {
-        console.error('Error fetching chat:', err);
-      }
-  }
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -155,32 +118,27 @@ export default function Friendsfriend() {
           resizeMode="cover"
         />
 
-        <View style={styles.infoBox}>
+        <View style={[styles.infoBox, {backgroundColor}, {opacity: 0.7}]}>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Username: </ThemedText>
-            <ThemedText type="tabText">{friendProfile?.username}</ThemedText>
+            <ThemedText style={styles.labelBold}>@{friendProfile?.username}</ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Name: </ThemedText>
-            <ThemedText type="tabText">
-              {friendProfile?.full_name || 'No name set'}
+            
+            <ThemedText style={styles.label}>
+              {friendProfile?.full_name || 'No name set'} / {friendProfile?.user_age || 'No age set'}
             </ThemedText>
           </View>
+          
+          
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Age: </ThemedText>
-            <ThemedText type="tabText">
-              {friendProfile?.user_age || 'No age set'}
-            </ThemedText>
-          </View>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Location: </ThemedText>
-            <ThemedText type="tabText">
+
+            <ThemedText style={styles.label}>
               {friendProfile?.location || 'No location set'}
             </ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Bio: </ThemedText>
-            <ThemedText type="tabText">
+            <ThemedText style={styles.labelBold}>Bio: </ThemedText>
+            <ThemedText style={styles.label}>
               {friendProfile?.user_bio || 'No bio made'}
             </ThemedText>
           </View>
@@ -191,12 +149,6 @@ export default function Friendsfriend() {
           buttonStyle={styles.button}
           titleStyle={styles.buttonText}
           onPress={handleFollowPress}
-        />
-        <Button
-          title='Go to Chat'
-          buttonStyle={styles.button}
-          titleStyle={styles.buttonText}
-          onPress={handleChatPress}
         />
       </ScrollView>
     </SafeAreaView>
@@ -265,24 +217,32 @@ const styles = StyleSheet.create({
   },
   infoRow: {
     flexDirection: 'row',
-    fontFamily: 'HelveticaRoundedBold',
     justifyContent: 'flex-start',
     alignContent: 'center',
   },
   label: {
-    fontFamily: 'HelveticaRoundedBold',
+    fontFamily: 'Inter_400Regular',
+        fontSize: 16,
+        opacity: 1,
+    
+  },
+  labelBold: {
+    fontFamily: 'Inter_400Regular',
+    fontWeight: 'bold',
     fontSize: 16,
-    color: '#333',
+    opacity: 1,
   },
   button: {
     width: '80%',
     borderRadius: 8,
-    padding: 12,
-    backgroundColor: '#4F7942',
+    padding: 10,
+    //backgroundColor: '#4F7942',
+    backgroundColor: '#000',
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
+    
   },
   signOutButton: {
     width: '80%',

@@ -9,14 +9,13 @@ import {
   Platform,
   StatusBar,
 } from 'react-native';
-import FloatingSearchBar from '../../components/search';
+import FloatingSearchBar from '../../components/ChatSearch';
 import ChatComponent from '@/components/Chat';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useContext, useEffect, useState } from 'react';
 import { getAllChatsByUsername } from '@/api';
 import { UserContext } from '../context/UserContext';
 import { supabase } from '@/lib/supabase';
-import { useLocalSearchParams } from 'expo-router';
 
 export default function TabFourScreen() {
   const { profile } = useContext(UserContext);
@@ -24,9 +23,8 @@ export default function TabFourScreen() {
   const [chatInfo, setChatInfo] = useState([]);
   const [chatIds, setChatIds] = useState([]);
   const [chatPartners, setChatPartners] = useState([]);
-  const { chatId } = useLocalSearchParams();
   const [chatImages, setChatImages] = useState<string[]>([]);
-  const [openedMessage, setOpenMessage] = useState(chatId || chatIds[0]);
+  const [openedMessage, setOpenMessage] = useState(chatIds[0]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -110,15 +108,12 @@ export default function TabFourScreen() {
           {chatImages.map((image, index) => {
             return (
               <View key={index} style={styles.avatarPlaceholder}>
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => handleChatChange(index)}
-                >
-                  <Image
-                    source={{ uri: image }}
-                    style={styles.avatarPlaceholder}
-                  />
-                </TouchableOpacity>
+          <TouchableOpacity key={index} onPress={() => handleChatChange(index)} style={styles.avatarWrapper}>
+  <View style={styles.avatarOverlay}>
+    <Image source={{ uri: image }} style={styles.avatarImage} />
+    <Text style={styles.avatarName}>{chatPartners[index]}</Text>
+  </View>
+</TouchableOpacity>
               </View>
             );
           })}
@@ -158,12 +153,13 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 40,
     backgroundColor: '#ccc',
+    overflow: 'hidden',
   },
 
   avatarWrapper: {
     width: 70,
     height: 70,
-    marginHorizontal: 8,
+    
   },
   avatarOverlay: {
     position: 'relative',
@@ -176,24 +172,24 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 40,
-    backgroundColor: '#ccc',
   },
   avatarName: {
     position: 'absolute',
-    top: 28,
+    top: 27,
     backgroundColor: 'rgba(0,0,0,0.9)',
     padding: 2,
     color: 'white',
     fontSize: 9,
-    paddingHorizontal: 4,
-    borderRadius: 4,
+    width: '100%',
+    paddingHorizontal: 6,
+    borderRadius: 0,
     overflow: 'hidden',
-    maxWidth: 80,
+    maxWidth: 70,
     textAlign: 'center',
   },
   safeArea: {
     flex: 1,
-    marginTop: Platform.OS === 'android' ? 24 : 0,
+    // marginTop: Platform.OS === 'android' ? 24 : 0,
   },
   background: {
     flex: 1,

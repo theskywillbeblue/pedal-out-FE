@@ -159,6 +159,7 @@ export default function EditUser() {
         style={{ flex: 1 }}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 60 }}
         keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
         <View style={styles.closeButtonContainer}>
           <Pressable

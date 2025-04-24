@@ -10,6 +10,7 @@ import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
+import { ThemedView } from '@/components/ThemedView';
 import { getFriends } from '../../api.js';
 import { supabase } from '@/lib/supabase';
 import { router } from 'expo-router';
@@ -117,18 +118,17 @@ const username = profile.username
       <ThemedText type="title" style={styles.title}>
         Connections
       </ThemedText>
-      <View style={styles.columnsContainer}>
+      <ThemedView style={styles.columnsContainer}>
         {/* Following */}
-        <View style={styles.column}>
+        <ThemedView style={styles.column}>
           <ThemedText style={styles.sectionHeader}>
             Following{'\n'}
             <ThemedText style={styles.figures}>({following.length})</ThemedText>
           </ThemedText>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.columnContent}
           >
-            {following.map((followee) => {
+            {following.map((followee, i) => {
               const avatar_img = followingAvatars.find(
                 (entry) => followee in entry,
               )?.[followee];
@@ -137,7 +137,7 @@ const username = profile.username
               )?.[followee];
 
               return (
-                <View key={followee} style={styles.avatarCard}>
+                <View key={i} style={styles.avatarCard}>
                   <TouchableOpacity
                     onPress={() =>
                       router.push({
@@ -162,10 +162,10 @@ const username = profile.username
               );
             })}
           </ScrollView>
-        </View>
+        </ThemedView>
 
         {/* Followers */}
-        <View style={styles.column}>
+        <ThemedView style={styles.column}>
           <ThemedText style={styles.sectionHeader}>
             Followers{'\n'}
             <ThemedText style={styles.figures}>({followers.length})</ThemedText>
@@ -174,7 +174,7 @@ const username = profile.username
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.columnContent}
           >
-            {followers.map((follower) => {
+            {followers.map((follower, i) => {
               const avatar_img = followerAvatars.find(
                 (entry) => follower in entry,
               )?.[follower];
@@ -184,7 +184,7 @@ const username = profile.username
 
 
               return (
-                <View key={follower} style={styles.avatarCard}>
+                <View key={i} style={styles.avatarCard}>
                   <TouchableOpacity
                     onPress={() =>
                       router.push({
@@ -209,8 +209,8 @@ const username = profile.username
               );
             })}
           </ScrollView>
-        </View>
-      </View>
+        </ThemedView>
+      </ThemedView>
     </ThemedSafeAreaView>
   );
 }
@@ -223,15 +223,13 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 24,
     marginBottom: 16,
-    backgroundColor: '#f0f0f5',
+    backgroundColor: '#1B4D3E',
     opacity: 0.8,
-    borderRadius: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 5, // Android shadow
-    color: '#333',
   },
   sectionHeader: {
     flexDirection: 'row',

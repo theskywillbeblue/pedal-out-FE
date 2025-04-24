@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-// import { View, ImageBackground, StyleSheet } from 'react-native';
 import Chat from '@codsod/react-native-chat';
 import { getMessagesByChatId, postNewMessage } from '@/api';
-import { KeyboardAvoidingView, Text, StyleSheet } from 'react-native';
-import { Platform } from 'react-native';
+import { KeyboardAvoidingView, Text } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
+
 
   interface ChatComponentProps {
 	openedMessage: string;
@@ -60,14 +60,13 @@ import { Platform } from 'react-native';
 	  }
 	  const onSendMessage = (text: string) => {
 
-
 		const messageRequest = {
 			message: text,
 			chatPartner: chatPartner,
 			username: user
 		}
-	  
-		postNewMessage(messageRequest, openedMessage,)
+
+		postNewMessage(messageRequest, openedMessage)
 		  .then(() => {
 			const newFormattedMessage: Message = {
 			  _id: messages.length + 1,
@@ -92,23 +91,22 @@ import { Platform } from 'react-native';
 		keyboardVerticalOffset={Platform.OS === 'ios' ? 45 : 0}>
 			<Chat
 				messages={messages}
-				setMessages={(val) => onSendMessage(val)}
-				themeColor='#4F7942'
+				setMessages={(val) => {
+					onSendMessage(val)}
+				}
+				themeColor='#1B4D3E'
 				themeTextColor='white'
 				showSenderAvatar={false}
 				showReceiverAvatar={true}
-				inputBorderColor='#4F7942'
 				user={{
 					_id: 1,
 					name: user
 				  }}
-				backgroundColor='white'
+				backgroundColor='black'
 				inputBackgroundColor='white'
 				placeholder='Enter Your Message'
 				placeholderColor='gray'
-				backgroundImage={
-					'https://s1.at.atcdn.net/wp-content/uploads/2024/07/HERO-Northern-Rivers-Rail-Trail-2.jpg'
-				}
+				backgroundImage={require('../assets/images/ChatBackgroundWhite.png')} 
 				showEmoji={false}
 				onPressEmoji={() => console.log('Emoji Button Pressed..')}
 				showAttachment={false}

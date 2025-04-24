@@ -42,6 +42,7 @@ export default function MapScreen() {
               latitude: ride.ride_location.lat,
               longitude: ride.ride_location.lng,
             }}
+            title={ride.title}
           >
             <Callout
               onPress={() =>

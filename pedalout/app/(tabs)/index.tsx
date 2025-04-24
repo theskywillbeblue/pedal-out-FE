@@ -50,16 +50,8 @@ export default function MainScreen() {
     );
   }
   if (error) {
-    return <ThemedText>Houston, we have a problem!</ThemedText>;
+    return <ThemedText style={{ marginTop: 30, textAlign: 'center' }}>Houston, we have a problem!</ThemedText>;
   }
-
-  // getUser()
-  // .then((res) => {
-  //   setUser(res.username);
-  // })
-  // .catch((error) => {
-  //   setError(error);
-  // })
 
   return (
     <ThemedView style={styles.safeArea}>

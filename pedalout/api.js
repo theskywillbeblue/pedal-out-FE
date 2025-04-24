@@ -58,6 +58,7 @@ async function patchRideById(ride_id, patchData) {
       discipline: patchData.discipline,
       title: patchData.title,
       isPublic: patchData.isPublic,
+      participants: patchData.participants,
     });
     return response.data;
   } catch (err) {
@@ -128,9 +129,9 @@ async function getFriends(username) {
 }
 
 async function removeFriend(username, personToUnfriend) {
-  try {    
+  try {
     const response = await supabaseApi.delete(`/friends/${username}`, {
-      params: {followingUsername: personToUnfriend},
+      params: { followingUsername: personToUnfriend },
     });
     return response;
   } catch (err) {
@@ -148,53 +149,50 @@ async function removeAllFriends() {
 }
 
 async function getAllChatsByUsername(username) {
-	try {
-		const response = await supabaseApi.get(`/chats`, { params: { username } });
-		return response.data;
-	} catch (err) {
-		console.log(err);
-		throw err;
-	}
+  try {
+    const response = await supabaseApi.get(`/chats`, { params: { username } });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 }
 
 async function getMessagesByChatId(chatId) {
-	try {
-		const response = await supabaseApi.get(`/chats/${chatId}`);
-		return response.data;
-	} catch (err) {
-		throw err;
-	}
+  try {
+    const response = await supabaseApi.get(`/chats/${chatId}`);
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
 }
 
 async function postNewMessage(request, chatId) {
-	try {
-    if(chatId) {
-      const response = await supabaseApi.post(`/chats/${chatId}`, request);
-      return response;
-    } else {
-      const response = await supabaseApi.post(`/chats`, request);
-      return response;
-    }
-	} catch (err) {
-		throw err;
-	}
+  try {
+    const endpoint = chatId ? `/chats/${chatId}` : `/chats`;
+
+    const response = await supabaseApi.post(endpoint, request);
+    return response;
+  } catch (err) {
+    throw err;
+  }
 }
 
 export {
-	getRides,
-	postRide,
-	patchRideById,
-	getCommentsByRideId,
-	postCommentOnRideById,
-	patchCommentById,
-	deleteCommentById,
-    addFriend,
-	getFriends,
-	removeFriend,
-	removeAllFriends,
-	getAllChatsByUsername,
-	getMessagesByChatId,
-	postNewMessage
-}
+  getRides,
+  postRide,
+  patchRideById,
+  getCommentsByRideId,
+  postCommentOnRideById,
+  patchCommentById,
+  deleteCommentById,
+  addFriend,
+  getFriends,
+  removeFriend,
+  removeAllFriends,
+  getAllChatsByUsername,
+  getMessagesByChatId,
+  postNewMessage,
+};
 
 export default Geocoder;
