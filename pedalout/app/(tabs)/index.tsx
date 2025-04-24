@@ -3,6 +3,7 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
+  Image,
   View,
   TouchableOpacity,
 } from 'react-native';
@@ -38,7 +39,15 @@ export default function MainScreen() {
   }, []);
 
   if (isLoading) {
-    return <ThemedText>Rides are on their way...</ThemedText>;
+    return (
+      <View style={styles.loaderContainer}>
+      <Image
+        source={require('../../assets/images/FetchingRidesWhite.png')}
+        style={styles.image}
+        resizeMode="contain"
+      />
+    </View>
+    );
   }
   if (error) {
     return <ThemedText>Houston, we have a problem!</ThemedText>;
@@ -114,4 +123,17 @@ const styles = StyleSheet.create({
     marginBottom: Platform.OS === 'android' ? 0 : -32,
     paddingVertical: 12,
   },
+  image: {
+    width: '90%',
+    aspectRatio: 1,
+    maxHeight: 400,
+    marginBottom: 30,
+    alignSelf: 'center',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
 });

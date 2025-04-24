@@ -123,12 +123,16 @@ const styles = StyleSheet.create({
   avatarContainer: {
     paddingHorizontal: 16,
     flexDirection: 'row',
-    gap: 16, 
+    gap: 16,
   },
   avatarPlaceholder: {
     width: 70,
     height: 70,
     borderRadius: 40,
     backgroundColor: '#ccc',
-  }
-})
+  },
+  safeArea: {
+    flex: 1,
+    marginTop: Platform.OS === 'android' ? 24 : 0,
+  },
+});
