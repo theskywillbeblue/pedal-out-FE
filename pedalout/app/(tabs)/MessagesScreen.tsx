@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from 'react';
 import { getAllChatsByUsername } from '@/api';
 import { UserContext } from '../context/UserContext';
 import { supabase } from '@/lib/supabase';
-import { useLocalSearchParams } from 'expo-router';
 
 export default function TabFourScreen() {
   const { profile } = useContext(UserContext);
@@ -14,9 +13,8 @@ export default function TabFourScreen() {
   const [chatInfo, setChatInfo] = useState([]);
   const [chatIds, setChatIds] = useState([]);
   const [chatPartners, setChatPartners] = useState([]);
-  const { chatId } = useLocalSearchParams();
   const [chatImages, setChatImages] = useState<string[]>([]);
-  const [openedMessage, setOpenMessage] = useState(chatId || chatIds[0]);
+  const [openedMessage, setOpenMessage] = useState(chatIds[0]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -133,6 +131,6 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    marginTop: Platform.OS === 'android' ? 24 : 0,
+    // marginTop: Platform.OS === 'android' ? 24 : 0,
   },
 });
