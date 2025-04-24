@@ -15,11 +15,19 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
+import { ThemedView } from '@/components/ThemedView';
+import { useColorScheme } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
   const router = useRouter();
   const { user, profile, loading } = useContext(UserContext);
+ const colorScheme = useColorScheme();
+
+  const borderColor = useThemeColor({ light: '#ccc', dark: '#444' });
+  const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
+  const textColor = colorScheme === 'dark' ?   '#fff': '#000';
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -60,7 +68,7 @@ export default function ProfileScreen() {
             style={styles.image}
             resizeMode="cover"
           />
-        <View style={styles.infoBox}>
+        <ThemedView style={[styles.infoBox, {backgroundColor}, {opacity: 0.7} ]}>
           <View style={styles.infoRow}>
 
             <ThemedText style={styles.labelBold}>Email: </ThemedText>
@@ -83,7 +91,7 @@ export default function ProfileScreen() {
             <ThemedText style={styles.label}>{profile?.user_bio || 'No bio made'}</ThemedText>
 
           </View>
-        </View>
+        </ThemedView>
 
         {/* Gallery function to add when functionality available */}
         {/* <Button
@@ -95,14 +103,14 @@ export default function ProfileScreen() {
 
           <Button
             title="Edit Profile"
-            buttonStyle={styles.button}
-            titleStyle={styles.buttonText}
+            buttonStyle={[styles.button, {backgroundColor}, {opacity: 0.8}]}
+            titleStyle={[styles.buttonText, {color: textColor}]}
             onPress={() => router.push('/profile/edit')}
           />
           <Button
             title="Sign Out"
-            buttonStyle={[styles.button, styles.signOutButton]}
-            titleStyle={styles.buttonText}
+            buttonStyle={[styles.button, {backgroundColor}, styles.signOutButton, {opacity: 0.8}]}
+            titleStyle={[styles.buttonText, {color: textColor}]}
             onPress={handleSignOut}
           />
         </ScrollView>
@@ -147,15 +155,15 @@ const styles = StyleSheet.create({
   infoBox: {
     width: '90%',
     padding: 20,
-    marginBottom: 20,
+    marginBottom: 10,
     borderRadius: 10,
-   
-    borderWidth: 3,
+    borderWidth: 1,
     borderColor: '#fff',
   },
   infoRow: {
     flexDirection: 'row',
    // fontFamily: 'Inter_400Regular',
+   
     justifyContent: 'flex-start',
     alignContent: 'center',
     marginBottom: 5,
@@ -163,28 +171,34 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: 'Inter_400Regular',
         fontSize: 16,
+        opacity: 1,
     
   },
   labelBold: {
     fontFamily: 'Inter_400Regular',
     fontWeight: 'bold',
     fontSize: 16,
-    
+    opacity: 1,
   },
   button: {
     width: '80%',
     borderRadius: 8,
-    padding: 12,
-    backgroundColor: '#4F7942',
+    padding: 10,
+    //backgroundColor: '#4F7942',
+    backgroundColor: '#000',
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
+    
   },
   signOutButton: {
-    backgroundColor: '#e63946',
+    //backgroundColor: '#e63946',
+    
   },
   buttonText: {
+    fontSize: 14
+    ,
     fontFamily: 'Inter_400Regular',
     textAlign: 'center',
     width: '100%',
