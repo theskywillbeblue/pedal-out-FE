@@ -50,24 +50,24 @@ export default function ProfileScreen() {
 
         <View style={styles.infoBox}>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Email: </ThemedText>
-            <ThemedText type='tabText'>{user?.email || 'Guest'}</ThemedText>
+            <ThemedText style={styles.labelBold}>Email: </ThemedText>
+            <ThemedText style={styles.label}>{user?.email || 'Guest'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Name: </ThemedText>
-            <ThemedText type='tabText'>{profile?.full_name || 'No name set'}</ThemedText>
+            <ThemedText style={styles.labelBold}>Name: </ThemedText>
+            <ThemedText style={styles.label}>{profile?.full_name || 'No name set'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Age: </ThemedText>
-            <ThemedText type='tabText'>{profile?.user_age || 'No age set'}</ThemedText>
+            <ThemedText style={styles.labelBold}>Age: </ThemedText>
+            <ThemedText style={styles.label}>{profile?.user_age || 'No age set'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Location: </ThemedText>
-            <ThemedText type='tabText'>{profile?.location || 'No location set'}</ThemedText>
+            <ThemedText style={styles.labelBold}>Location: </ThemedText>
+            <ThemedText style={styles.label}>{profile?.location || 'No location set'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Bio: </ThemedText>
-            <ThemedText type='tabText'>{profile?.user_bio || 'No bio made'}</ThemedText>
+            <ThemedText style={styles.labelBold}>Bio: </ThemedText>
+            <ThemedText style={styles.label}>{profile?.user_bio || 'No bio made'}</ThemedText>
           </View>
         </View>
 
@@ -99,7 +99,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: 'transparent',
+    
   },
   container: {
     alignItems: 'center',
@@ -130,20 +130,27 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     borderRadius: 10,
-    backgroundColor: '#BEBEBE',
+   
     borderWidth: 3,
     borderColor: '#fff', 
   },
   infoRow: {
     flexDirection: 'row',
-    fontFamily: 'HelveticaRoundedBold',
+   // fontFamily: 'Inter_400Regular',
     justifyContent: 'flex-start',
     alignContent: 'center',
   },
   label: {
-    fontFamily: 'HelveticaRoundedBold',
+    fontFamily: 'Inter_400Regular',
+    
     fontSize: 16,
-    color: '#333',
+    
+  },
+  labelBold: {
+    fontFamily: 'Inter_400Regular',
+    fontWeight: 'bold',
+    fontSize: 16,
+    
   },
   button: {
     width: '80%',
@@ -160,6 +167,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e63946',
   },
   buttonText: {
+    fontFamily: 'Inter_400Regular',
     textAlign: 'center',
     width: '100%',
   },

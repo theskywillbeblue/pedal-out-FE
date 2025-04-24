@@ -48,7 +48,7 @@ function RideDetailsPanel() {
       </ThemedText>
 
       <ThemedText style={[styles.desc2, { borderColor }]}>
-        Discipline: {parsedRide.disciplines}
+        {parsedRide.discipline}
       </ThemedText>
 
       <View
@@ -62,7 +62,7 @@ function RideDetailsPanel() {
       <ThemedView style={styles.spaceContainer} />
 
       <ThemedText style={[styles.desc2, { borderColor }]}>
-        {parsedRide.participants.length} participants
+       {parsedRide.participants.length}  {parsedRide.participants.length === 1 ? 'participant' : 'participants'}
       </ThemedText>
 
         <ParticipantsArray />
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 
     fontSize: 14,
     width: '100%',
-    height: 50,
+    
     borderRadius: 6,
     paddingVertical: 0,
     paddingHorizontal: 10,
