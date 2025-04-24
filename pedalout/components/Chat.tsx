@@ -4,6 +4,7 @@ import { getMessagesByChatId, postNewMessage } from '@/api';
 import { KeyboardAvoidingView, Text } from 'react-native';
 import { Platform, StyleSheet } from 'react-native';
 
+
   interface ChatComponentProps {
 	openedMessage: string;
 	user: string;
@@ -102,13 +103,11 @@ import { Platform, StyleSheet } from 'react-native';
 					_id: 1,
 					name: user
 				  }}
-				backgroundColor='white'
+				backgroundColor='black'
 				inputBackgroundColor='white'
 				placeholder='Enter Your Message'
 				placeholderColor='gray'
-				backgroundImage={
-					'https://s1.at.atcdn.net/wp-content/uploads/2024/07/HERO-Northern-Rivers-Rail-Trail-2.jpg'
-				}
+				backgroundImage={require('../assets/images/ChatBackgroundWhite.png')} 
 				showEmoji={false}
 				onPressEmoji={() => console.log('Emoji Button Pressed..')}
 				showAttachment={false}
