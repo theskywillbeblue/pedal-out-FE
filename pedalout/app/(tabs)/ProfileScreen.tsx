@@ -1,6 +1,5 @@
 import {
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Image,
   View,
@@ -14,20 +13,17 @@ import { UserContext } from '@/app/context/UserContext';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
-import { ThemedView } from '@/components/ThemedView';
 import { useColorScheme } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
-// import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
   const router = useRouter();
   const { user, profile, loading } = useContext(UserContext);
- const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme();
 
   const borderColor = useThemeColor({ light: '#ccc', dark: '#444' });
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
-  const textColor = colorScheme === 'dark' ?   '#fff': '#000';
+  const textColor = colorScheme === 'dark' ? '#fff' : '#000';
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -40,9 +36,9 @@ export default function ProfileScreen() {
 
   if (loading) {
     return (
-      <ThemedSafeAreaView>
+      <SafeAreaView style={styles.loadingContainer}>
         <ThemedText>Loading...</ThemedText>
-      </ThemedSafeAreaView>
+      </SafeAreaView>
     );
   }
 
@@ -50,15 +46,10 @@ export default function ProfileScreen() {
     <ImageBackground
       source={require('../../assets/images/ProfileBackgroundWhiteLow.png')}
       style={styles.background}
-      imageStyle={{ opacity: 0.4 }}
+      imageStyle={{ opacity: 0.3 }}
     >
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView contentContainerStyle={styles.container}>
-          <ThemedText type="title" style={styles.heading}>
-            Welcome,{'\n'}
-            {profile?.username || user?.email || 'Guest'}!
-          </ThemedText>
-
+        <View style={styles.centerContainer}>
           <Image
             source={{
               uri:
@@ -66,58 +57,46 @@ export default function ProfileScreen() {
                 'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
             }}
             style={styles.image}
-            resizeMode="cover"
           />
-        <ThemedView style={[styles.infoBox, {backgroundColor}, {opacity: 0.7} ]}>
-          <View style={styles.infoRow}>
 
-            <ThemedText style={styles.labelBold}>Email: </ThemedText>
-            <ThemedText style={styles.label}>{user?.email || 'Guest'}</ThemedText>
-          </View>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>Name: </ThemedText>
-            <ThemedText style={styles.label}>{profile?.full_name || 'No name set'}</ThemedText>
-          </View>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>Age: </ThemedText>
-            <ThemedText style={styles.label}>{profile?.user_age || 'No age set'}</ThemedText>
-          </View>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>Location: </ThemedText>
-            <ThemedText style={styles.label}>{profile?.location || 'No location set'}</ThemedText>
-          </View>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>Bio: </ThemedText>
-            <ThemedText style={styles.label}>{profile?.user_bio || 'No bio made'}</ThemedText>
+          <ThemedText type="title" style={styles.heading}>
+            {profile?.username || user?.email || 'Guest'}
+          </ThemedText>
 
+          <View style={[styles.infoBox, { backgroundColor, opacity: 0.7, borderColor }]}>
+            <ProfileRow label="Email" value={user?.email} />
+            <ProfileRow label="Name" value={profile?.full_name} />
+            <ProfileRow label="Age" value={profile?.user_age} />
+            <ProfileRow label="Location" value={profile?.location} />
+            <ProfileRow label="Bio" value={profile?.user_bio} />
           </View>
-        </ThemedView>
 
-        {/* Gallery function to add when functionality available */}
-        {/* <Button
-          title="Open Gallery"
-          buttonStyle={styles.button}
-          titleStyle={styles.buttonText}
-          onPress={() => router.push('/profile/gallery')}
-        /> */}
-
-          <Button
-            title="Edit Profile"
-            buttonStyle={[styles.button, {backgroundColor}, {opacity: 0.8}]}
-            titleStyle={[styles.buttonText, {color: textColor}]}
-            onPress={() => router.push('/profile/edit')}
-          />
-          <Button
-            title="Sign Out"
-            buttonStyle={[styles.button, {backgroundColor}, styles.signOutButton, {opacity: 0.8}]}
-            titleStyle={[styles.buttonText, {color: textColor}]}
-            onPress={handleSignOut}
-          />
-        </ScrollView>
+          <View style={styles.buttonsContainer}>
+            <Button
+              title="Edit Profile"
+              buttonStyle={[styles.button, { backgroundColor }]}
+              titleStyle={{ color: textColor }}
+              onPress={() => router.push('/profile/edit')}
+            />
+            <Button
+              title="Sign Out"
+              buttonStyle={[styles.button, { backgroundColor }]}
+              titleStyle={{ color: textColor }}
+              onPress={handleSignOut}
+            />
+          </View>
+        </View>
       </SafeAreaView>
     </ImageBackground>
   );
 }
+
+const ProfileRow = ({ label, value }: { label: string; value?: string }) => (
+  <View style={styles.infoRow}>
+    <ThemedText style={styles.labelBold}>{label}:</ThemedText>
+    <ThemedText style={styles.label}>{value || 'Not set'}</ThemedText>
+  </View>
+);
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -127,80 +106,61 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
-  container: {
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
-  },
-  heading: {
-    marginBottom: 20,
-    lineHeight: 40,
-    textAlign: 'center',
+    paddingHorizontal: 20,
   },
   image: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    marginBottom: 20,
-    borderWidth: 3,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    marginBottom: 16,
+    borderWidth: 2,
     borderColor: '#fff',
-
-    // Drop shadow (iOS)
-
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
+  },
+  heading: {
+    fontSize: 22,
+    fontWeight: '600',
+    marginBottom: 16,
+    textAlign: 'center',
   },
   infoBox: {
-    width: '90%',
-    padding: 20,
-    marginBottom: 10,
+    width: '100%',
+    padding: 16,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#fff',
+    marginBottom: 20,
   },
   infoRow: {
     flexDirection: 'row',
-   // fontFamily: 'Inter_400Regular',
-   
-    justifyContent: 'flex-start',
-    alignContent: 'center',
-    marginBottom: 5,
-  },
-  label: {
-    fontFamily: 'Inter_400Regular',
-        fontSize: 16,
-        opacity: 1,
-    
+    justifyContent: 'space-between',
+    marginVertical: 4,
   },
   labelBold: {
-    fontFamily: 'Inter_400Regular',
     fontWeight: 'bold',
-    fontSize: 16,
-    opacity: 1,
+  },
+  label: {
+    flexShrink: 1,
+    textAlign: 'right',
+    fontFamily: 'Inter_400Regular',
+  },
+  buttonsContainer: {
+    width: '100%',
+    gap: 10,
   },
   button: {
-    width: '80%',
     borderRadius: 8,
-    padding: 10,
-    //backgroundColor: '#4F7942',
-    backgroundColor: '#000',
-    marginBottom: 10,
+    paddingVertical: 12,
+    width: '50%',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
-    
+     alignSelf: 'center'
   },
-  signOutButton: {
-    //backgroundColor: '#e63946',
-    
-  },
-  buttonText: {
-    fontSize: 14
-    ,
-    fontFamily: 'Inter_400Regular',
-    textAlign: 'center',
-    width: '100%',
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
