@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Pressable, StyleSheet, Button } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Button } from '@rneui/themed';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -69,7 +70,10 @@ function RideDetailsPanel() {
 
       <ThemedView style={styles.spaceContainer} />
 
-      <Button title="Join" />
+      <Button 
+      title="Join"
+      buttonStyle={styles.button}
+      titleStyle={styles.buttonText}  />
     </ThemedView>
   );
 }
@@ -153,6 +157,20 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 40,
     backgroundColor: '#ccc',
+  },
+  button: {
+    width: '60%',
+    borderRadius: 10,
+    padding: 12,
+    backgroundColor: '#4F7942',
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  buttonText: {
+    textAlign: 'center',
+    width: '100%',
   },
 });
 
