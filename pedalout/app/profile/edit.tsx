@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ScrollView, View, Alert, Image, ActivityIndicator, Pressable } from 'react-native';
+import { ThemedText } from '@/components/ThemedText';
 import { supabase } from '../../lib/supabase';
 import { UserContext } from '../context/UserContext';
 import { StyleSheet } from 'react-native';
@@ -170,7 +171,9 @@ export default function EditUser() {
           </Pressable>
         </View>
         <View style={{ alignItems: 'center' }}>
-          <Text style={styles.text}>Edit Your Profile!</Text>
+                    <ThemedText type="title" style={styles.heading}>
+                      Edit your profile!
+                    </ThemedText>
         </View>
 
         <View style={{ alignItems: 'center', marginTop: 20 }}>
@@ -305,7 +308,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   button: {
-    width: '90%',
+    width: '60%',
     borderRadius: 10,
     padding: 12,
     backgroundColor: '#4F7942',
