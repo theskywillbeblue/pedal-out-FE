@@ -37,7 +37,7 @@ export default function RideDetails() {
       <ParallaxScrollView
         headerImage={
           <View style={styles.imageContainer}>
-            <Image source={{ uri: parsedRide.ride_img_url }} style={styles.headerImage} resizeMode="cover" />
+            <Image source={{ uri: parsedRide.ride_img_url || 'https://images.pexels.com/photos/1174106/pexels-photo-1174106.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}} style={styles.headerImage} resizeMode="cover" />
             <TouchableOpacity
   onPress={handleLongPress}
   activeOpacity={0.9}
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   headerImage: {
     width: '100%',
     height: '100%',
+    resizeMode: 'cover',
   },
   floatingMap: {
     position: 'absolute',

@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   text: {
+    fontFamily: 'Inter_400Regular',
     fontSize: 40,
     color: 'white',
   },
