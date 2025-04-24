@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 16,
     paddingLeft: 20,
-    padding: 10,
+    padding: 5,
   },
   headerImage: {
     color: '#808080',

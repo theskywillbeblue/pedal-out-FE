@@ -8,6 +8,8 @@ import {
   Platform,
   View,
   Modal,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
@@ -102,7 +104,6 @@ export default function PostRide(props: PostRideProps) {
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const borderColor = useThemeColor({}, 'text');
-
   return (
     <ThemedView style={styles.formContainer}>
       <Formik

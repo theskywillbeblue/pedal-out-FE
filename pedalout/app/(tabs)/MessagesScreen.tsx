@@ -116,12 +116,16 @@ export default function TabFourScreen() {
           {chatImages.map((image, index) => {
             return (
               <View key={index} style={styles.avatarPlaceholder}>
-          <TouchableOpacity key={index} onPress={() => handleChatChange(index)} style={styles.avatarWrapper}>
-  <View style={styles.avatarOverlay}>
-    <Image source={{ uri: image }} style={styles.avatarImage} />
-    <Text style={styles.avatarName}>{chatPartners[index]}</Text>
-  </View>
-</TouchableOpacity>
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleChatChange(index)}
+                  style={styles.avatarWrapper}
+                >
+                  <View style={styles.avatarOverlay}>
+                    <Image source={{ uri: image }} style={styles.avatarImage} />
+                    <Text style={styles.avatarName}>{chatPartners[index]}</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             );
           })}
@@ -167,7 +171,7 @@ const styles = StyleSheet.create({
   avatarWrapper: {
     width: 70,
     height: 70,
-    
+    marginTop: 5,
   },
   avatarOverlay: {
     position: 'relative',
