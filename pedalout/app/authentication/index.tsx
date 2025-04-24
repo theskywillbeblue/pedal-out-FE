@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
   image: {
     width: '90%',
     aspectRatio: 1,
-    maxHeight: 400,
-    marginBottom: 30,
+    maxHeight: 350,
+    marginBottom: 5,
     alignSelf: 'center',
   },
   inputWrapper: {
