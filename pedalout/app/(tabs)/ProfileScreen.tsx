@@ -9,13 +9,11 @@ import {
   StatusBar,
 } from 'react-native';
 import { Button } from '@rneui/themed';
-import { useContext, useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useContext } from 'react';
 import { UserContext } from '@/app/context/UserContext';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -62,40 +60,33 @@ export default function ProfileScreen() {
             style={styles.image}
             resizeMode="cover"
           />
+        <View style={styles.infoBox}>
+          <View style={styles.infoRow}>
 
-          <View style={styles.infoBox}>
-            <View style={styles.infoRow}>
-              <ThemedText style={styles.label}>Email: </ThemedText>
-              <ThemedText type="tabText">{user?.email || 'Guest'}</ThemedText>
-            </View>
-            <View style={styles.infoRow}>
-              <ThemedText style={styles.label}>Name: </ThemedText>
-              <ThemedText type="tabText">
-                {profile?.full_name || 'No name set'}
-              </ThemedText>
-            </View>
-            <View style={styles.infoRow}>
-              <ThemedText style={styles.label}>Age: </ThemedText>
-              <ThemedText type="tabText">
-                {profile?.user_age || 'No age set'}
-              </ThemedText>
-            </View>
-            <View style={styles.infoRow}>
-              <ThemedText style={styles.label}>Location: </ThemedText>
-              <ThemedText type="tabText">
-                {profile?.location || 'No location set'}
-              </ThemedText>
-            </View>
-            <View style={styles.infoRow}>
-              <ThemedText style={styles.label}>Bio: </ThemedText>
-              <ThemedText type="tabText">
-                {profile?.user_bio || 'No bio made'}
-              </ThemedText>
-            </View>
+            <ThemedText style={styles.labelBold}>Email: </ThemedText>
+            <ThemedText style={styles.label}>{user?.email || 'Guest'}</ThemedText>
           </View>
+          <View style={styles.infoRow}>
+            <ThemedText style={styles.labelBold}>Name: </ThemedText>
+            <ThemedText style={styles.label}>{profile?.full_name || 'No name set'}</ThemedText>
+          </View>
+          <View style={styles.infoRow}>
+            <ThemedText style={styles.labelBold}>Age: </ThemedText>
+            <ThemedText style={styles.label}>{profile?.user_age || 'No age set'}</ThemedText>
+          </View>
+          <View style={styles.infoRow}>
+            <ThemedText style={styles.labelBold}>Location: </ThemedText>
+            <ThemedText style={styles.label}>{profile?.location || 'No location set'}</ThemedText>
+          </View>
+          <View style={styles.infoRow}>
+            <ThemedText style={styles.labelBold}>Bio: </ThemedText>
+            <ThemedText style={styles.label}>{profile?.user_bio || 'No bio made'}</ThemedText>
 
-          {/* Gallery function to add when functionality available */}
-          {/* <Button
+          </View>
+        </View>
+
+        {/* Gallery function to add when functionality available */}
+        {/* <Button
           title="Open Gallery"
           buttonStyle={styles.button}
           titleStyle={styles.buttonText}
@@ -144,6 +135,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 3,
     borderColor: '#fff',
+    // Drop shadow (iOS)
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -155,20 +147,28 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     borderRadius: 10,
-    backgroundColor: '#BEBEBE',
+   
     borderWidth: 3,
     borderColor: '#fff',
   },
   infoRow: {
     flexDirection: 'row',
+   // fontFamily: 'Inter_400Regular',
     justifyContent: 'flex-start',
     alignContent: 'center',
     marginBottom: 5,
   },
   label: {
-    fontFamily: 'HelveticaRoundedBold',
+    fontFamily: 'Inter_400Regular',
+    
     fontSize: 16,
-    color: '#333',
+    
+  },
+  labelBold: {
+    fontFamily: 'Inter_400Regular',
+    fontWeight: 'bold',
+    fontSize: 16,
+    
   },
   button: {
     width: '80%',
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e63946',
   },
   buttonText: {
+    fontFamily: 'Inter_400Regular',
     textAlign: 'center',
     width: '100%',
   },

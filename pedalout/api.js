@@ -110,7 +110,7 @@ async function postCommentOnRideById(ride_id, comment) {
 async function addFriend(username, newFriendUsername) {
   try {
     const response = await supabaseApi.post(`/friends/${username}`, {
-      body: newFriendUsername,
+      followingUsername: newFriendUsername,
     });
     return response.data;
   } catch (err) {
@@ -128,9 +128,9 @@ async function getFriends(username) {
 }
 
 async function removeFriend(username, personToUnfriend) {
-  try {
+  try {    
     const response = await supabaseApi.delete(`/friends/${username}`, {
-      body: personToUnfriend,
+      params: {followingUsername: personToUnfriend},
     });
     return response;
   } catch (err) {
@@ -147,18 +147,54 @@ async function removeAllFriends() {
   }
 }
 
-export default Geocoder;
+async function getAllChatsByUsername(username) {
+	try {
+		const response = await supabaseApi.get(`/chats`, { params: { username } });
+		return response.data;
+	} catch (err) {
+		console.log(err);
+		throw err;
+	}
+}
+
+async function getMessagesByChatId(chatId) {
+	try {
+		const response = await supabaseApi.get(`/chats/${chatId}`);
+		return response.data;
+	} catch (err) {
+		throw err;
+	}
+}
+
+async function postNewMessage(request, chatId) {
+	try {
+    if(chatId) {
+      const response = await supabaseApi.post(`/chats/${chatId}`, request);
+      return response;
+    } else {
+      const response = await supabaseApi.post(`/chats`, request);
+      return response;
+    }
+	} catch (err) {
+		throw err;
+	}
+}
 
 export {
-  getRides,
-  postRide,
-  patchRideById,
-  getCommentsByRideId,
-  postCommentOnRideById,
-  patchCommentById,
-  deleteCommentById,
-  addFriend,
-  getFriends,
-  removeFriend,
-  removeAllFriends,
-};
+	getRides,
+	postRide,
+	patchRideById,
+	getCommentsByRideId,
+	postCommentOnRideById,
+	patchCommentById,
+	deleteCommentById,
+    addFriend,
+	getFriends,
+	removeFriend,
+	removeAllFriends,
+	getAllChatsByUsername,
+	getMessagesByChatId,
+	postNewMessage
+}
+
+export default Geocoder;

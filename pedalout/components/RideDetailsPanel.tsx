@@ -1,112 +1,158 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React from 'react';
+import { View, Pressable, StyleSheet, Button } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedText } from './ThemedText';
-
-import { useThemeColor } from '@/hooks/useThemeColor'; // Import the useThemeColor hook
-import { ThemedView } from '@/components/ThemedView'; // Import ThemedView
+import { ThemedView } from '@/components/ThemedView';
+import ParticipantsArray from './ParticipantsArray';
+import { router, useLocalSearchParams } from 'expo-router';
+import { ScreenHeight } from '@rneui/themed/dist/config';
+import { useState } from 'react';
+import TouchableOpacity from 'react-native-gesture-handler';
 
 function RideDetailsPanel() {
- 
+  const [chatImages, setChatImages] = useState<string[]>([]);
+  const { ride } = useLocalSearchParams();
+  const parsedRide = JSON.parse(ride as string);
+  const formattedDate = new Date(parsedRide.ride_date).toLocaleDateString('en-GB', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+  const formattedTime = new Date(`1970-01-01T${parsedRide.ride_time}Z`).toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
- 
+  const borderColor = useThemeColor({}, 'text');
+  const invertedBorderColor = useThemeColor(
+    { light: '#000', dark: '#fff' },
+    'text',
+  );
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor }]}>
-      
-      <ThemedText> Test</ThemedText>
-      
-      <View style={{ height: 180 }} />
+    <ThemedView style={styles.container}>
+      <ThemedText style={[styles.title, { borderColor }]}>
+        {parsedRide.title}
+      </ThemedText>
+
+      {/* <ThemedText style={[styles.desc2, { borderColor }]}>
+        address from geocode ????
+      </ThemedText> */}
+
+      <ThemedText style={[styles.desc2, { borderColor }]}>
+      {formattedDate} at {formattedTime}
+      </ThemedText>
+
+      <ThemedText style={[styles.desc2, { borderColor }]}>
+        {parsedRide.discipline}
+      </ThemedText>
+
+      <View
+        style={[styles.divider, { borderBottomColor: invertedBorderColor }]}
+      />
+
+      <ThemedText style={[styles.description, { borderColor }]}>
+        {parsedRide.description}
+      </ThemedText>
+
+      <ThemedView style={styles.spaceContainer} />
+
+      <ThemedText style={[styles.desc2, { borderColor }]}>
+       {parsedRide.participants.length}  {parsedRide.participants.length === 1 ? 'participant' : 'participants'}
+      </ThemedText>
+
+        <ParticipantsArray />
+
+      <ThemedView style={styles.spaceContainer} />
+
+      <Button title="Join" />
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-    },
-    title: {
-        fontSize: 16,
+  container: {
+    padding: 0,
+  },
+  title: {
+    fontSize: 18,
+    width: '100%',
+    paddingVertical: 0,
+    paddingHorizontal: 6,
+    borderRadius: 6,
+    lineHeight: 20,
+  },
+  desc2: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 12,
+    width: '100%',
+    height: 25,
+    borderRadius: 6,
+    paddingVertical: 0,
+    paddingHorizontal: 10,
+  },
+  description: {
+    fontFamily: 'Inter_400Regular',
 
-        textAlignVertical: 'top',
-        width: '90%',
-        borderWidth: 1,
-        borderRadius: 6,
-        padding: 10,
-        marginBottom: 8, // Reduced from 16
-      },
-    input: {
-        width: '75%',
-      textAlignVertical: 'top',
-      borderWidth: 1,
-      borderRadius: 6,
-      padding: 10,
-      marginBottom: 8, // Reduced from 16
-      fontSize: 12,
-    },
-    tags: {
-        width: '70%',
-        textAlignVertical: 'top',
-        borderWidth: 1,
-        borderRadius: 6,
-        padding: 5,
-        marginBottom: 8,
-        fontSize: 12,
-      },
-    description: {
-        fontSize: 12,
+    fontSize: 14,
+    width: '100%',
 
-        textAlignVertical: 'top',
-        width: '100%',
-        borderWidth: 1,
-        borderRadius: 6,
-        padding: 10,
-        marginBottom: 8, // Reduced from 16
-      },
-    dateText: {
-      fontSize: 11,
-      padding: 10,
-    },
-    datePicker: {
-        width: '70%',
-        
-      borderWidth: 1,
-      borderRadius: 6,
-      marginBottom: 8, // Reduced from 16
-    },
-    
-  buttonContainer: {
+    borderRadius: 6,
+    paddingVertical: 0,
+    paddingHorizontal: 10,
+  },
+  divider: {
+    borderBottomWidth: 1, // Thickness of the line
+    marginVertical: 12,
+    width: '100%',
+  },
+
+  buttoncontainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginVertical: 0,
   },
-  placeholderButton: {
-    flex: 1,
-  },
-  button: {
-    borderWidth: 1,
+  buttonplaceholder: {
+    width: '48%',
+    height: 36,
+    borderWidth: 0.5,
     borderRadius: 6,
-    padding: 10,
+    justifyContent: 'center',
     alignItems: 'center',
-    flex: 0.3,
-    marginHorizontal: 8,
   },
-  button2: {
-    backgroundColor: '#24A0ED',
-    padding: 10,
-    borderRadius: 6,
-    alignItems: 'center',
-    flex: 0.8,
-    marginHorizontal: 8,
+  buttonplaceholdertext: {
+    fontSize: 14,
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
+  spaceContainer: {
+    marginTop: 2,
+    height: 20,
   },
-  buttonTextDark: {
-    fontSize: 16,
-    textAlign: 'center',
+  modalContent: {
+    borderRadius: 8,
+    padding: 16,
+  },
+  scrollOverlay: {
+    position: 'absolute',
+    top: 80,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    paddingVertical: 10,
+  },
+  avatarContainer: {
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    gap: 16,
+  },
+  avatarPlaceholder: {
+    width: 70,
+    height: 70,
+    borderRadius: 40,
+    backgroundColor: '#ccc',
   },
 });
 
