@@ -5,6 +5,9 @@ import {
   StyleSheet,
   View,
   useColorScheme,
+  Platform,
+  StatusBar,
+  ScrollView,
 } from 'react-native';
 import { Input, Button } from '@rneui/themed';
 import { useRouter } from 'expo-router';
@@ -34,12 +37,8 @@ export default function Auth() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <ThemedText style={styles.heading}>PedalOut</ThemedText>
-
         <Image
-          source={{
-            uri: 'https://cdn.pixabay.com/photo/2013/07/13/13/39/bicycle-161315_960_720.png',
-          }}
+          source={require('../../assets/images/PedalOutMainLogoWhite.png')}
           style={styles.image}
           resizeMode="contain"
         />
@@ -48,7 +47,7 @@ export default function Auth() {
           <Input
             inputStyle={styles.input}
             label="Email"
-            placeholder="email@emailaddress.com"
+            placeholder="email@address.com"
             leftIcon={{ type: 'font-awesome', name: 'envelope' }}
             onChangeText={setEmail}
             value={email}
@@ -71,8 +70,11 @@ export default function Auth() {
           onPress={signInWithEmail}
           loading={loading}
           buttonStyle={styles.signInButton}
-          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333', textAlign: 'center',
-            width: '100%', }}
+          titleStyle={{
+            color: colorScheme === 'dark' ? '#fff' : '#333',
+            textAlign: 'center',
+            width: '100%',
+          }}
         />
 
         <ThemedText style={styles.subtext}>Not a member yet?</ThemedText>
@@ -81,8 +83,11 @@ export default function Auth() {
           title="Sign up!"
           onPress={() => router.push('/authentication/SignUp')}
           buttonStyle={styles.signUpButton}
-          titleStyle={{ color: colorScheme === 'dark' ? '#fff' : '#333', textAlign: 'center',
-            width: '100%', }}
+          titleStyle={{
+            color: colorScheme === 'dark' ? '#fff' : '#333',
+            textAlign: 'center',
+            width: '100%',
+          }}
         />
       </View>
     </SafeAreaView>
@@ -93,23 +98,26 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: 'transparent',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   container: {
     flex: 1,
-    paddingTop: 50,
     padding: 10,
     alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   heading: {
-    fontSize: 40, 
+    fontSize: 40,
     fontFamily: 'HelveticaRoundedBold',
-    marginBottom: 20, 
+    marginBottom: 20,
     lineHeight: 40,
   },
   image: {
-    width: 300,
-    height: 180,
+    width: '90%',
+    aspectRatio: 1,
+    maxHeight: 400,
     marginBottom: 30,
+    alignSelf: 'center',
   },
   inputWrapper: {
     width: '95%',
@@ -119,7 +127,7 @@ const styles = StyleSheet.create({
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 16,
     color: '#fff',
-    marginLeft: 10
+    marginLeft: 10,
   },
   signInButton: {
     width: '80%',
@@ -138,7 +146,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4F7942',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   subtext: {
     marginVertical: 12,
@@ -146,5 +154,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'gray',
     fontFamily: 'HelveticaRoundedBold',
+  },
+  scrollContent: {
+    // flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 10,
   },
 });

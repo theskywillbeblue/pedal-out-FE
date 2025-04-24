@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 10,
     flexDirection: 'row',
-    gap: 16, 
+    gap: 16,
   },
   avatarPlaceholder: {
     width: 70,
@@ -167,3 +167,10 @@ const styles = StyleSheet.create({
     maxWidth: 80,     
     textAlign: 'center',
 }})
+
+  safeArea: {
+    flex: 1,
+    marginTop: Platform.OS === 'android' ? 24 : 0,
+  },
+});
+

@@ -1,4 +1,13 @@
-import { StyleSheet, Image, View, ScrollView } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Image,
+  View,
+  ImageBackground,
+  Platform,
+  StatusBar,
+} from 'react-native';
 import { Button } from '@rneui/themed';
 import { useContext } from 'react';
 import { UserContext } from '@/app/context/UserContext';
@@ -6,7 +15,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -30,23 +39,27 @@ export default function ProfileScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <ThemedText type="title" style={styles.heading}>
-          Welcome,{'\n'}
-          {profile?.username || user?.email || 'Guest'}!
-        </ThemedText>
+    <ImageBackground
+      source={require('../../assets/images/ProfileBackgroundWhite.png')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.4 }}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <ThemedText type="title" style={styles.heading}>
+            Welcome,{'\n'}
+            {profile?.username || user?.email || 'Guest'}!
+          </ThemedText>
 
-        <Image
-          source={{
-            uri:
-              profile?.avatar_img ||
-              'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
-          }}
-          style={styles.image}
-          resizeMode="cover"
-        />
-
+          <Image
+            source={{
+              uri:
+                profile?.avatar_img ||
+                'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
+            }}
+            style={styles.image}
+            resizeMode="cover"
+          />
         <View style={styles.infoBox}>
           <View style={styles.infoRow}>
 
@@ -80,27 +93,31 @@ export default function ProfileScreen() {
           onPress={() => router.push('/profile/gallery')}
         /> */}
 
-        <Button
-          title="Edit Profile"
-          buttonStyle={styles.button}
-          titleStyle={styles.buttonText}
-          onPress={() => router.push('/profile/edit')}
-        />
-        <Button
-          title="Sign Out"
-          buttonStyle={[styles.button, styles.signOutButton]}
-          titleStyle={styles.buttonText}
-          onPress={handleSignOut}
-        />
-      </ScrollView>
-    </SafeAreaView>
+          <Button
+            title="Edit Profile"
+            buttonStyle={styles.button}
+            titleStyle={styles.buttonText}
+            onPress={() => router.push('/profile/edit')}
+          />
+          <Button
+            title="Sign Out"
+            buttonStyle={[styles.button, styles.signOutButton]}
+            titleStyle={styles.buttonText}
+            onPress={handleSignOut}
+          />
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  background: {
+    flex: 1,
   },
   container: {
     alignItems: 'center',
@@ -123,7 +140,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
-    // Drop shadow (Android)
     elevation: 8,
   },
   infoBox: {
@@ -140,6 +156,7 @@ const styles = StyleSheet.create({
    // fontFamily: 'Inter_400Regular',
     justifyContent: 'flex-start',
     alignContent: 'center',
+    marginBottom: 5,
   },
   label: {
     fontFamily: 'Inter_400Regular',
@@ -164,7 +181,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   signOutButton: {
-    width: '80%',
     backgroundColor: '#e63946',
   },
   buttonText: {
