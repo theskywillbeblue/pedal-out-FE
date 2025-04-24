@@ -8,6 +8,7 @@ export default function ParticipantsArray() {
     const { ride } = useLocalSearchParams();
     const parsedRide = JSON.parse(ride as string);
     const [participantImages, setParticipantImages] = useState([]);
+    const router = useRouter();
 
     const participants = parsedRide.participants;
     
@@ -38,9 +39,8 @@ export default function ParticipantsArray() {
 
 
     function handleParticipantProfileClick(index) {
-        const router = useRouter();
         const clickedProfileUsername = participants[index];
-        router.push({pathname: '../app/FriendsProfile', params: {username: clickedProfileUsername}});
+        router.push({pathname: 'FriendsProfile', params: {username: clickedProfileUsername}});
     }
 
     return (

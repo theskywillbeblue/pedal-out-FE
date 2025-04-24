@@ -65,7 +65,7 @@ import { Platform } from 'react-native';
 			username: user
 		}
 	  
-		postNewMessage(openedMessage, messageRequest)
+		postNewMessage(messageRequest, openedMessage,)
 		  .then(() => {
 			const newFormattedMessage: Message = {
 			  _id: messages.length + 1,
@@ -107,9 +107,9 @@ import { Platform } from 'react-native';
 				backgroundImage={
 					'https://s1.at.atcdn.net/wp-content/uploads/2024/07/HERO-Northern-Rivers-Rail-Trail-2.jpg'
 				}
-				showEmoji={true}
+				showEmoji={false}
 				onPressEmoji={() => console.log('Emoji Button Pressed..')}
-				showAttachment={true}
+				showAttachment={false}
 				onPressAttachment={() => console.log('Attachment Button Pressed..')}
 				timeContainerColor='grey'
 				timeContainerTextColor='black'

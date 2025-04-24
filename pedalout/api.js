@@ -110,7 +110,7 @@ async function postCommentOnRideById(ride_id, comment) {
 async function addFriend(username, newFriendUsername) {
   try {
     const response = await supabaseApi.post(`/friends/${username}`, {
-      body: newFriendUsername,
+      followingUsername: newFriendUsername,
     });
     return response.data;
   } catch (err) {
@@ -128,9 +128,9 @@ async function getFriends(username) {
 }
 
 async function removeFriend(username, personToUnfriend) {
-  try {
+  try {    
     const response = await supabaseApi.delete(`/friends/${username}`, {
-      body: personToUnfriend,
+      params: {followingUsername: personToUnfriend},
     });
     return response;
   } catch (err) {
@@ -149,9 +149,7 @@ async function removeAllFriends() {
 
 async function getAllChatsByUsername(username) {
 	try {
-		// console.log('in the api')
 		const response = await supabaseApi.get(`/chats`, { params: { username } });
-		// console.log(response.data);
 		return response.data;
 	} catch (err) {
 		console.log(err);
@@ -168,10 +166,15 @@ async function getMessagesByChatId(chatId) {
 	}
 }
 
-async function postNewMessage(chatId, request) {
+async function postNewMessage(request, chatId) {
 	try {
-		const response = await supabaseApi.post(`/chats/${chatId}`, request);
-		return response;
+    if(chatId) {
+      const response = await supabaseApi.post(`/chats/${chatId}`, request);
+      return response;
+    } else {
+      const response = await supabaseApi.post(`/chats`, request);
+      return response;
+    }
 	} catch (err) {
 		throw err;
 	}

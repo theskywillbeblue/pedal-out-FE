@@ -31,7 +31,7 @@ export default function RideDetails() {
 
   return (
     <ThemedSafeAreaView>
-      <Pressable style={styles.closeButton} onPress={() => router.back()}>
+      <Pressable style={styles.closeButton} onPress={() => router.replace('/')}>
         <Text style={styles.closeText}>✕</Text>
       </Pressable>
       <ParallaxScrollView

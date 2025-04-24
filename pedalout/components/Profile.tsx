@@ -60,10 +60,11 @@ export default function Profile({ navigation }: { navigation: any }) {
         {profile?.username || user?.email || 'Guest'}!
       </Text>
 
+
       <Image
         source={{
           uri:
-            profile?.avatar_img ||
+            profile.avatar_img ? profile.avatar_img :
             'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
         }}
         style={styles.image}
