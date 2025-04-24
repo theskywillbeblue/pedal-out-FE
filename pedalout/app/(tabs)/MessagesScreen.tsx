@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
   avatarWrapper: {
     width: 70,
     height: 70,
-    marginTop: 5,
   },
   avatarOverlay: {
     position: 'relative',

@@ -30,8 +30,8 @@ export default function MapScreen() {
           longitude: isIndividualRide
             ? rides[0].ride_location.lng
             : userLng || -1.8808,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.001,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
         }}
       >
         {/*  Map through rides and put marker details on map */}

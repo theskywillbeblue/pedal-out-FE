@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     top: 0,
-    right: 20,
+    right: 10,
   },
   closeButton: {
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -282,10 +282,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 24,
   },
-  container: {
-    marginTop: 40,
-    padding: 12,
-  },
+
   verticallySpaced: {
     // paddingTop: 2,
     // paddingBottom: 2,
@@ -295,8 +292,8 @@ const styles = StyleSheet.create({
     marginTop:  0,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 170,
+    height: 170,
     borderRadius: 100,
     marginBottom: 10,
   },
@@ -308,16 +305,17 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   button: {
-    width: '60%',
+    width: '65%',
     borderRadius: 10,
-    padding: 12,
-    backgroundColor: '#4F7942',
+    padding: 10,
+    backgroundColor: '#1B4D3E',
     marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   updateButton: {
-    backgroundColor: '#e63946',
+    backgroundColor: '#007AFF',
   },
   buttonText: {
     textAlign: 'center',

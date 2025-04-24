@@ -142,10 +142,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   updateButton: {
-    width: '80%',
+    width: '60%',
     borderRadius: 10,
     padding: 12,
-    backgroundColor: '#4F7942',
+    backgroundColor: '#1B4D3E',
     justifyContent: 'center',
     alignItems: 'center',
   },
