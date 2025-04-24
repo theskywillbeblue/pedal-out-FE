@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, View, Alert, Image, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Alert, Image, ActivityIndicator, Pressable } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { UserContext } from '../context/UserContext';
 import { StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Input, Text, Button } from '@rneui/themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 
-
 export default function EditUser() {
+  const navigation = useNavigation();
   const { user, profile, refreshProfile } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
@@ -159,6 +160,14 @@ export default function EditUser() {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 60 }}
         keyboardShouldPersistTaps="handled"
       >
+        <View style={styles.closeButtonContainer}>
+          <Pressable
+            style={styles.closeButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.closeText}>✕</Text>
+          </Pressable>
+        </View>
         <View style={{ alignItems: 'center' }}>
           <Text style={styles.text}>Edit Your Profile!</Text>
         </View>
@@ -228,7 +237,6 @@ export default function EditUser() {
             autoCapitalize="none"
           />
         </View>
-
         <View style={[styles.verticallySpaced, styles.mt20, { alignItems: 'center' }]}>
           <Button
             title="Set your location"
@@ -236,7 +244,6 @@ export default function EditUser() {
             titleStyle={styles.buttonText}
             onPress={() => router.push('/profile/locationSetterMap')}
           />
-
           <Button
             title={loading ? 'Updating...' : 'Update'}
             buttonStyle={[styles.button, styles.updateButton]}
@@ -251,6 +258,26 @@ export default function EditUser() {
 }
 
 const styles = StyleSheet.create({
+  closeButtonContainer: {
+    flex: 1,
+    position: 'absolute',
+    top: 50,
+    right: 20,
+  },
+  closeButton: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  closeText: {
+    color: '#fff',
+    fontSize: 24,
+    lineHeight: 24,
+  },
   container: {
     marginTop: 40,
     padding: 12,

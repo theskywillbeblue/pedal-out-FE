@@ -140,14 +140,16 @@ export default function TabFourScreen() {
 const styles = StyleSheet.create({
   scrollOverlay: {
     position: 'absolute',
-    top: 80,
+    top: 60,
     left: 0,
     right: 0,
     zIndex: 10,
     paddingVertical: 10,
+    height: 110,
   },
   avatarContainer: {
     paddingHorizontal: 16,
+    marginTop: 10,
     flexDirection: 'row',
     gap: 16,
   },
@@ -156,6 +158,38 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 40,
     backgroundColor: '#ccc',
+  },
+
+  avatarWrapper: {
+    width: 70,
+    height: 70,
+    marginHorizontal: 8,
+  },
+  avatarOverlay: {
+    position: 'relative',
+    width: 70,
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarImage: {
+    width: 70,
+    height: 70,
+    borderRadius: 40,
+    backgroundColor: '#ccc',
+  },
+  avatarName: {
+    position: 'absolute',
+    top: 28,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    padding: 2,
+    color: 'white',
+    fontSize: 9,
+    paddingHorizontal: 4,
+    borderRadius: 4,
+    overflow: 'hidden',
+    maxWidth: 80,
+    textAlign: 'center',
   },
   safeArea: {
     flex: 1,

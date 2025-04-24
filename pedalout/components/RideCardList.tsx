@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   participantCount: {
-    color: '#fff'
+    color: '#fff',
+    paddingLeft: 5,
   },
 });

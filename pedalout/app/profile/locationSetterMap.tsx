@@ -73,6 +73,15 @@ export default function LocSetMap() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.closeButtonContainer}>
+        {/* Floating X Button - we can add this to Sign up page too? */}
+        <Pressable
+          style={styles.closeButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.closeText}>✕</Text>
+        </Pressable>
+      </View>
       <MapView
         style={styles.smallMap}
         initialRegion={{
@@ -105,6 +114,26 @@ export default function LocSetMap() {
 }
 
 const styles = StyleSheet.create({
+  closeButtonContainer: {
+    flex: 1,
+    position: 'absolute',
+    top: 50,
+    right: 20,
+  },
+  closeButton: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  closeText: {
+    color: '#fff',
+    fontSize: 24,
+    lineHeight: 24,
+  },
   container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   smallMap: {
     width: '100%',
