@@ -195,4 +195,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Platform.OS === 'android' ? 24 : 0,
   },
+  background: {
+    flex: 1,
+  },
 });
