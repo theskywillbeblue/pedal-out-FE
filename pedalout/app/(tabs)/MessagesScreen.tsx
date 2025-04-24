@@ -1,4 +1,12 @@
-import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import FloatingSearchBar from '../../components/ChatSearch';
 import ChatComponent from '@/components/Chat';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -22,52 +30,55 @@ export default function TabFourScreen() {
 
   useEffect(() => {
     getAllChatsByUsername(loggedInUser)
-    .then((res) => {
-      const returnedChatInfo = res.chatInfo;
-      setChatInfo(returnedChatInfo);
-      const myChatIds = returnedChatInfo.map((chat) => {
-        return chat[0];
+      .then((res) => {
+        const returnedChatInfo = res.chatInfo;
+        setChatInfo(returnedChatInfo);
+        const myChatIds = returnedChatInfo.map((chat) => {
+          return chat[0];
+        });
+        setChatIds(myChatIds);
+        setOpenMessage(myChatIds[0]);
+        const myChatPartners = returnedChatInfo.map((chat) => {
+          return chat[1];
+        });
+        setChatPartners(myChatPartners);
+        getChatPartnerAvatars(myChatPartners);
       })
-      setChatIds(myChatIds);
-      setOpenMessage(myChatIds[0]);
-      const myChatPartners = returnedChatInfo.map((chat) => {
-        return chat[1];
+      .catch((err) => {
+        setError(err);
+        throw err;
       })
-      setChatPartners(myChatPartners);
-      getChatPartnerAvatars(myChatPartners);
-    })
-    .catch((err) => {
-      setError(err);
-      throw err;
-    })
-    .finally(() => {
-      setLoading(false);
-    })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [loggedInUser]);
 
   async function getChatPartnerAvatars(chatPartners) {
     try {
       const avatarPromises = chatPartners.map(async (chatPartner) => {
         const { data, error } = await supabase
-                  .from('user_profile')
-                  .select('avatar_img')
-                  .eq('username', chatPartner)
-                  .single();
-        
-        if(error) {
-          console.error(`Error fetching avatar for ${chatPartner}:`, error.message);
+          .from('user_profile')
+          .select('avatar_img')
+          .eq('username', chatPartner)
+          .single();
+
+        if (error) {
+          console.error(
+            `Error fetching avatar for ${chatPartner}:`,
+            error.message,
+          );
           return null;
         }
-          
+
         return data?.avatar_img || null;
       });
-        const avatars = await Promise.all(avatarPromises);
-        const filteredAvatars = avatars.filter(Boolean);
-        setChatImages(filteredAvatars);
+      const avatars = await Promise.all(avatarPromises);
+      const filteredAvatars = avatars.filter(Boolean);
+      setChatImages(filteredAvatars);
     } catch (err) {
       console.error('Failed to fetch chat partner avatars:', err);
     }
-}
+  }
 
   function handleChatChange(index: number) {
     setOpenMessage(chatIds[index]);
@@ -80,37 +91,39 @@ export default function TabFourScreen() {
     return <Text>Houston, we have a problem!</Text>;
   }
 
-	return (
-	
-			<SafeAreaProvider>
+  return (
+    <SafeAreaProvider>
       <FloatingSearchBar />
       <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.scrollOverlay}
-          contentContainerStyle={styles.avatarContainer}
-        >
-         {chatImages.map((image, index) => (
-         <TouchableOpacity key={index} onPress={() => handleChatChange(index)} style={styles.avatarWrapper}>
-         <View style={styles.avatarOverlay}>
-           <Image source={{ uri: image }} style={styles.avatarImage} />
-           <Text style={styles.avatarName}>{chatPartners[index]}</Text>
-         </View>
-       </TouchableOpacity>
-))}
-         
-        </ScrollView>
-        {openedMessage && chatInfo.length > 0 && (
-          <ChatComponent 
-            openedMessage={openedMessage} 
-            user={loggedInUser} 
-            chatPartner={chatInfo.find(([chat]) => chat === openedMessage)?.[1] || ''}
-          />
-        )}
-			</SafeAreaProvider>
-		
-	);
-
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.scrollOverlay}
+        contentContainerStyle={styles.avatarContainer}
+      >
+        {chatImages.map((image, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => handleChatChange(index)}
+            style={styles.avatarWrapper}
+          >
+            <View style={styles.avatarOverlay}>
+              <Image source={{ uri: image }} style={styles.avatarImage} />
+              <Text style={styles.avatarName}>{chatPartners[index]}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      {openedMessage && chatInfo.length > 0 && (
+        <ChatComponent
+          openedMessage={openedMessage}
+          user={loggedInUser}
+          chatPartner={
+            chatInfo.find(([chat]) => chat === openedMessage)?.[1] || ''
+          }
+        />
+      )}
+    </SafeAreaProvider>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -164,13 +177,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     borderRadius: 4,
     overflow: 'hidden',
-    maxWidth: 80,     
+    maxWidth: 80,
     textAlign: 'center',
-}})
-
+  },
   safeArea: {
     flex: 1,
     marginTop: Platform.OS === 'android' ? 24 : 0,
   },
 });
-
