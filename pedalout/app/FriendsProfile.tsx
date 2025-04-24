@@ -17,7 +17,7 @@ import { addFriend, getAllChatsByUsername, getFriends, postNewMessage, removeFri
 import { UserContext } from './context/UserContext';
 import { useColorScheme } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
-
+import { ImageBackground } from 'react-native';
 export default function Friendsfriend() {
   const navigation = useNavigation();
   const params = useLocalSearchParams();
@@ -32,11 +32,11 @@ export default function Friendsfriend() {
   const { profile } = useContext(UserContext);
   const loggedInUser = profile.username;
 
-   const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme();
   
-    const borderColor = useThemeColor({ light: '#ccc', dark: '#444' });
-    const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
-    const textColor = colorScheme === 'dark' ?   '#fff': '#000';
+  const borderColor = useThemeColor({ light: '#ccc', dark: '#444' });
+  const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
+  const textColor = colorScheme === 'dark' ? '#fff': '#000';
 
   useEffect(() => {
     getFriends(friendName)
@@ -93,10 +93,14 @@ export default function Friendsfriend() {
   };
 
   return (
+    <ImageBackground
+          source={require('../assets/images/ProfileBackgroundWhiteLow.png')}
+          style={styles.background}
+          imageStyle={{ opacity: 0.3 }}
+        >
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.closeButtonContainer}>
-          {/* Floating X Button - we can add this to Sign up page too? */}
           <Pressable
             style={styles.closeButton}
             onPress={() => navigation.goBack()}
@@ -104,43 +108,42 @@ export default function Friendsfriend() {
             <Text style={styles.closeText}>✕</Text>
           </Pressable>
         </View>
-        <ThemedText type="title" style={styles.heading}>
-          {friendProfile?.full_name}
-        </ThemedText>
 
-        <Image
-          source={{
-            uri:
-            friendProfile?.avatar_img ||
-              'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
-          }}
-          style={styles.image}
-          resizeMode="cover"
-        />
+        <View style={styles.profileHeader}>
+          <Image
+            source={{
+              uri: friendProfile?.avatar_img ||
+                'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
+            }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+          <ThemedText type="title" style={styles.name}>
+          {friendProfile?.username}
+          </ThemedText>
+        </View>
 
-        <View style={[styles.infoBox, {backgroundColor}, {opacity: 0.7}]}>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>@{friendProfile?.username}</ThemedText>
-          </View>
-          <View style={styles.infoRow}>
-            
-            <ThemedText style={styles.label}>
-              {friendProfile?.full_name || 'No name set'} / {friendProfile?.user_age || 'No age set'}
-            </ThemedText>
-          </View>
+        <View style={[styles.infoBox, { backgroundColor: backgroundColor, opacity: 0.7 }]}>
           
-          
-          <View style={styles.infoRow}>
 
-            <ThemedText style={styles.label}>
-              {friendProfile?.location || 'No location set'}
-            </ThemedText>
-          </View>
           <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>Bio: </ThemedText>
-            <ThemedText style={styles.label}>
-              {friendProfile?.user_bio || 'No bio made'}
-            </ThemedText>
+            <ThemedText style={styles.labelBold}>Name:</ThemedText>
+            <ThemedText style={styles.labelRight}>{friendProfile?.full_name || 'No name set'}</ThemedText>
+          </View>
+
+          <View style={styles.infoRow}>
+            <ThemedText style={styles.labelBold}>Age:</ThemedText>
+            <ThemedText style={styles.labelRight}>{friendProfile?.user_age || 'No age set'}</ThemedText>
+          </View>
+
+          <View style={styles.infoRow}>
+            <ThemedText style={styles.labelBold}>Location:</ThemedText>
+            <ThemedText style={styles.labelRight}>{friendProfile?.location || 'No location set'}</ThemedText>
+          </View>
+
+          <View style={styles.infoRow}>
+            <ThemedText style={styles.labelBold}>Bio:</ThemedText>
+            <ThemedText style={styles.labelRight}>{friendProfile?.user_bio || 'No bio made'}</ThemedText>
           </View>
         </View>
 
@@ -152,31 +155,14 @@ export default function Friendsfriend() {
         />
       </ScrollView>
     </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  closeButtonContainer: {
+  background: {
     flex: 1,
-    position: 'absolute',
-    top: 50,
-    right: 20,
   },
-  closeButton: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    borderRadius: 20,
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 10,
-  },
-  closeText: {
-    color: '#fff',
-    fontSize: 24,
-    lineHeight: 24,
-  },
-
   safeArea: {
     flex: 1,
     backgroundColor: 'transparent',
@@ -185,25 +171,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
-  heading: {
-    marginTop: 20,
+  profileHeader: {
+    alignItems: 'center',
     marginBottom: 20,
-    lineHeight: 40,
+    marginTop: 100, // Ensures the profile header doesn't touch the top
+  },
+  name: {
+    marginTop: 10,
     textAlign: 'center',
+    fontSize: 22, // Adjusted to match user profile size
+    fontFamily: 'HelveticaRoundedBold',
   },
   image: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    marginBottom: 20,
+    width: 120, // Smaller size for the friends page
+    height: 120, // Smaller size for the friends page
+    borderRadius: 60,
+    marginBottom: 10, // Adjusted for consistent spacing
     borderWidth: 3,
     borderColor: '#fff',
-    // Drop shadow (iOS)
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
-    // Drop shadow (Android)
     elevation: 8,
   },
   infoBox: {
@@ -218,38 +207,55 @@ const styles = StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignContent: 'center',
+    alignItems: 'center',
   },
   label: {
     fontFamily: 'Inter_400Regular',
-        fontSize: 16,
-        opacity: 1,
-    
+    fontSize: 16,
+    opacity: 1,
   },
   labelBold: {
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'HelveticaRoundedBold',
+
     fontWeight: 'bold',
     fontSize: 16,
     opacity: 1,
+  },
+  labelRight: {
+    flex: 1,
+    textAlign: 'right',
+    fontFamily: 'Inter_400Regular',
+    fontSize: 16,
   },
   button: {
     width: '80%',
     borderRadius: 8,
     padding: 10,
-    //backgroundColor: '#4F7942',
     backgroundColor: '#000',
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    
-  },
-  signOutButton: {
-    width: '80%',
-    backgroundColor: '#e63946',
   },
   buttonText: {
     textAlign: 'center',
     width: '100%',
+  },
+  closeButtonContainer: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+  },
+  closeButton: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  closeText: {
+    color: '#fff',
+    fontSize: 24,
   },
 });
