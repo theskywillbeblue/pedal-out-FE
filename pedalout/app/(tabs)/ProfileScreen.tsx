@@ -40,7 +40,7 @@ export default function ProfileScreen() {
 
   return (
     <ImageBackground
-      source={require('../../assets/images/ProfileBackgroundWhite.png')}
+      source={require('../../assets/images/ProfileBackgroundWhiteLow.png')}
       style={styles.background}
       imageStyle={{ opacity: 0.4 }}
     >
@@ -135,7 +135,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 3,
     borderColor: '#fff',
+
     // Drop shadow (iOS)
+
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -160,8 +162,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: 'Inter_400Regular',
-    
-    fontSize: 16,
+        fontSize: 16,
     
   },
   labelBold: {

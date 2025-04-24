@@ -5,9 +5,11 @@ import {
   View,
   Image,
   TouchableOpacity,
+  ImageBackground,
   Platform,
+  StatusBar,
 } from 'react-native';
-import FloatingSearchBar from '../../components/ChatSearch';
+import FloatingSearchBar from '../../components/search';
 import ChatComponent from '@/components/Chat';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useContext, useEffect, useState } from 'react';
@@ -18,7 +20,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 export default function TabFourScreen() {
   const { profile } = useContext(UserContext);
-  const loggedInUser = profile.username;
+  const loggedInUser = profile.username || '';
   const [chatInfo, setChatInfo] = useState([]);
   const [chatIds, setChatIds] = useState([]);
   const [chatPartners, setChatPartners] = useState([]);
@@ -92,37 +94,46 @@ export default function TabFourScreen() {
   }
 
   return (
-    <SafeAreaProvider>
-      <FloatingSearchBar />
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollOverlay}
-        contentContainerStyle={styles.avatarContainer}
-      >
-        {chatImages.map((image, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => handleChatChange(index)}
-            style={styles.avatarWrapper}
-          >
-            <View style={styles.avatarOverlay}>
-              <Image source={{ uri: image }} style={styles.avatarImage} />
-              <Text style={styles.avatarName}>{chatPartners[index]}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      {openedMessage && chatInfo.length > 0 && (
-        <ChatComponent
-          openedMessage={openedMessage}
-          user={loggedInUser}
-          chatPartner={
-            chatInfo.find(([chat]) => chat === openedMessage)?.[1] || ''
-          }
-        />
-      )}
-    </SafeAreaProvider>
+    <ImageBackground
+      source={require('../../assets/images/ProfileBackgroundWhite.png')}
+      style={[styles.background, { flex: 1 }]}
+      imageStyle={{ opacity: 0.4 }}
+    >
+      <SafeAreaProvider>
+        <FloatingSearchBar />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.scrollOverlay}
+          contentContainerStyle={styles.avatarContainer}
+        >
+          {chatImages.map((image, index) => {
+            return (
+              <View key={index} style={styles.avatarPlaceholder}>
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleChatChange(index)}
+                >
+                  <Image
+                    source={{ uri: image }}
+                    style={styles.avatarPlaceholder}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        </ScrollView>
+        {openedMessage && chatInfo.length > 0 && (
+          <ChatComponent
+            openedMessage={openedMessage}
+            user={loggedInUser}
+            chatPartner={
+              chatInfo.find(([chat]) => chat === openedMessage)?.[1] || ''
+            }
+          />
+        )}
+      </SafeAreaProvider>
+    </ImageBackground>
   );
 }
 
