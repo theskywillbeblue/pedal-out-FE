@@ -8,12 +8,12 @@ import { UserContext } from './context/UserContext';
 export default function MapScreen() {
   const navigation = useNavigation();
   const params = useLocalSearchParams();
-  const rides = JSON.parse(params.rides); 
+  const rides = JSON.parse(params.rides);
   const { profile } = useContext(UserContext);
   const userLat = parseFloat(profile?.user_coordinate?.lat);
   const userLng = parseFloat(profile?.user_coordinate?.lng);
   const router = useRouter();
-
+  const isIndividualRide = rides.length === 1;
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -24,15 +24,18 @@ export default function MapScreen() {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: userLat || 50.7192,
-          longitude: userLng || -1.8808,
+          latitude: isIndividualRide
+            ? rides[0].ride_location.lat
+            : userLat || 50.7192,
+          longitude: isIndividualRide
+            ? rides[0].ride_location.lng
+            : userLng || -1.8808,
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         }}
       >
         {/*  Map through rides and put marker details on map */}
-        {rides.map((ride) =>  (
-          
+        {rides.map((ride: any) => (
           <Marker
             key={ride.ride_id}
             coordinate={{
@@ -40,17 +43,18 @@ export default function MapScreen() {
               longitude: ride.ride_location.lng,
             }}
           >
-            <Callout onPress={() =>
-              router.push({
-                pathname: '/RideDetails',
-                params: { ride: JSON.stringify(ride) },
-              })
-            }>
+            <Callout
+              onPress={() =>
+                router.push({
+                  pathname: '/RideDetails',
+                  params: { ride: JSON.stringify(ride) },
+                })
+              }
+            >
               <Text>{ride.title}</Text>
             </Callout>
           </Marker>
         ))}
-
       </MapView>
 
       {/* Floating X Button - we can add this to Sign up page too? */}
