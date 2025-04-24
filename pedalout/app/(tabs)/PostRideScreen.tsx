@@ -26,11 +26,11 @@ export default function TabTwoScreen() {
   };
   return (
     <SafeAreaProvider>
-      <ScrollView
+      {/* <ScrollView
         nestedScrollEnabled={false}
         scrollEnabled={!open}
         horizontal={false}
-      >
+      > */}
     
       <ThemedText style={styles.closeText}>Select the location and post your ride</ThemedText>
   
@@ -62,7 +62,7 @@ export default function TabTwoScreen() {
           open={open}
           setOpen={setOpen}
         />
-      </ScrollView>
+      {/* </ScrollView> */}
     </SafeAreaProvider>
   );
 }

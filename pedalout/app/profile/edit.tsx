@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
   closeButtonContainer: {
     flex: 1,
     position: 'absolute',
-    top: 50,
+    top: 0,
     right: 20,
   },
   closeButton: {
@@ -283,12 +283,12 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
+    // paddingTop: 2,
+    // paddingBottom: 2,
     alignSelf: 'stretch',
   },
   mt20: {
-    marginTop: 20,
+    marginTop:  0,
   },
   image: {
     width: 200,

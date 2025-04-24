@@ -20,7 +20,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 export default function TabFourScreen() {
   const { profile } = useContext(UserContext);
-  const loggedInUser = profile.username || '';
+  const loggedInUser = profile?.username || '';
   const [chatInfo, setChatInfo] = useState([]);
   const [chatIds, setChatIds] = useState([]);
   const [chatPartners, setChatPartners] = useState([]);
