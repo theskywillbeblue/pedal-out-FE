@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     fontFamily: 'HelveticaRoundedBold',
   },
   scrollContent: {
-    // flexGrow: 1,
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 10,
