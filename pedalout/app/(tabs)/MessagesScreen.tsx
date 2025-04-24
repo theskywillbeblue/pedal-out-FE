@@ -1,11 +1,11 @@
 import {
   StyleSheet,
-  Platform,
   ScrollView,
   Text,
   View,
   Image,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import FloatingSearchBar from '../../components/ChatSearch';
 import ChatComponent from '@/components/Chat';
