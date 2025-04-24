@@ -63,7 +63,7 @@ function RideDetailsPanel() {
       <ThemedView style={styles.spaceContainer} />
 
       <ThemedText style={[styles.desc2, { borderColor }]}>
-       {parsedRide.participants.length}  {parsedRide.participants.length === 1 ? 'participant' : 'participants'}
+       {parsedRide.participants.length} {parsedRide.participants.length === 1 ? 'participant' : 'participants'}
       </ThemedText>
 
         <ParticipantsArray />
@@ -71,7 +71,7 @@ function RideDetailsPanel() {
       <ThemedView style={styles.spaceContainer} />
 
       <Button 
-      title="Join"
+      title="Join this ride"
       buttonStyle={styles.button}
       titleStyle={styles.buttonText}  />
     </ThemedView>
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 0,
     paddingHorizontal: 6,
+    marginBottom: 5,
     borderRadius: 6,
     lineHeight: 20,
   },
@@ -146,17 +147,6 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 10,
     paddingVertical: 10,
-  },
-  avatarContainer: {
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    gap: 16,
-  },
-  avatarPlaceholder: {
-    width: 70,
-    height: 70,
-    borderRadius: 40,
-    backgroundColor: '#ccc',
   },
   button: {
     width: '60%',
