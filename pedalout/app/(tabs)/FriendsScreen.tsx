@@ -128,7 +128,7 @@ const username = profile.username
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.columnContent}
           >
-            {following.map((followee) => {
+            {following.map((followee, i) => {
               const avatar_img = followingAvatars.find(
                 (entry) => followee in entry,
               )?.[followee];
@@ -137,7 +137,7 @@ const username = profile.username
               )?.[followee];
 
               return (
-                <View key={followee} style={styles.avatarCard}>
+                <View key={i} style={styles.avatarCard}>
                   <TouchableOpacity
                     onPress={() =>
                       router.push({
@@ -174,7 +174,7 @@ const username = profile.username
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.columnContent}
           >
-            {followers.map((follower) => {
+            {followers.map((follower, i) => {
               const avatar_img = followerAvatars.find(
                 (entry) => follower in entry,
               )?.[follower];
@@ -184,7 +184,7 @@ const username = profile.username
 
 
               return (
-                <View key={follower} style={styles.avatarCard}>
+                <View key={i} style={styles.avatarCard}>
                   <TouchableOpacity
                     onPress={() =>
                       router.push({

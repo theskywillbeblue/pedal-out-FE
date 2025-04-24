@@ -108,15 +108,12 @@ export default function TabFourScreen() {
           {chatImages.map((image, index) => {
             return (
               <View key={index} style={styles.avatarPlaceholder}>
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => handleChatChange(index)}
-                >
-                  <Image
-                    source={{ uri: image }}
-                    style={styles.avatarPlaceholder}
-                  />
-                </TouchableOpacity>
+          <TouchableOpacity key={index} onPress={() => handleChatChange(index)} style={styles.avatarWrapper}>
+  <View style={styles.avatarOverlay}>
+    <Image source={{ uri: image }} style={styles.avatarImage} />
+    <Text style={styles.avatarName}>{chatPartners[index]}</Text>
+  </View>
+</TouchableOpacity>
               </View>
             );
           })}
@@ -156,12 +153,13 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 40,
     backgroundColor: '#ccc',
+    overflow: 'hidden',
   },
 
   avatarWrapper: {
     width: 70,
     height: 70,
-    marginHorizontal: 8,
+    
   },
   avatarOverlay: {
     position: 'relative',
@@ -174,19 +172,19 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 40,
-    backgroundColor: '#ccc',
   },
   avatarName: {
     position: 'absolute',
-    top: 28,
+    top: 27,
     backgroundColor: 'rgba(0,0,0,0.9)',
     padding: 2,
     color: 'white',
     fontSize: 9,
-    paddingHorizontal: 4,
-    borderRadius: 4,
+    width: '100%',
+    paddingHorizontal: 6,
+    borderRadius: 0,
     overflow: 'hidden',
-    maxWidth: 80,
+    maxWidth: 70,
     textAlign: 'center',
   },
   safeArea: {
