@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   image: {
+    maxWidth: Platform.OS === 'ios' ? 300 : 300,
     width: '50%',
     aspectRatio: 1,
     maxHeight: 400,
