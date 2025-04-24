@@ -32,8 +32,7 @@ export default function TabTwoScreen() {
         horizontal={false}
       > */}
 
-        showsVerticalScrollIndicator={false}
-      >
+        {/* showsVerticalScrollIndicator={false} */}
    
       <ThemedText style={styles.closeText}>Select the location and post your ride</ThemedText>
   
