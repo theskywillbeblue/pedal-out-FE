@@ -9,7 +9,7 @@ import {
   Platform,
   StatusBar,
 } from 'react-native';
-import FloatingSearchBar from '../../components/search';
+import FloatingSearchBar from '../../components/ChatSearch';
 import ChatComponent from '@/components/Chat';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useContext, useEffect, useState } from 'react';
