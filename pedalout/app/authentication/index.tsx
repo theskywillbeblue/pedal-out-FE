@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     lineHeight: 40,
   },
   image: {
+    maxWidth: Platform.OS === 'ios' ? 330 : 400,
     width: '90%',
     aspectRatio: 1,
     maxHeight: 350,
