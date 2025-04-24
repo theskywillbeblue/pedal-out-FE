@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   image: {
-    width: '70%',
+    width: '50%',
     aspectRatio: 1,
     maxHeight: 400,
     marginBottom: 30,
