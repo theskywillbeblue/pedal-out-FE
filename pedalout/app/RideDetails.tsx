@@ -70,7 +70,7 @@ export default function RideDetails() {
                     latitude: parsedRide.ride_location.lat,
                     longitude: parsedRide.ride_location.lng,
                   }}
-                  title="Hamsterly Forest"
+                  title={parsedRide.title}
                 />
               </MapView>
             </TouchableOpacity>
