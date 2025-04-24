@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+// import { View, ImageBackground, StyleSheet } from 'react-native';
 import Chat from '@codsod/react-native-chat';
 import { getMessagesByChatId, postNewMessage } from '@/api';
 import { KeyboardAvoidingView, Text, StyleSheet } from 'react-native';

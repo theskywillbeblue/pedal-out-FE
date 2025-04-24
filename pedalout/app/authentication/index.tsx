@@ -8,6 +8,7 @@ import {
   Platform,
   StatusBar,
   ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { Input, Button } from '@rneui/themed';
 import { useRouter } from 'expo-router';
@@ -35,62 +36,70 @@ export default function Auth() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Image
-          source={require('../../assets/images/PedalOutMainLogoWhite.png')}
-          style={styles.image}
-          resizeMode="contain"
-        />
-
-        <View style={styles.inputWrapper}>
-          <Input
-            inputStyle={styles.input}
-            label="Email"
-            placeholder="email@address.com"
-            leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-            onChangeText={setEmail}
-            value={email}
-            autoCapitalize="none"
+    <KeyboardAvoidingView
+      style={styles.keyboard}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 45 : 0}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Image
+            source={require('../../assets/images/PedalOutMainLogoWhite.png')}
+            style={styles.image}
+            resizeMode="contain"
           />
-          <Input
-            inputStyle={styles.input}
-            label="Password"
-            placeholder="Password"
-            secureTextEntry
-            leftIcon={{ type: 'font-awesome', name: 'lock' }}
-            onChangeText={setPassword}
-            value={password}
-            autoCapitalize="none"
+
+          <View style={styles.inputWrapper}>
+            <Input
+              inputStyle={styles.input}
+              label="Email"
+              placeholder="email@address.com"
+              leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+              onChangeText={setEmail}
+              value={email}
+              autoCapitalize="none"
+            />
+            <Input
+              inputStyle={styles.input}
+              label="Password"
+              placeholder="Password"
+              secureTextEntry
+              leftIcon={{ type: 'font-awesome', name: 'lock' }}
+              onChangeText={setPassword}
+              value={password}
+              autoCapitalize="none"
+            />
+          </View>
+
+          <Button
+            title="Sign In"
+            onPress={signInWithEmail}
+            loading={loading}
+            buttonStyle={styles.signInButton}
+            titleStyle={{
+              color: colorScheme === 'dark' ? '#fff' : '#333',
+              textAlign: 'center',
+              width: '100%',
+            }}
+          />
+
+          <ThemedText style={styles.subtext}>Not a member yet?</ThemedText>
+
+          <Button
+            title="Sign up!"
+            onPress={() => router.push('/authentication/SignUp')}
+            buttonStyle={styles.signUpButton}
+            titleStyle={{
+              color: colorScheme === 'dark' ? '#fff' : '#333',
+              textAlign: 'center',
+              width: '100%',
+            }}
           />
         </View>
-
-        <Button
-          title="Sign In"
-          onPress={signInWithEmail}
-          loading={loading}
-          buttonStyle={styles.signInButton}
-          titleStyle={{
-            color: colorScheme === 'dark' ? '#fff' : '#333',
-            textAlign: 'center',
-            width: '100%',
-          }}
-        />
-
-        <ThemedText style={styles.subtext}>Not a member yet?</ThemedText>
-
-        <Button
-          title="Sign up!"
-          onPress={() => router.push('/authentication/SignUp')}
-          buttonStyle={styles.signUpButton}
-          titleStyle={{
-            color: colorScheme === 'dark' ? '#fff' : '#333',
-            textAlign: 'center',
-            width: '100%',
-          }}
-        />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -160,5 +169,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 10,
+  },
+  keyboard: {
+    flex: 1,
   },
 });
