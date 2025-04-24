@@ -167,17 +167,14 @@ async function getMessagesByChatId(chatId) {
 }
 
 async function postNewMessage(request, chatId) {
-	try {
-    if(chatId) {
-      const response = await supabaseApi.post(`/chats/${chatId}`, request);
-      return response;
-    } else {
-      const response = await supabaseApi.post(`/chats`, request);
-      return response;
-    }
-	} catch (err) {
-		throw err;
-	}
+  try {
+    const endpoint = chatId ? `/chats/${chatId}` : `/chats`;
+    
+    const response = await supabaseApi.post(endpoint, request);
+    return response;
+  } catch (err) {
+    throw err;
+  }
 }
 
 export {

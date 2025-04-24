@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 // import { View, ImageBackground, StyleSheet } from 'react-native';
 import Chat from '@codsod/react-native-chat';
 import { getMessagesByChatId, postNewMessage } from '@/api';
-import { KeyboardAvoidingView, Text, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Text } from 'react-native';
 import { Platform } from 'react-native';
 
   interface ChatComponentProps {
@@ -60,14 +60,13 @@ import { Platform } from 'react-native';
 	  }
 	  const onSendMessage = (text: string) => {
 
-
 		const messageRequest = {
 			message: text,
 			chatPartner: chatPartner,
 			username: user
 		}
-	  
-		postNewMessage(messageRequest, openedMessage,)
+
+		postNewMessage(messageRequest, openedMessage)
 		  .then(() => {
 			const newFormattedMessage: Message = {
 			  _id: messages.length + 1,
@@ -92,7 +91,9 @@ import { Platform } from 'react-native';
 		keyboardVerticalOffset={Platform.OS === 'ios' ? 45 : 0}>
 			<Chat
 				messages={messages}
-				setMessages={(val) => onSendMessage(val)}
+				setMessages={(val) => {
+					onSendMessage(val)}
+				}
 				themeColor='#4F7942'
 				themeTextColor='white'
 				showSenderAvatar={false}

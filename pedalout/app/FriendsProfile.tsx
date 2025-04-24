@@ -84,51 +84,6 @@ export default function Friendsfriend() {
     }
   };
 
-  const handleChatPress = async () => {
-    try {
-      const {chatInfo} = await getAllChatsByUsername(loggedInUser);
-      const myChatIds = chatInfo.map((chat) => {
-        return chat[0];
-      })
-      const myChatPartners = chatInfo.map((chat) => {
-        return chat[1];
-      })
-
-      setChatInfo(chatInfo);
-      setChatIds(myChatIds);
-      setChatPartners(myChatPartners);
-
-      const existingIndex = myChatPartners.findIndex((partner) => partner === friendName);
-
-      if(existingIndex !== -1) {
-        const existingChatId = myChatIds[existingIndex];
-        router.push({pathname: '/MessagesScreen', params: {chatId: existingChatId}});
-      }
-        else {
-          const messageRequest = {
-            message: "",
-            chatPartner: friendName,
-            username: loggedInUser
-          };
-
-          await postNewMessage(messageRequest);
-
-          const newResult = await getAllChatsByUsername(loggedInUser);
-          const newChatInfo = newResult.chatInfo;
-          const newChatIds = newChatInfo.map((chat) => {
-            return chat[0];
-          })
-          setChatInfo(newChatInfo);
-          setChatIds(newChatIds);
-
-          const newestChatId = newChatIds[newChatIds.length -1];
-          router.push({pathname: '/MessagesScreen', params: {chatId: newestChatId}})
-        }
-      } catch (err) {
-        console.error('Error fetching chat:', err);
-      }
-  }
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -191,12 +146,6 @@ export default function Friendsfriend() {
           buttonStyle={styles.button}
           titleStyle={styles.buttonText}
           onPress={handleFollowPress}
-        />
-        <Button
-          title='Go to Chat'
-          buttonStyle={styles.button}
-          titleStyle={styles.buttonText}
-          onPress={handleChatPress}
         />
       </ScrollView>
     </SafeAreaView>
