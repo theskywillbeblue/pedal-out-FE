@@ -94,11 +94,10 @@ import { Platform, StyleSheet } from 'react-native';
 				setMessages={(val) => {
 					onSendMessage(val)}
 				}
-				themeColor='#4F7942'
+				themeColor='#1B4D3E'
 				themeTextColor='white'
 				showSenderAvatar={false}
 				showReceiverAvatar={true}
-				inputBorderColor='#4F7942'
 				user={{
 					_id: 1,
 					name: user

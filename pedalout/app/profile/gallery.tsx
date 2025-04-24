@@ -12,7 +12,8 @@ export default function UserGallery({ navigation }: any) {
   const router = useRouter();
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}
+    showsVerticalScrollIndicator={false}>
       <Text style={styles.text}>Check out your gallery</Text>
 
       <Image

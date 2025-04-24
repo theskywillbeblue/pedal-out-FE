@@ -30,6 +30,7 @@ export default function TabTwoScreen() {
         nestedScrollEnabled={false}
         scrollEnabled={!open}
         horizontal={false}
+        showsVerticalScrollIndicator={false}
       >
     
       <ThemedText style={styles.closeText}>Select the location and post your ride</ThemedText>
