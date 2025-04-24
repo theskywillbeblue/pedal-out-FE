@@ -4,14 +4,22 @@
     "slug": "pedalout",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "https://cdn.pixabay.com/photo/2021/11/10/07/29/mountain-6783202_1280.png",
+    "icon": "./assets/images/PedalOutLoadingScreen.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+
+    "splash": {
+      "image": "./assets/images/PedalOutLoadingScreen.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.jay-mulholland.pedalout"
     },
+
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
@@ -19,26 +27,30 @@
       },
       "package": "com.jay_mulholland.pedalout"
     },
+
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
+
     "updates": {
       "fallbackToCacheTimeout": 0
     },
+
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "https://cdn.pixabay.com/photo/2021/11/10/07/29/mountain-6783202_1280.png",
+          "image": "./assets/images/PedalOutLoadingScreen.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
       ]
     ],
+
     "experiments": {
       "typedRoutes": true
     }

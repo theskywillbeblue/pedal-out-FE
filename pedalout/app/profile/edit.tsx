@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, View, Alert, Pressable } from 'react-native';
+import { ScrollView, View, Alert, Image, ActivityIndicator, Pressable } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { UserContext } from '../context/UserContext';
 import { StyleSheet } from 'react-native';
@@ -7,15 +7,18 @@ import { useRouter } from 'expo-router';
 import { Input, Text, Button } from '@rneui/themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function EditUser() {
   const navigation = useNavigation();
   const { user, profile, refreshProfile } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
+
   const [displayName, setDisplayName] = useState('');
   const [userAge, setUserAge] = useState('');
   const [userFullName, setUserFullName] = useState('');
-  // const [location, setLocation] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
   const [userBio, setUserBio] = useState('');
   const router = useRouter();
@@ -25,11 +28,103 @@ export default function EditUser() {
       setDisplayName(profile.username || '');
       setUserFullName(profile.full_name || '');
       setUserAge(profile.user_age?.toString() || '');
-      // setLocation(profile.location || '');
       setAvatarUrl(profile.avatar_img || '');
       setUserBio(profile.user_bio || '');
     }
   }, [profile]);
+
+  const pickImageAndUpload = async () => {
+    console.log('Picking image...');
+  
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      Alert.alert('Permission Required', 'Permission to access media library is needed!');
+      return;
+    }
+  
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: 'images',
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7,
+      base64: true,
+    });
+  
+    console.log('Result:', result);
+  
+    if (!result.canceled && result.assets?.length > 0) {
+      setImageUploading(true);
+      const file = result.assets[0];
+      console.log('Uploading file:', file.uri);
+  
+      const fileExt = file.uri.split('.').pop();
+      const fileName = `${user.id}_${Date.now()}.${fileExt}`;
+      const filePath = fileName;
+  
+      try {
+        const base64 = file.base64;
+
+        const byteCharacters = atob(base64);
+        const byteArray = new Uint8Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteArray[i] = byteCharacters.charCodeAt(i);
+        }
+  
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('user-profile-image')
+          .upload(filePath, byteArray, {
+            contentType: 'image/jpeg',
+            upsert: true,
+          });
+  
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          Alert.alert('Upload Error', uploadError.message);
+          setImageUploading(false);
+          return;
+        }
+  
+        console.log('Upload successful:', uploadData);
+  
+        const { data: publicData, error: publicUrlError } = supabase.storage
+          .from('user-profile-image')
+          .getPublicUrl(filePath);
+  
+        if (publicUrlError) {
+          console.error('Public URL error:', publicUrlError);
+          Alert.alert('Error', publicUrlError.message);
+          setImageUploading(false);
+          return;
+        }
+  
+        console.log('Public URL:', publicData?.publicUrl);
+  
+        if (publicData?.publicUrl) {
+          setAvatarUrl(publicData.publicUrl);
+          Alert.alert('Success', 'Image uploaded!');
+          
+          const { error } = await supabase
+            .from('user_profile')
+            .update({ avatar_img: publicData.publicUrl })
+            .eq('user_id', user.id);
+        
+          if (error) {
+            console.error('DB update error:', error);
+            Alert.alert('Profile update failed', error.message);
+          } else {
+            console.log('Profile image URL updated in DB');
+            await refreshProfile();
+          }
+        }
+  
+      } catch (err) {
+        console.error('Unexpected upload failure:', err);
+        Alert.alert('Unexpected Error', err.message || 'Something went wrong during image upload.');
+      } finally {
+        setImageUploading(false);
+      }
+    }
+  };
 
   async function editUserDetails() {
     if (!user) return;
@@ -42,7 +137,6 @@ export default function EditUser() {
         username: displayName,
         full_name: userFullName,
         user_age: userAge,
-        // location,
         avatar_img: avatarUrl,
         user_bio: userBio,
       })
@@ -52,7 +146,7 @@ export default function EditUser() {
       Alert.alert('Error', error.message);
     } else {
       Alert.alert('Success', 'Details updated!');
-      await refreshProfile(); // Refresh context after update
+      await refreshProfile();
       router.back();
     }
 
@@ -67,7 +161,6 @@ export default function EditUser() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.closeButtonContainer}>
-          {/* Floating X Button - we can add this to Sign up page too? */}
           <Pressable
             style={styles.closeButton}
             onPress={() => navigation.goBack()}
@@ -79,12 +172,30 @@ export default function EditUser() {
           <Text style={styles.text}>Edit Your Profile!</Text>
         </View>
 
+        <View style={{ alignItems: 'center', marginTop: 20 }}>
+          {avatarUrl ? (
+            <Image source={{ uri: avatarUrl }} style={styles.image} />
+          ) : (
+            <Text style={styles.text}>No Avatar Selected</Text>
+          )}
+          {imageUploading ? (
+            <ActivityIndicator size="large" color="#fff" />
+          ) : (
+            <Button
+              title="Pick an Avatar"
+              onPress={pickImageAndUpload}
+              buttonStyle={styles.button}
+              titleStyle={styles.buttonText}
+            />
+          )}
+        </View>
+
         <View style={[styles.verticallySpaced, styles.mt20]}>
           <Input
             inputStyle={styles.input}
             label="Display Name"
             leftIcon={{ type: 'font-awesome', name: 'user' }}
-            onChangeText={(text) => setDisplayName(text)}
+            onChangeText={setDisplayName}
             value={displayName}
             placeholder="Username"
             textContentType="nickname"
@@ -96,7 +207,7 @@ export default function EditUser() {
             inputStyle={styles.input}
             label="Full Name"
             leftIcon={{ type: 'font-awesome', name: 'user' }}
-            onChangeText={(text) => setUserFullName(text)}
+            onChangeText={setUserFullName}
             value={userFullName}
             placeholder="Your Full Name"
             autoCapitalize="words"
@@ -109,59 +220,30 @@ export default function EditUser() {
             label="Age"
             keyboardType="numeric"
             leftIcon={{ type: 'font-awesome', name: 'hashtag' }}
-            onChangeText={(text) => setUserAge(text)}
+            onChangeText={setUserAge}
             value={userAge}
             placeholder="Your Age"
           />
         </View>
 
-        {/* <View style={styles.verticallySpaced}>
-          <Input
-            inputStyle={styles.input}
-            label="Location"
-            leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
-            onChangeText={(text) => setLocation(text)}
-            value={location}
-            placeholder="Where in the world?"
-          />
-        </View> */}
         <View style={styles.verticallySpaced}>
           <Input
             inputStyle={styles.input}
             label="User Bio"
-            leftIcon={{ type: 'font-awesome', name: 'image' }}
-            onChangeText={(text) => setUserBio(text)}
+            leftIcon={{ type: 'font-awesome', name: 'info-circle' }}
+            onChangeText={setUserBio}
             value={userBio}
             placeholder="About you"
             autoCapitalize="none"
           />
         </View>
-        <View style={styles.verticallySpaced}>
-          <Input
-            inputStyle={styles.input}
-            label="Avatar URL"
-            leftIcon={{ type: 'font-awesome', name: 'image' }}
-            onChangeText={(text) => setAvatarUrl(text)}
-            value={avatarUrl}
-            placeholder="www.coolpic.com"
-            autoCapitalize="none"
+        <View style={[styles.verticallySpaced, styles.mt20, { alignItems: 'center' }]}>
+          <Button
+            title="Set your location"
+            buttonStyle={styles.button}
+            titleStyle={styles.buttonText}
+            onPress={() => router.push('/profile/locationSetterMap')}
           />
-        </View>
-        <View
-          style={[
-            styles.verticallySpaced,
-            styles.mt20,
-            { alignItems: 'center' },
-          ]}
-        >
-          <View style={{ alignItems: 'center' }}>
-            <Button
-              title="Set your location"
-              buttonStyle={styles.button}
-              titleStyle={styles.buttonText}
-              onPress={() => router.push('/profile/locationSetterMap')}
-            />
-          </View>
           <Button
             title={loading ? 'Updating...' : 'Update'}
             buttonStyle={[styles.button, styles.updateButton]}
@@ -210,13 +292,12 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 200,
-    height: 250,
-    marginBottom: 20,
-    borderRadius: 10,
+    height: 200,
+    borderRadius: 100,
+    marginBottom: 10,
   },
   text: {
-    fontFamily: 'Inter_400Regular',
-    fontSize: 40,
+    fontSize: 24,
     color: 'white',
   },
   input: {
@@ -232,7 +313,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   updateButton: {
-    width: '90%',
     backgroundColor: '#e63946',
   },
   buttonText: {

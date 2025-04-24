@@ -90,13 +90,15 @@ export default function TabFourScreen() {
           style={styles.scrollOverlay}
           contentContainerStyle={styles.avatarContainer}
         >
-          {chatImages.map((image, index) => {
-            return <View key={index} style={styles.avatarPlaceholder}>
-              <TouchableOpacity key={index} onPress={() => handleChatChange(index)}>
-              <Image source={{ uri: image }} style={styles.avatarPlaceholder}/>
-              </TouchableOpacity>
-            </View>
-          })}
+         {chatImages.map((image, index) => (
+         <TouchableOpacity key={index} onPress={() => handleChatChange(index)} style={styles.avatarWrapper}>
+         <View style={styles.avatarOverlay}>
+           <Image source={{ uri: image }} style={styles.avatarImage} />
+           <Text style={styles.avatarName}>{chatPartners[index]}</Text>
+         </View>
+       </TouchableOpacity>
+))}
+         
         </ScrollView>
         {openedMessage && chatInfo.length > 0 && (
           <ChatComponent 
@@ -114,21 +116,61 @@ export default function TabFourScreen() {
 const styles = StyleSheet.create({
   scrollOverlay: {
     position: 'absolute',
-    top: 80,
+    top: 60,
     left: 0,
     right: 0,
     zIndex: 10,
     paddingVertical: 10,
+    height: 110,
   },
   avatarContainer: {
     paddingHorizontal: 16,
+    marginTop: 10,
     flexDirection: 'row',
-    gap: 16, 
+    gap: 16,
   },
   avatarPlaceholder: {
     width: 70,
     height: 70,
     borderRadius: 40,
     backgroundColor: '#ccc',
-  }
-})
+  },
+
+  avatarWrapper: {
+    width: 70,
+    height: 70,
+    marginHorizontal: 8,
+  },
+  avatarOverlay: {
+    position: 'relative',
+    width: 70,
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarImage: {
+    width: 70,
+    height: 70,
+    borderRadius: 40,
+    backgroundColor: '#ccc',
+  },
+  avatarName: {
+    position: 'absolute',
+    top: 28,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    padding: 2,
+    color: 'white',
+    fontSize: 9,
+    paddingHorizontal: 4,
+    borderRadius: 4,
+    overflow: 'hidden',
+    maxWidth: 80,     
+    textAlign: 'center',
+}})
+
+  safeArea: {
+    flex: 1,
+    marginTop: Platform.OS === 'android' ? 24 : 0,
+  },
+});
+
