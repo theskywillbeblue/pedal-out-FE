@@ -35,7 +35,7 @@ export default function RideCardList({ rides }: Props) {
             <View style={styles.overlayColour} />
 
             <View style={styles.iconContainer}>
-              <Ionicons name="people-circle-outline" size={24} color="white" />
+              <Ionicons name="people-circle-outline" size={21} color="white" />
               <ThemedText style={styles.participantCount}>{ride.participants.length}</ThemedText>            
             </View>
             <Text style={styles.rideCardDetails}>
@@ -94,10 +94,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: 15,
-    opacity: 0.8,
+    opacity: 0.7,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   participantCount: {
     color: '#fff',
-    paddingLeft: 5,
+    fontSize: 15,
+    paddingLeft: 4,
   },
 });
