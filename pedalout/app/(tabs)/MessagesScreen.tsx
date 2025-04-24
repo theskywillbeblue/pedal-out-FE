@@ -85,7 +85,15 @@ export default function TabFourScreen() {
   }
 
   if (isLoading) {
-    return <Text>Fetching your messages...</Text>;
+        return (
+          <View style={styles.loaderContainer}>
+          <Image
+            source={require('../../assets/images/FetchingMessagesWhite.png')}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        </View>
+        );
   }
   if (error) {
     return <Text>Houston, we have a problem!</Text>;
@@ -193,5 +201,18 @@ const styles = StyleSheet.create({
   },
   background: {
     flex: 1,
+  },
+  image: {
+    maxWidth: Platform.OS === 'ios' ? 300 : 300,
+    width: '50%',
+    aspectRatio: 1,
+    maxHeight: 400,
+    marginBottom: 30,
+    alignSelf: 'center',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
