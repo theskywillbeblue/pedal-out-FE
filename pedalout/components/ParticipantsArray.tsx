@@ -69,14 +69,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   avatarContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 5,
     flexDirection: 'row',
-    gap: 16, 
+    gap: 11, 
   },
   avatarPlaceholder: {
     width: 70,
     height: 70,
     borderRadius: 40,
-    backgroundColor: '#ccc',
   }
 })
