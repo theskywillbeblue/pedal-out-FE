@@ -1,30 +1,29 @@
-import { StyleSheet, ScrollView, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, Text, View, Platform} from 'react-native';
 import FloatingSearchBar from '../../components/search';
 import ChatComponent from '@/components/Chat';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
+// import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function TabFourScreen() {
-	return (
-	
-			<SafeAreaProvider>
+  return (
+    
+    <SafeAreaView style={styles.safeArea}>
       <FloatingSearchBar />
       <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.scrollOverlay}
-          contentContainerStyle={styles.avatarContainer}
-        >
-          <View style={styles.avatarPlaceholder} />
-          <View style={styles.avatarPlaceholder} />
-          <View style={styles.avatarPlaceholder} />
-          <View style={styles.avatarPlaceholder} />
-          <View style={styles.avatarPlaceholder} />
-        </ScrollView>
-				<ChatComponent></ChatComponent>
-			</SafeAreaProvider>
-		
-	);
-
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.scrollOverlay}
+        contentContainerStyle={styles.avatarContainer}
+      >
+        <View style={styles.avatarPlaceholder} />
+        <View style={styles.avatarPlaceholder} />
+        <View style={styles.avatarPlaceholder} />
+        <View style={styles.avatarPlaceholder} />
+        <View style={styles.avatarPlaceholder} />
+      </ScrollView>
+      <ChatComponent></ChatComponent>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -39,12 +38,16 @@ const styles = StyleSheet.create({
   avatarContainer: {
     paddingHorizontal: 16,
     flexDirection: 'row',
-    gap: 16, 
+    gap: 16,
   },
   avatarPlaceholder: {
     width: 70,
     height: 70,
     borderRadius: 40,
     backgroundColor: '#ccc',
-  }
-})
+  },
+  safeArea: {
+    flex: 1,
+    marginTop: Platform.OS === 'android' ? 24 : 0,
+  },
+});

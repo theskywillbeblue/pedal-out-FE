@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { View, ImageBackground, StyleSheet } from 'react-native';
 import Chat from '@codsod/react-native-chat';
 
 type User = {
@@ -55,37 +56,46 @@ const ChatComponent = () => {
 	};
 
 	return (
-
+		<View style={styles.container}>
+		  <ImageBackground
+			source={require('../assets/images/ChatBackgroundBlack2.png')}
+			style={styles.background}
+			resizeMode="cover"
+		  >
 			<Chat
-				messages={messages}
-				setMessages={(val) => onSendMessage(val)}
-				themeColor='#4F7942'
-				themeTextColor='white'
-				showSenderAvatar={false}
-				showReceiverAvatar={true}
-				inputBorderColor='#4F7942'
-				user={{
-					_id: 1,
-					name: 'Vishal Chaturvedi',
-				}}
-				backgroundColor='white'
-				inputBackgroundColor='white'
-				placeholder='Enter Your Message'
-				placeholderColor='gray'
-				backgroundImage={
-					'https://s1.at.atcdn.net/wp-content/uploads/2024/07/HERO-Northern-Rivers-Rail-Trail-2.jpg'
-				}
-				showEmoji={true}
-				onPressEmoji={() => console.log('Emoji Button Pressed..')}
-				showAttachment={true}
-				onPressAttachment={() => console.log('Attachment Button Pressed..')}
-				timeContainerColor='grey'
-				timeContainerTextColor='black'
-				// onEndReached={() => alert("You have reached the end of the page")}
+			  messages={messages}
+			  setMessages={(val) => onSendMessage(val)}
+			  themeColor="#4F7942"
+			  themeTextColor="white"
+			  showSenderAvatar={false}
+			  showReceiverAvatar={true}
+			  inputBorderColor="#4F7942"
+			  user={{ _id: 1, name: 'Vishal Chaturvedi' }}
+			  backgroundColor="transparent"
+			  inputBackgroundColor="white"
+			  placeholder="Enter Your Message"
+			  placeholderColor="gray"
+			  showEmoji={true}
+			  onPressEmoji={() => console.log('Emoji Button Pressed..')}
+			  showAttachment={true}
+			  onPressAttachment={() => console.log('Attachment Button Pressed..')}
+			  timeContainerColor="grey"
+			  timeContainerTextColor="black"
 			/>
-	
-	);
+		  </ImageBackground>
+		</View>
+	  );
 };
-
+const styles = StyleSheet.create({
+	background: {
+	  flex: 1,
+	  width: '100%',
+	  height: '100%',
+	},
+	container: {
+		flex: 1,
+		backgroundColor: 'white',
+	  },
+  });
 
 export default ChatComponent;

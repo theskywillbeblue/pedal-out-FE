@@ -1,4 +1,13 @@
-import { StyleSheet, Image, Text, View, ScrollView } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Image,
+  View,
+  ImageBackground,
+  Platform,
+  StatusBar,
+} from 'react-native';
 import { Button } from '@rneui/themed';
 import { useContext, useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
@@ -8,7 +17,7 @@ import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -32,74 +41,92 @@ export default function ProfileScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <ThemedText type='title' style={styles.heading}>
-          Welcome,{'\n'}{profile?.username || user?.email || 'Guest'}!
-        </ThemedText>
+    <ImageBackground
+      source={require('../../assets/images/ProfileBackgroundWhite.png')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.4 }}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <ThemedText type="title" style={styles.heading}>
+            Welcome,{'\n'}
+            {profile?.username || user?.email || 'Guest'}!
+          </ThemedText>
 
-        <Image
-          source={{
-            uri:
-              profile?.avatar_img ||
-              'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
-          }}
-          style={styles.image}
-          resizeMode="cover"
-        />
+          <Image
+            source={{
+              uri:
+                profile?.avatar_img ||
+                'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
+            }}
+            style={styles.image}
+            resizeMode="cover"
+          />
 
-        <View style={styles.infoBox}>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Email: </ThemedText>
-            <ThemedText type='tabText'>{user?.email || 'Guest'}</ThemedText>
+          <View style={styles.infoBox}>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.label}>Email: </ThemedText>
+              <ThemedText type="tabText">{user?.email || 'Guest'}</ThemedText>
+            </View>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.label}>Name: </ThemedText>
+              <ThemedText type="tabText">
+                {profile?.full_name || 'No name set'}
+              </ThemedText>
+            </View>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.label}>Age: </ThemedText>
+              <ThemedText type="tabText">
+                {profile?.user_age || 'No age set'}
+              </ThemedText>
+            </View>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.label}>Location: </ThemedText>
+              <ThemedText type="tabText">
+                {profile?.location || 'No location set'}
+              </ThemedText>
+            </View>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.label}>Bio: </ThemedText>
+              <ThemedText type="tabText">
+                {profile?.user_bio || 'No bio made'}
+              </ThemedText>
+            </View>
           </View>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Name: </ThemedText>
-            <ThemedText type='tabText'>{profile?.full_name || 'No name set'}</ThemedText>
-          </View>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Age: </ThemedText>
-            <ThemedText type='tabText'>{profile?.user_age || 'No age set'}</ThemedText>
-          </View>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Location: </ThemedText>
-            <ThemedText type='tabText'>{profile?.location || 'No location set'}</ThemedText>
-          </View>
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.label}>Bio: </ThemedText>
-            <ThemedText type='tabText'>{profile?.user_bio || 'No bio made'}</ThemedText>
-          </View>
-        </View>
 
-{/* Gallery function to add when functionality available */}
-        {/* <Button
+          {/* Gallery function to add when functionality available */}
+          {/* <Button
           title="Open Gallery"
           buttonStyle={styles.button}
           titleStyle={styles.buttonText}
           onPress={() => router.push('/profile/gallery')}
         /> */}
 
-        <Button
-          title="Edit Profile"
-          buttonStyle={styles.button}
-          titleStyle={styles.buttonText}
-          onPress={() => router.push('/profile/edit')}
-        />
-        <Button
-          title="Sign Out"
-          buttonStyle={[styles.button, styles.signOutButton]}
-          titleStyle={styles.buttonText}
-          onPress={handleSignOut}
-        />
-      </ScrollView>
-    </SafeAreaView>
+          <Button
+            title="Edit Profile"
+            buttonStyle={styles.button}
+            titleStyle={styles.buttonText}
+            onPress={() => router.push('/profile/edit')}
+          />
+          <Button
+            title="Sign Out"
+            buttonStyle={[styles.button, styles.signOutButton]}
+            titleStyle={styles.buttonText}
+            onPress={handleSignOut}
+          />
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: 'transparent',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  background: {
+    flex: 1,
   },
   container: {
     alignItems: 'center',
@@ -116,13 +143,11 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     marginBottom: 20,
     borderWidth: 3,
-    borderColor: '#fff', 
-    // Drop shadow (iOS)
+    borderColor: '#fff',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
-    // Drop shadow (Android)
     elevation: 8,
   },
   infoBox: {
@@ -132,13 +157,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#BEBEBE',
     borderWidth: 3,
-    borderColor: '#fff', 
+    borderColor: '#fff',
   },
   infoRow: {
     flexDirection: 'row',
-    fontFamily: 'HelveticaRoundedBold',
     justifyContent: 'flex-start',
     alignContent: 'center',
+    marginBottom: 5,
   },
   label: {
     fontFamily: 'HelveticaRoundedBold',
@@ -153,10 +178,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   signOutButton: {
-    width: '80%',
     backgroundColor: '#e63946',
   },
   buttonText: {

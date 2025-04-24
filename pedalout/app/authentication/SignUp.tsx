@@ -55,13 +55,11 @@ export default function SignIn() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.headerText}>Sign Up</Text>
       <Image
-        source={{
-          uri: 'https://cdn.pixabay.com/photo/2013/07/13/13/39/bicycle-161315_960_720.png',
-        }}
+        source={require('../../assets/images/PedalOutMainLogoWhite.png')}
         style={styles.image}
         resizeMode="contain"
       />
-      <View style={styles.inputContainer}>
+      {/* <View style={styles.inputContainer}>
         <Input
           inputStyle={styles.input}
           label="Display Name"
@@ -71,7 +69,7 @@ export default function SignIn() {
           placeholder="Username"
           textContentType="nickname"
         />
-      </View>
+      </View> */}
       <View style={styles.inputContainer}>
         <Input
           inputStyle={styles.input}
