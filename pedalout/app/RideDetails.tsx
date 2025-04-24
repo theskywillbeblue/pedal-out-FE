@@ -39,29 +39,29 @@ export default function RideDetails() {
           <View style={styles.imageContainer}>
             <Image source={{ uri: parsedRide.ride_img_url || 'https://images.pexels.com/photos/1174106/pexels-photo-1174106.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}} style={styles.headerImage} resizeMode="cover" />
             <TouchableOpacity
-  onPress={handleLongPress}
-  activeOpacity={0.9}
-  style={[styles.floatingMap, { borderColor }]}
->
-  <MapView
-    style={styles.mapPreview}
-    initialRegion={{
-      latitude: parsedRide.ride_location.lat,
-      longitude: parsedRide.ride_location.lng,
-      latitudeDelta: 0.1,
-      longitudeDelta: 0.1,
-    }}
-    pointerEvents="none"
-  >
-    <Marker
-      coordinate={{
-        latitude: parsedRide.ride_location.lat,
-        longitude: parsedRide.ride_location.lng,
-      }}
-      title="Hamsterly Forest"
-    />
-  </MapView>
-</TouchableOpacity>
+              onPress={handleLongPress}
+              activeOpacity={0.9}
+              style={[styles.floatingMap, { borderColor }]}
+            >
+              <MapView
+                style={styles.mapPreview}
+                initialRegion={{
+                  latitude: parsedRide.ride_location.lat,
+                  longitude: parsedRide.ride_location.lng,
+                  latitudeDelta: 0.1,
+                  longitudeDelta: 0.1,
+                }}
+                pointerEvents="none"
+              >
+                <Marker
+                  coordinate={{
+                    latitude: parsedRide.ride_location.lat,
+                    longitude: parsedRide.ride_location.lng,
+                  }}
+                  title={parsedRide.title}
+                />
+              </MapView>
+            </TouchableOpacity>
           </View>
         }
         headerBackgroundColor={{
