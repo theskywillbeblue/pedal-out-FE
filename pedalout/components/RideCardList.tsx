@@ -24,7 +24,7 @@ export default function RideCardList({ rides }: Props) {
           onPress={() =>
             router.push({
               pathname: '/RideDetails',
-              params: { ride: JSON.stringify(ride) }, 
+              params: { ride: JSON.stringify(ride) },
             })
           }
         >
@@ -36,7 +36,9 @@ export default function RideCardList({ rides }: Props) {
 
             <View style={styles.iconContainer}>
               <Ionicons name="people-circle-outline" size={21} color="white" />
-              <ThemedText style={styles.participantCount}>{ride.participants.length}</ThemedText>            
+              <ThemedText style={styles.participantCount}>
+                {ride.participants.length}
+              </ThemedText>
             </View>
             <Text style={styles.rideCardDetails}>
               <Text style={styles.subtitle}>{ride.title}</Text>
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff'
+    color: '#fff',
   },
   iconContainer: {
     flexDirection: 'row',

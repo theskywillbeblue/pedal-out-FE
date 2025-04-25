@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ImageBackground,
   Platform,
-  StatusBar,
 } from 'react-native';
 import FloatingSearchBar from '../../components/ChatSearch';
 import ChatComponent from '@/components/Chat';
@@ -76,7 +75,7 @@ export default function TabFourScreen() {
       const filteredAvatars = avatars.filter(Boolean);
       setChatImages(filteredAvatars);
     } catch (err) {
-      console.error('Failed to fetch chat partner avatars:', err);
+      
     }
   }
 
@@ -89,7 +88,7 @@ export default function TabFourScreen() {
           <View style={styles.loaderContainer}>
           <Image
             source={require('../../assets/images/FetchingMessagesWhite.png')}
-            style={styles.image}
+            style={styles.loadingImage}
             resizeMode="contain"
           />
         </View>
@@ -205,13 +204,14 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
-  image: {
+  loadingImage: {
     maxWidth: Platform.OS === 'ios' ? 300 : 300,
     width: '50%',
     aspectRatio: 1,
-    maxHeight: 400,
+    maxHeight: 350,
     marginBottom: 30,
     alignSelf: 'center',
+    marginTop: 20,
   },
   loaderContainer: {
     flex: 1,

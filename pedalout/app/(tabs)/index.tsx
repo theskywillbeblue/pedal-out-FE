@@ -43,7 +43,7 @@ export default function MainScreen() {
       <View style={styles.loaderContainer}>
       <Image
         source={require('../../assets/images/FetchingRidesWhite.png')}
-        style={styles.image}
+        style={styles.loadingImage}
         resizeMode="contain"
       />
     </View>
@@ -115,13 +115,14 @@ const styles = StyleSheet.create({
     marginBottom: Platform.OS === 'android' ? 0 : -32,
     paddingVertical: 12,
   },
-  image: {
+  loadingImage: {
     maxWidth: Platform.OS === 'ios' ? 300 : 300,
     width: '50%',
     aspectRatio: 1,
-    maxHeight: 400,
+    maxHeight: 300,
     marginBottom: 30,
     alignSelf: 'center',
+    marginTop: 20,
   },
   loaderContainer: {
     flex: 1,

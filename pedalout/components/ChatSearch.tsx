@@ -1,13 +1,13 @@
 import { StyleSheet, View, TextInput } from 'react-native';
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function FloatingSearchBar() {
   const colorScheme = useColorScheme();
 
   // Define background, text color, and placeholder color based on the color scheme
-  const backgroundColor = colorScheme === "dark" ? "#333" : "#fff";  // Dark mode: light grey background, Light mode: white background
-  const textColor = colorScheme === "dark" ? "#fff" : "#000";  // Dark mode: white text, Light mode: black text
-  const placeholderColor = colorScheme === "dark" ? "#aaa" : "#888";  // Dark mode: light grey placeholder, Light mode: dark grey placeholder
+  const backgroundColor = colorScheme === 'dark' ? '#333' : '#fff'; // Dark mode: light grey background, Light mode: white background
+  const textColor = colorScheme === 'dark' ? '#fff' : '#000'; // Dark mode: white text, Light mode: black text
+  const placeholderColor = colorScheme === 'dark' ? '#aaa' : '#888'; // Dark mode: light grey placeholder, Light mode: dark grey placeholder
 
   return (
     <View style={[styles.floatingSearchContainer, { backgroundColor }]}>

@@ -1,21 +1,16 @@
-import React, { useContext } from 'react';
-import { View, Pressable, StyleSheet, Alert } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useContext, useState } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Button } from '@rneui/themed';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParticipantsArray from './ParticipantsArray';
-import { router, useLocalSearchParams, useRouter } from 'expo-router';
-import { ScreenHeight } from '@rneui/themed/dist/config';
-import { useState } from 'react';
-import TouchableOpacity from 'react-native-gesture-handler';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { UserContext } from '@/app/context/UserContext';
 import { patchRideById } from '@/api';
 
 function RideDetailsPanel() {
   const { profile } = useContext(UserContext);
-  const [chatImages, setChatImages] = useState<string[]>([]);
   const { ride } = useLocalSearchParams();
   const parsedRide = JSON.parse(ride as string);
   const router = useRouter();

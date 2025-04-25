@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     zIndex: 1000,
     borderRadius: 25,
     paddingHorizontal: 4,
-    paddingVertical: 4,
+    paddingVertical: 3,
     // Remove any shadow properties here
     shadowColor: 'transparent', // Ensures no shadow is applied
     shadowRadius: 0,

@@ -77,7 +77,7 @@ export default function TabTwoScreen() {
 
 const styles = StyleSheet.create({
   mapPreviewContainer: {
-    height: 280,
+    height: 250,
     width: '100%',
     borderRadius: 6,
     overflow: 'hidden',

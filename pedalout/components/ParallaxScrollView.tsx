@@ -36,11 +36,15 @@ export default function ParallaxScrollView({
           translateY: interpolate(
             scrollOffset.value,
             [-headerHeight, 0, headerHeight],
-            [-headerHeight / 2, 0, headerHeight * 0.75]
+            [-headerHeight / 2, 0, headerHeight * 0.75],
           ),
         },
         {
-          scale: interpolate(scrollOffset.value, [-headerHeight, 0, headerHeight], [2, 1, 1]),
+          scale: interpolate(
+            scrollOffset.value,
+            [-headerHeight, 0, headerHeight],
+            [2, 1, 1],
+          ),
         },
       ],
     };
@@ -57,7 +61,10 @@ export default function ParallaxScrollView({
         <Animated.View
           style={[
             styles.header,
-            { backgroundColor: headerBackgroundColor[colorScheme], height: headerHeight }, // Use headerHeight prop
+            {
+              backgroundColor: headerBackgroundColor[colorScheme],
+              height: headerHeight,
+            }, // Use headerHeight prop
             headerAnimatedStyle,
           ]}
         >

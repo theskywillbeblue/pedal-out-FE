@@ -37,6 +37,7 @@ export default function RideDetails() {
         <Text style={styles.closeText}>✕</Text>
       </Pressable>
       <ParallaxScrollView
+    
         headerImage={
           <View style={styles.imageContainer}>
             <Image
@@ -47,6 +48,7 @@ export default function RideDetails() {
               }}
               style={styles.headerImage}
               resizeMode="cover"
+              
             />
             <TouchableOpacity
               onPress={handleLongPress}

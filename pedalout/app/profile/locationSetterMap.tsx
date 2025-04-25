@@ -9,7 +9,7 @@ import Geocoder from '../../api';
 
 export default function LocSetMap() {
   const navigation = useNavigation();
-  const { user, profile, refreshProfile } = useContext(UserContext);
+  const { user, refreshProfile } = useContext(UserContext);
   const [userLat, setUserLat] = useState(null);
   const [userLng, setUserLng] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -74,7 +74,7 @@ export default function LocSetMap() {
   return (
     <View style={styles.container}>
       <View style={styles.closeButtonContainer}>
-        {/* Floating X Button - we can add this to Sign up page too? */}
+        {/* Floating X Button */}
         <Pressable
           style={styles.closeButton}
           onPress={() => navigation.goBack()}

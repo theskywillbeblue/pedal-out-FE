@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, View, Alert, Image, ActivityIndicator, Pressable } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import {
+  ScrollView,
+  View,
+  Alert,
+  Image,
+  ActivityIndicator,
+  Pressable,
+} from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { UserContext } from '../context/UserContext';
 import { StyleSheet } from 'react-native';
@@ -8,8 +14,9 @@ import { useRouter } from 'expo-router';
 import { Input, Text, Button } from '@rneui/themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
+import { useColorScheme } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 export default function EditUser() {
   const navigation = useNavigation();
@@ -24,6 +31,12 @@ export default function EditUser() {
   const [userBio, setUserBio] = useState('');
   const router = useRouter();
 
+  const colorScheme = useColorScheme();
+
+  const borderColor = useThemeColor({ light: '#ccc', dark: '#444' });
+  const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
+  const textColor = colorScheme === 'dark' ? '#fff' : '#000';
+
   useEffect(() => {
     if (profile) {
       setDisplayName(profile.username || '');
@@ -35,14 +48,16 @@ export default function EditUser() {
   }, [profile]);
 
   const pickImageAndUpload = async () => {
-    console.log('Picking image...');
-  
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
-      Alert.alert('Permission Required', 'Permission to access media library is needed!');
+      Alert.alert(
+        'Permission Required',
+        'Permission to access media library is needed!',
+      );
       return;
     }
-  
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: 'images',
       allowsEditing: true,
@@ -50,18 +65,15 @@ export default function EditUser() {
       quality: 0.7,
       base64: true,
     });
-  
-    console.log('Result:', result);
-  
+
     if (!result.canceled && result.assets?.length > 0) {
       setImageUploading(true);
       const file = result.assets[0];
-      console.log('Uploading file:', file.uri);
-  
+
       const fileExt = file.uri.split('.').pop();
       const fileName = `${user.id}_${Date.now()}.${fileExt}`;
       const filePath = fileName;
-  
+
       try {
         const base64 = file.base64;
 
@@ -70,57 +82,50 @@ export default function EditUser() {
         for (let i = 0; i < byteCharacters.length; i++) {
           byteArray[i] = byteCharacters.charCodeAt(i);
         }
-  
+
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('user-profile-image')
           .upload(filePath, byteArray, {
             contentType: 'image/jpeg',
             upsert: true,
           });
-  
+
         if (uploadError) {
-          console.error('Upload error:', uploadError);
           Alert.alert('Upload Error', uploadError.message);
           setImageUploading(false);
           return;
         }
-  
-        console.log('Upload successful:', uploadData);
-  
+
         const { data: publicData, error: publicUrlError } = supabase.storage
           .from('user-profile-image')
           .getPublicUrl(filePath);
-  
+
         if (publicUrlError) {
-          console.error('Public URL error:', publicUrlError);
           Alert.alert('Error', publicUrlError.message);
           setImageUploading(false);
           return;
         }
-  
-        console.log('Public URL:', publicData?.publicUrl);
-  
+
         if (publicData?.publicUrl) {
           setAvatarUrl(publicData.publicUrl);
           Alert.alert('Success', 'Image uploaded!');
-          
+
           const { error } = await supabase
             .from('user_profile')
             .update({ avatar_img: publicData.publicUrl })
             .eq('user_id', user.id);
-        
+
           if (error) {
-            console.error('DB update error:', error);
             Alert.alert('Profile update failed', error.message);
           } else {
-            console.log('Profile image URL updated in DB');
             await refreshProfile();
           }
         }
-  
       } catch (err) {
-        console.error('Unexpected upload failure:', err);
-        Alert.alert('Unexpected Error', err.message || 'Something went wrong during image upload.');
+        Alert.alert(
+          'Unexpected Error',
+          err.message || 'Something went wrong during image upload.',
+        );
       } finally {
         setImageUploading(false);
       }
@@ -158,7 +163,7 @@ export default function EditUser() {
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 60 }}
+        contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
@@ -170,12 +175,6 @@ export default function EditUser() {
             <Text style={styles.closeText}>✕</Text>
           </Pressable>
         </View>
-        <View style={{ alignItems: 'center' }}>
-                    <ThemedText type="title" style={styles.heading}>
-                      Edit your profile!
-                    </ThemedText>
-        </View>
-
         <View style={{ alignItems: 'center', marginTop: 20 }}>
           {avatarUrl ? (
             <Image source={{ uri: avatarUrl }} style={styles.image} />
@@ -188,69 +187,76 @@ export default function EditUser() {
             <Button
               title="Pick an Avatar"
               onPress={pickImageAndUpload}
-              buttonStyle={styles.button}
+              buttonStyle={[styles.button, { backgroundColor }]}
               titleStyle={styles.buttonText}
             />
           )}
         </View>
+        <View style={styles.infoHolder}>
+          <View style={[styles.verticallySpaced, styles.mt20]}>
+            <Input
+              inputStyle={styles.input}
+              label="Display Name"
+              leftIcon={{ type: 'font-awesome', name: 'user' }}
+              onChangeText={setDisplayName}
+              value={displayName}
+              placeholder="Username"
+              textContentType="nickname"
+            />
+          </View>
 
-        <View style={[styles.verticallySpaced, styles.mt20]}>
-          <Input
-            inputStyle={styles.input}
-            label="Display Name"
-            leftIcon={{ type: 'font-awesome', name: 'user' }}
-            onChangeText={setDisplayName}
-            value={displayName}
-            placeholder="Username"
-            textContentType="nickname"
-          />
-        </View>
+          <View style={[styles.verticallySpaced, styles.mt20]}>
+            <Input
+              inputStyle={styles.input}
+              label="Full Name"
+              leftIcon={{ type: 'font-awesome', name: 'user' }}
+              onChangeText={setUserFullName}
+              value={userFullName}
+              placeholder="Your Full Name"
+              autoCapitalize="words"
+            />
+          </View>
 
-        <View style={[styles.verticallySpaced, styles.mt20]}>
-          <Input
-            inputStyle={styles.input}
-            label="Full Name"
-            leftIcon={{ type: 'font-awesome', name: 'user' }}
-            onChangeText={setUserFullName}
-            value={userFullName}
-            placeholder="Your Full Name"
-            autoCapitalize="words"
-          />
-        </View>
+          <View>
+            <Input
+              inputStyle={styles.input}
+              label="Age"
+              keyboardType="numeric"
+              leftIcon={{ type: 'font-awesome', name: 'hashtag' }}
+              onChangeText={setUserAge}
+              value={userAge}
+              placeholder="Your Age"
+            />
+          </View>
 
-        <View>
-          <Input
-            inputStyle={styles.input}
-            label="Age"
-            keyboardType="numeric"
-            leftIcon={{ type: 'font-awesome', name: 'hashtag' }}
-            onChangeText={setUserAge}
-            value={userAge}
-            placeholder="Your Age"
-          />
+          <View style={[styles.verticallySpaced, styles.mt20]}>
+            <Input
+              inputStyle={styles.input}
+              label="User Bio"
+              leftIcon={{ type: 'font-awesome', name: 'info-circle' }}
+              onChangeText={setUserBio}
+              value={userBio}
+              placeholder="About you"
+              autoCapitalize="none"
+            />
+          </View>
         </View>
-
-        <View style={styles.verticallySpaced}>
-          <Input
-            inputStyle={styles.input}
-            label="User Bio"
-            leftIcon={{ type: 'font-awesome', name: 'info-circle' }}
-            onChangeText={setUserBio}
-            value={userBio}
-            placeholder="About you"
-            autoCapitalize="none"
-          />
-        </View>
-        <View style={[styles.verticallySpaced, styles.mt20, { alignItems: 'center' }]}>
+        <View
+          style={[
+            styles.verticallySpaced,
+            styles.mt20,
+            { alignItems: 'center' },
+          ]}
+        >
           <Button
             title="Set your location"
-            buttonStyle={styles.button}
+            buttonStyle={[styles.button, { backgroundColor }]}
             titleStyle={styles.buttonText}
             onPress={() => router.push('/profile/locationSetterMap')}
           />
           <Button
             title={loading ? 'Updating...' : 'Update'}
-            buttonStyle={[styles.button, styles.updateButton]}
+            buttonStyle={[styles.button, { backgroundColor }]}
             titleStyle={styles.buttonText}
             disabled={loading}
             onPress={editUserDetails}
@@ -284,12 +290,11 @@ const styles = StyleSheet.create({
   },
 
   verticallySpaced: {
-    // paddingTop: 2,
-    // paddingBottom: 2,
     alignSelf: 'stretch',
+    height: 80,
   },
   mt20: {
-    marginTop:  0,
+    marginTop: 0,
   },
   image: {
     width: 170,
@@ -305,20 +310,28 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   button: {
+    borderRadius: 8,
+    paddingVertical: 10,
     width: '65%',
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: '#1B4D3E',
-    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-  },
-  updateButton: {
-    backgroundColor: '#007AFF',
+    borderLeftWidth: 1.5,
+    borderLeftColor: 'rgba(255,255,255,0.4)',
+    borderBottomWidth: 1.8,
+    borderBottomColor: 'rgba(255,255,255,0.4)',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(255,255,255,0.4)',
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderRightColor: 'rgba(255,255,255,0.4)',
+    margin: 7,
   },
   buttonText: {
     textAlign: 'center',
     width: '100%',
+  },
+  infoHolder: {
+    marginTop: 15,
+    marginBottom: 15
   },
 });

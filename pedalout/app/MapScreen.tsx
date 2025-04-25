@@ -58,7 +58,7 @@ export default function MapScreen() {
         ))}
       </MapView>
 
-      {/* Floating X Button - we can add this to Sign up page too? */}
+      {/* Floating X Button */}
       <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
         <Text style={styles.closeText}>✕</Text>
       </Pressable>

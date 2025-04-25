@@ -8,8 +8,6 @@ import {
   Platform,
   View,
   Modal,
-  KeyboardAvoidingView,
-  ScrollView,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
@@ -20,10 +18,10 @@ import { Formik } from 'formik';
 import { Ionicons } from '@expo/vector-icons';
 import { UserContext } from '../app/context/UserContext';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { router } from 'expo-router';
 import { format } from 'date-fns';
 import * as Yup from 'yup';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type PostRideProps = {
   latitude: number;
@@ -339,13 +337,21 @@ export default function PostRide(props: PostRideProps) {
             <TouchableOpacity
               onPress={handleSubmit}
               style={{
-                backgroundColor: '#1B4D3E',
-                paddingVertical: 12,
-                borderRadius: 6,
-                marginTop: 20,
+                borderRadius: 8,
+                paddingVertical: 10,
+                width: '65%',
+                marginTop: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
                 alignSelf: 'center',
-                width: '70%',
-                marginBottom: 20,
+                borderLeftWidth: 1.5,
+                borderLeftColor: 'rgba(255,255,255,0.4)',
+                borderBottomWidth: 1.8,
+                borderBottomColor: 'rgba(255,255,255,0.4)',
+                borderTopWidth: StyleSheet.hairlineWidth,
+                borderTopColor: 'rgba(255,255,255,0.4)',
+                borderRightWidth: StyleSheet.hairlineWidth,
+                borderRightColor: 'rgba(255,255,255,0.4)',
               }}
             >
               <Text

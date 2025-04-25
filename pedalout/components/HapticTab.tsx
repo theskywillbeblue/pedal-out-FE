@@ -1,7 +1,6 @@
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
-import { Pressable } from 'react-native';
+import { View, StyleSheet, Platform, Pressable } from 'react-native';
 import React, { useState } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
 export function HapticTab(props: BottomTabBarButtonProps) {
@@ -22,25 +21,24 @@ export function HapticTab(props: BottomTabBarButtonProps) {
 
   return (
     <Pressable
-  onPress={props.onPress} 
-  onPressIn={handlePressIn}
-  onPressOut={handlePressOut}
-  style={({ pressed: isPressed }) => [
-    styles.wrapper,
-    props.style,
-    {
-      backgroundColor: 'transparent',
-      opacity: 1,
-    },
-  ]}
-  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
->
-  <View style={styles.iconContainer}>
-    {pressed && <View style={styles.hapticCircle} />}
-    {props.children}
-  </View>
-</Pressable>
-
+      onPress={props.onPress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={({ pressed: isPressed }) => [
+        styles.wrapper,
+        props.style,
+        {
+          backgroundColor: 'transparent',
+          opacity: 1,
+        },
+      ]}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+    >
+      <View style={styles.iconContainer}>
+        {pressed && <View style={styles.hapticCircle} />}
+        {props.children}
+      </View>
+    </Pressable>
   );
 }
 

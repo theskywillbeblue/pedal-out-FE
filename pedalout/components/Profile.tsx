@@ -1,10 +1,9 @@
 import { UserContext } from '@/app/context/UserContext';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'expo-router';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import { View, Text, Button, Image, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
 
 export default function Profile({ navigation }: { navigation: any }) {
   const router = useRouter();
@@ -60,12 +59,11 @@ export default function Profile({ navigation }: { navigation: any }) {
         {profile?.username || user?.email || 'Guest'}!
       </Text>
 
-
       <Image
         source={{
-          uri:
-            profile.avatar_img ? profile.avatar_img :
-            'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
+          uri: profile.avatar_img
+            ? profile.avatar_img
+            : 'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
         }}
         style={styles.image}
         resizeMode="cover"
@@ -73,7 +71,8 @@ export default function Profile({ navigation }: { navigation: any }) {
 
       <View style={styles.infoBox}>
         <Text style={styles.infoText}>
-          <Text style={styles.label}>Email:</Text> {user?.email || 'No email set'}
+          <Text style={styles.label}>Email:</Text>{' '}
+          {user?.email || 'No email set'}
         </Text>
         <Text style={styles.infoText}>
           <Text style={styles.label}>Name:</Text>{' '}

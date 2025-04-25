@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   useColorScheme,
+  ImageBackground
 } from 'react-native';
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
@@ -14,6 +15,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { getFriends } from '../../api.js';
 import { supabase } from '@/lib/supabase';
 import { router } from 'expo-router';
+
 
 export default function FriendsScreen() {
   const { profile } = useContext(UserContext);
@@ -114,7 +116,9 @@ const username = profile.username
   }
 
   return (
-    <ThemedSafeAreaView style={{ flex: 1 }}>
+
+    
+    <ThemedView style={[{ flex: 1 }]}  >
       <ThemedText type="title" style={styles.title}>
         Connections
       </ThemedText>
@@ -125,9 +129,11 @@ const username = profile.username
             Following{'\n'}
             <ThemedText style={styles.figures}>({following.length})</ThemedText>
           </ThemedText>
+          
           <ScrollView
             showsVerticalScrollIndicator={false}
           >
+
             {following.map((followee, i) => {
               const avatar_img = followingAvatars.find(
                 (entry) => followee in entry,
@@ -208,10 +214,15 @@ const username = profile.username
                 </View>
               );
             })}
+            
           </ScrollView>
+          
         </ThemedView>
+     
       </ThemedView>
-    </ThemedSafeAreaView>
+    
+    </ThemedView>
+ 
   );
 }
 
@@ -220,23 +231,18 @@ const styles = StyleSheet.create({
     fontFamily: 'HelveticaRoundedBold',
     fontSize: 32,
     textAlign: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
+    paddingVertical: 30,
     marginBottom: 16,
-    backgroundColor: '#1B4D3E',
-    opacity: 0.8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 5, // Android shadow
+    backgroundColor: '#000',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.4)',
   },
   sectionHeader: {
     flexDirection: 'row',
     fontSize: 22,
     alignSelf: 'center',
     marginBottom: 20,
-    marginTop: 20,
+    marginTop: 8,
   },
   avatarCard: {
     alignItems: 'center',

@@ -8,12 +8,12 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ScrollView } from 'react-native-gesture-handler';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@rneui/themed';
-import { addFriend, getAllChatsByUsername, getFriends, postNewMessage, removeFriend } from '@/api';
+import { addFriend, getFriends, removeFriend } from '@/api';
 import { UserContext } from './context/UserContext';
 import { useColorScheme } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
@@ -26,54 +26,53 @@ export default function Friendsfriend() {
   const [friendsFollowing, setFriendsFollowing] = useState([]);
   const [friendsFollowers, setFriendsFollowers] = useState([]);
   const [friendProfile, setFriendProfile] = useState([]);
-  const [chatInfo, setChatInfo] = useState([]);
-  const [chatIds, setChatIds] = useState([]);
-  const [chatPartners, setChatPartners] = useState([]);
   const { profile } = useContext(UserContext);
   const loggedInUser = profile.username;
 
   const colorScheme = useColorScheme();
-  
+
   const borderColor = useThemeColor({ light: '#ccc', dark: '#444' });
   const backgroundColor = colorScheme === 'dark' ? '#000' : '#fff';
-  const textColor = colorScheme === 'dark' ? '#fff': '#000';
+  const textColor = colorScheme === 'dark' ? '#fff' : '#000';
 
   useEffect(() => {
     getFriends(friendName)
-    .then((res) => {
-      setFriendsFollowing(res.followedUsers);
-      setFriendsFollowers(res.usersFollowers);
-      getFriendProfile();
+      .then((res) => {
+        setFriendsFollowing(res.followedUsers);
+        setFriendsFollowers(res.usersFollowers);
+        getFriendProfile();
 
-      if(res.usersFollowers.includes(loggedInUser)) {
-        setIsFollowed(true);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-    })
+        if (res.usersFollowers.includes(loggedInUser)) {
+          setIsFollowed(true);
+        }
+      })
+      .catch((err) => {
+        
+      });
   }, [loggedInUser]);
 
   const getFriendProfile = async () => {
     try {
-        const { data, error } = await supabase
-          .from('user_profile')
-          .select('*')
-          .eq('username', friendName)
-          .single();
+      const { data, error } = await supabase
+        .from('user_profile')
+        .select('*')
+        .eq('username', friendName)
+        .single();
 
-        if(error) {
-          console.error(`Error fetching profile for ${friendName}:`, error.message);
-          return null;
-        }
-        setFriendProfile(data);
-        return data || null;
-
-      } catch (err) {
-      console.error('Failed to fetch friend profile:', err);
+      if (error) {
+        console.error(
+          `Error fetching profile for ${friendName}:`,
+          error.message,
+        );
+        return null;
+      }
+      setFriendProfile(data);
+      return data || null;
+    } catch (err) {
+      
     }
   };
-      
+
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
@@ -88,73 +87,85 @@ export default function Friendsfriend() {
         setIsFollowed(!isFollowed);
       }
     } catch (err) {
-      console.error(err);
+      
     }
   };
 
   return (
     <ImageBackground
-          source={require('../assets/images/ProfileBackgroundWhiteLow.png')}
-          style={styles.background}
-          imageStyle={{ opacity: 0.3 }}
-        >
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.closeButtonContainer}>
-          <Pressable
-            style={styles.closeButton}
-            onPress={() => navigation.goBack()}
+      source={require('../assets/images/ProfileBackgroundWhiteLow.png')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.3 }}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View style={styles.closeButtonContainer}>
+            <Pressable
+              style={styles.closeButton}
+              onPress={() => navigation.goBack()}
+            >
+              <Text style={styles.closeText}>✕</Text>
+            </Pressable>
+          </View>
+
+          <View style={styles.profileHeader}>
+            <Image
+              source={{
+                uri:
+                  friendProfile?.avatar_img ||
+                  'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
+              }}
+              style={styles.image}
+              resizeMode="cover"
+            />
+            <ThemedText type="title" style={styles.name}>
+              {friendProfile?.username}
+            </ThemedText>
+          </View>
+
+          <View
+            style={[
+              styles.infoBox,
+              { backgroundColor: backgroundColor, opacity: 0.7 },
+            ]}
           >
-            <Text style={styles.closeText}>✕</Text>
-          </Pressable>
-        </View>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.labelBold}>Name:</ThemedText>
+              <ThemedText style={styles.labelRight}>
+                {friendProfile?.full_name || 'No name set'}
+              </ThemedText>
+            </View>
 
-        <View style={styles.profileHeader}>
-          <Image
-            source={{
-              uri: friendProfile?.avatar_img ||
-                'https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png',
-            }}
-            style={styles.image}
-            resizeMode="cover"
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.labelBold}>Age:</ThemedText>
+              <ThemedText style={styles.labelRight}>
+                {friendProfile?.user_age || 'No age set'}
+              </ThemedText>
+            </View>
+
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.labelBold}>Location:</ThemedText>
+              <ThemedText style={styles.labelRight}>
+                {friendProfile?.location || 'No location set'}
+              </ThemedText>
+            </View>
+
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.labelBold}>Bio:</ThemedText>
+              <ThemedText style={styles.labelRight}>
+                {friendProfile?.user_bio || 'No bio made'}
+              </ThemedText>
+            </View>
+          </View>
+
+          <Button
+            title={isFollowed ? 'Unfollow' : 'Follow'}
+            buttonStyle={styles.button}
+            titleStyle={styles.buttonText}
+            onPress={handleFollowPress}
           />
-          <ThemedText type="title" style={styles.name}>
-          {friendProfile?.username}
-          </ThemedText>
-        </View>
-
-        <View style={[styles.infoBox, { backgroundColor: backgroundColor, opacity: 0.7 }]}>
-          
-
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>Name:</ThemedText>
-            <ThemedText style={styles.labelRight}>{friendProfile?.full_name || 'No name set'}</ThemedText>
-          </View>
-
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>Age:</ThemedText>
-            <ThemedText style={styles.labelRight}>{friendProfile?.user_age || 'No age set'}</ThemedText>
-          </View>
-
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>Location:</ThemedText>
-            <ThemedText style={styles.labelRight}>{friendProfile?.location || 'No location set'}</ThemedText>
-          </View>
-
-          <View style={styles.infoRow}>
-            <ThemedText style={styles.labelBold}>Bio:</ThemedText>
-            <ThemedText style={styles.labelRight}>{friendProfile?.user_bio || 'No bio made'}</ThemedText>
-          </View>
-        </View>
-
-        <Button
-          title={isFollowed ? 'Unfollow' : 'Follow'}
-          buttonStyle={styles.button}
-          titleStyle={styles.buttonText}
-          onPress={handleFollowPress}
-        />
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
     </ImageBackground>
   );
 }
